@@ -1,6 +1,8 @@
 package ar.edu.unq.po2.conteiner;
 
 
+import ar.edu.unq.po2.cliente.Cliente;
+
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -52,7 +54,7 @@ public abstract class Conteiner {
     * */
     public Conteiner(Cliente duenioConsignee,double ancho, double largo, double altura,double peso){
         this.duenioConsignee=duenioConsignee;
-        this.idConteiner(duenioConsignee);
+        this.idConteiner(duenioConsignee.nombreCliente());
         this.ancho=ancho;
         this.largo=largo;
         this.altura=altura;
