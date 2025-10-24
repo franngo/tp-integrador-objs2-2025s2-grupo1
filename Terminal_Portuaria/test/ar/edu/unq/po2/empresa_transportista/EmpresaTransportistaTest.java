@@ -1,12 +1,20 @@
 package ar.edu.unq.po2.empresa_transportista;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ar.edu.unq.po2.camion.Camion;
 import ar.edu.unq.po2.chofer.Chofer;
+import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
+
+/**
+* Definen los tests unitarios de la clase EmpresaTransportista.
+* @author Benjamin Maldonado.
+*/
 
 class EmpresaTransportistaTest {
 	private EmpresaTransportista andreani;
@@ -45,17 +53,43 @@ class EmpresaTransportistaTest {
 		assertEquals("Volvo FH460", volvoFH460.getMarcaYModelo());
 		assertEquals("NRG113", volvoFH460.getPatente());
 		
-		assertTrue(andreani.getCamiones().contains(scaniaR580));
-		assertTrue(andreani.getCamiones().contains(volvoFH460));
+		assertTrue(andreani.tieneCamion(scaniaR580));
+		assertTrue(andreani.tieneCamion(volvoFH460));
 		assertEquals(2, andreani.getCamiones().size());
 		
-		assertTrue(andreani.getChoferes().contains(jose));
-		assertTrue(andreani.getChoferes().contains(carlos));
+		assertTrue(andreani.tieneChofer(jose));
+		assertTrue(andreani.tieneChofer(carlos));
 		assertEquals(2, andreani.getChoferes().size());
 	}
 	
 	@Test
-	public void testRegistrarseEnTerminalPortuaria() {
+	public void testFuncionamientoDeAñadirALaEmpresaTransportista() {
+		assertEquals(2, andreani.getCamiones().size());
+		assertEquals(2, andreani.getChoferes().size());
 		
+		andreani.añadirCamion(scaniaR580);
+		andreani.añadirChofer(jose);
+		
+		assertEquals(2, andreani.getCamiones().size());
+		assertEquals(2, andreani.getChoferes().size());
+		
+		Camion scaniaP310 = new Camion("Scania P310", "HGP440");
+		Chofer ricardo = new Chofer("Ricardo Iorio", "27.908.100");
+		
+		andreani.añadirCamion(scaniaP310);
+		andreani.añadirChofer(ricardo);
+		
+		assertEquals(3, andreani.getCamiones().size());
+		assertEquals(3, andreani.getChoferes().size());
+	}
+	
+	@Test
+	public void testRegistrarseEnTerminalPortuaria() {
+		// Setup
+        TerminalPortuaria terminal = mock(TerminalPortuaria.class);
+        andreani.registrarse(terminal);
+
+        // Exercise & Verify
+        verify(terminal).registrarEmpresaTransportista(andreani);
 	}
 }

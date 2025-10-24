@@ -1,26 +1,83 @@
 package ar.edu.unq.po2.camion;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ar.edu.unq.po2.chofer.Chofer;
+import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
+
+/**
+* Definen los tests unitarios de la clase Camion.
+* @author Benjamin Maldonado.
+*/
+
 class CamionTest {
 	private Camion scaniaR580;
+	private Camion volvoFH460;
 	
 	@BeforeEach
 	public void setUp() {
 		scaniaR580 = new Camion("Scania R580", "AE471WD");
+		volvoFH460 = new Camion("Volvo FH460", "NRG113");
 	}
 
 	@Test
 	public void testFuncionamientoGetters() {
 		assertEquals("Scania R580", scaniaR580.getMarcaYModelo());
 		assertEquals("AE471WD", scaniaR580.getPatente());
+		
+		assertEquals("Volvo FH460", volvoFH460.getMarcaYModelo());
+		assertEquals("NRG113", volvoFH460.getPatente());
 	}
 	
 	@Test
-	public void testRegistrarseEnTerminalPortuaria() {
+	public void testFuncionamientoEquals() {
+		Camion scaniaR580D = new Camion("Scania R580", "AA975BA"); // Tiene la misma marca y modelo que scaniaR580, pero la misma patente.
+		Camion volvoFH500  = new Camion("Volvo FH500", "NRG113");  // Tiene la misma patente que volvoFH460, pero no el mismo modelo y marca.
+		Chofer jose = new Chofer("Jose Fernandez", "38.091.105");  // Chofer utilizado de referencia.
 		
+		// Equals con misma referencia de tipo Camion.
+		assertTrue(scaniaR580.equals(scaniaR580));
+		assertEquals(scaniaR580.hashCode(), scaniaR580.hashCode());
+		
+		// Equals con una instancia que no es del tipo Camion.
+		assertFalse(scaniaR580.equals(jose));
+		assertNotEquals(scaniaR580.hashCode(), jose.hashCode());
+		
+		// Equals con una instancia de tipo Camion pero con distinta patente.
+		assertFalse(scaniaR580.equals(scaniaR580D));
+		assertNotEquals(scaniaR580.hashCode(), scaniaR580D.hashCode());
+		
+		// Equals con una instancia de tipo Camion pero con misma patente.
+		assertTrue(volvoFH460.equals(volvoFH500));
+		assertEquals(volvoFH460.hashCode(), volvoFH500.hashCode());
+	}
+
+	@Test
+	public void testIngresarALaTerminalPortuaria() {
+		// Setup
+        TerminalPortuaria terminal = mock(TerminalPortuaria.class);
+        scaniaR580.ingresarA(terminal);
+        volvoFH460.ingresarA(terminal);
+
+        // Exercise & Verify
+        // verify(terminal).ingresarCamion(scaniaR580);
+        // verify(terminal).ingresarCamion(volvoFH460);
+	}
+	
+	@Test
+	public void testRetirarseDeLaTerminalPortuaria() {
+		// Setup
+        TerminalPortuaria terminal = mock(TerminalPortuaria.class);
+        scaniaR580.retirarseDe(terminal);
+        volvoFH460.retirarseDe(terminal);
+        
+        // Exercise & Verify
+        // verify(terminal).retirarCamion(scaniaR580);
+        // verify(terminal).retirarCamion(volvoFH460);
 	}
 }
