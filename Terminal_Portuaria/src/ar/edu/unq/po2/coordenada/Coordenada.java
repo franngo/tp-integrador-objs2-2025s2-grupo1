@@ -20,9 +20,15 @@ public class Coordenada {
         this.longitud=longitud;
     }
 
+    /*
+    * @return representa la latitud actual del usuario, redondeado a 4 decimales
+    * */
+    public double getLatitud() { return Math.round(latitud * 10000.0) / 10000.0; }
 
-    public double getLatitud() { return latitud; }
-    public double getLongitud() { return longitud; }
+    /*
+     * @return representa la longitud actual del usuario, redondeado a 4 decimales
+     * */
+    public double getLongitud() { return Math.round(longitud * 10000.0) / 10000.0; }
 
     private void setLatitud(double latitud) { this.latitud = latitud; }
     private void setLongitud(double longitud) { this.longitud = longitud; }
