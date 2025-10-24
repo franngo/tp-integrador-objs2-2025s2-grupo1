@@ -1,34 +1,38 @@
+package ar.edu.unq.po2.buque;
+
+import ar.edu.unq.po2.coordenada.Coordenada;
+import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
+
 /*
  * @Autor : Matias Sanchez
  *
  *
  * */
 public class Buque {
-
+  /*
     Viaje viajeActual;
     Coordenada posicionActual;
     TerminalPortuaria terminalDestino;
 
     EstadoBuque estadoBuque;
-    /*
-     * @viajeActual : el buque inicia con el viaje que le pasa la naviera
-     * @posicion: el buque inicia con una coordenada particular
-     * */
-    public Buque(Viaje viajeActual,Posicion posicion){}
 
-    public void avanzarHacia(Coordenada coordenadas){
-        this.posicionActual(coordenadas);
-        this.notificarNuevaPosicion(terminalDestino);
+    public Buque(){}
+
+    public void avanzarHacia(double latitud, double longitud){
+        posicionActual.nuevaPosicion(latitud,longitud);
+        // this.notificarNuevaPosicion(); ESPERAR A QUE BENJA IMPLEMENTE TERMINAL
     }
 
     public void iniciarViaje(Viaje Viaje){
         viajeActual=viaje;
         estadoBuque = new OutBound();
     }
+
+
     public void notificarNuevaPosicion(TerminalPortuaria terminal){
         terminal.notificarPosicion(this);
     }
-
+*/
 
 
 }
