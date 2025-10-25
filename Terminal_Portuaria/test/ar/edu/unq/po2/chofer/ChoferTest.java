@@ -53,4 +53,16 @@ class ChoferTest {
 		assertTrue(carlos.equals(carlosG));
 		assertEquals(carlos.hashCode(), carlosG.hashCode());
 	}
+	
+	@Test
+	public void testFuncionamientoDisponibilidad() {
+		// Verify
+		assertTrue(jose.estaDisponible());
+		
+		// Exercise
+		jose.cambiarEstaDisponiblePor(false);
+		
+		// Verify
+		assertFalse(jose.estaDisponible());
+	}
 }

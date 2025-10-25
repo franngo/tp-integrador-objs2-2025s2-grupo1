@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ar.edu.unq.po2.chofer.Chofer;
+import ar.edu.unq.po2.orden.Orden;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 /**
@@ -56,28 +57,58 @@ class CamionTest {
 		assertTrue(volvoFH460.equals(volvoFH500));
 		assertEquals(volvoFH460.hashCode(), volvoFH500.hashCode());
 	}
+	
+	@Test
+	public void testFuncionamientoOrdenActual() {
+		// Setup
+		Orden orden = mock(Orden.class);
+		
+		// Exercise & Verify
+		assertEquals(null, scaniaR580.getOrdenActual());
+		
+		scaniaR580.cambiarOrdenActualPor(orden);
+		
+		assertEquals(orden, scaniaR580.getOrdenActual());
+	}
+
+	@Test
+	public void testFuncionamientoDisponibilidad() {
+		// Setup
+		assertTrue(scaniaR580.estaDisponible());
+		Orden orden = mock(Orden.class);
+		
+		// Exercise
+		scaniaR580.cambiarOrdenActualPor(orden);
+		
+		// Verify
+		assertFalse(scaniaR580.estaDisponible());
+	}
 
 	@Test
 	public void testIngresarALaTerminalPortuaria() {
 		// Setup
         TerminalPortuaria terminal = mock(TerminalPortuaria.class);
+        
+        // Exercise
         scaniaR580.ingresarA(terminal);
         volvoFH460.ingresarA(terminal);
 
-        // Exercise & Verify
-        // verify(terminal).ingresarCamion(scaniaR580);
-        // verify(terminal).ingresarCamion(volvoFH460);
+        // Verify
+        verify(terminal).ingresarCamion(scaniaR580);
+        verify(terminal).ingresarCamion(volvoFH460);
 	}
 	
 	@Test
 	public void testRetirarseDeLaTerminalPortuaria() {
 		// Setup
         TerminalPortuaria terminal = mock(TerminalPortuaria.class);
+
+        // Exercise
         scaniaR580.retirarseDe(terminal);
         volvoFH460.retirarseDe(terminal);
         
-        // Exercise & Verify
-        // verify(terminal).retirarCamion(scaniaR580);
-        // verify(terminal).retirarCamion(volvoFH460);
+        // Verify
+        verify(terminal).retirarCamion(scaniaR580);
+        verify(terminal).retirarCamion(volvoFH460);
 	}
 }

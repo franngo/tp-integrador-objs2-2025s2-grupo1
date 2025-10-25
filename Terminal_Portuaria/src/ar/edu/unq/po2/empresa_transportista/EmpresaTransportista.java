@@ -2,6 +2,7 @@ package ar.edu.unq.po2.empresa_transportista;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
 
 import ar.edu.unq.po2.camion.Camion;
 import ar.edu.unq.po2.chofer.Chofer;
@@ -54,6 +55,29 @@ public class EmpresaTransportista implements Registrable {
 	}
 	
 	/**
+	 * Indica si tiene algún camión en la empresa transportista que se encuentre disponible para ser asignado a un trabajo.
+	 */
+	public boolean tieneCamionDisponible() {
+		return !this.camionesDisponibles().isEmpty();
+	}
+	
+	/**
+	 * Describe un camión disponible de la empresa transportista para ser asignado a un trabajo.
+	 */
+	public Camion camionDisponible() {
+		return this.camionesDisponibles().getFirst();
+	}
+	
+	/**
+	 * Describe todos los camiones que se encuentran disponibles en la empresa transportista para ser asignados a un trabajo.
+	 */
+	private List<Camion> camionesDisponibles(){
+		return camiones.stream()
+				   	   .filter(camion -> camion.estaDisponible())
+				       .toList();
+	}
+	
+	/**
 	 * Añade el chofer dado a la empresa transportista.
 	 * @param chofer es el chofer a añadir en la empresa transportista.
 	 */
@@ -62,18 +86,25 @@ public class EmpresaTransportista implements Registrable {
 	}
 	
 	/**
-	 * Indica si el chofer dado se encuentra en los choferes de la empresa transportista.
-	 * @param chofer es el chofer a verificar si existe en la empresa transportista.
+	 * Indica si tiene algún chofer que se encuentre disponible en la empresa transportista para ser asignado a un trabajo.
 	 */
-	public boolean tieneChofer(Chofer chofer) {
-		return choferes.contains(chofer);
+	public boolean tieneChoferDisponible() {
+		return !this.choferesDisponibles().isEmpty();
 	}
 	
 	/**
-	 * Indica si el camión dado se encuentra en los camiones de la empresa transportista.
-	 * @param camion es el camion a verificar si existe en la empresa transportista.
+	 * Describe un chofer disponible de la empresa transportista para ser asignado a un trabajo.
 	 */
-	public boolean tieneCamion(Camion camion) {
-		return camiones.contains(camion);
+	public Chofer choferDisponible() {
+		return this.choferesDisponibles().getFirst();
+	}
+	
+	/**
+	 * Describe todos los choferes que se encuentran disponibles en la empresa transportista para ser asignados a un trabajo.
+	 */
+	private List<Chofer> choferesDisponibles(){
+		return choferes.stream()
+				   	   .filter(chofer -> chofer.estaDisponible())
+				   	   .toList();
 	}
 }
