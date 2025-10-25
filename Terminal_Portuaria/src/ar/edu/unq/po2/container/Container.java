@@ -1,15 +1,16 @@
-package ar.edu.unq.po2.conteiner;
+package ar.edu.unq.po2.container;
 
 
+import ar.edu.unq.po2.Servicio.TipoServicio;
 import ar.edu.unq.po2.cliente.Cliente;
 
-import java.util.Random;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /*
 * @Autor: Matias Sanchez
 * */
-public abstract class Conteiner {
+public abstract class Container {
     private Cliente duenioConsignee;
 
     private String idConnteiner;
@@ -21,6 +22,8 @@ public abstract class Conteiner {
    private double altura;
 
    private double peso;
+
+    private List<TipoServicio> servicios;
 
     // ********************************* @Getters ********************************
     public Cliente getDuenioConsignee() {
@@ -47,18 +50,22 @@ public abstract class Conteiner {
         return peso;
     }
 
+    public List<TipoServicio> getServicios() {
+        return servicios;
+    }
+
     // ********************************* CONSTRUCTOR ********************************
     /*
     * Constructor de conteiner
-    * @param duenioConsignee representa al dueño de la carga
+    * @param duenioConsignee representa al dueño de la carga. Por lo general sera un consignee
     * */
-    public Conteiner(Cliente duenioConsignee,double ancho, double largo, double altura,double peso){
-        this.duenioConsignee=duenioConsignee;
-        this.idConteiner(duenioConsignee.nombreCliente());
+    public Container(Cliente duenio, double ancho, double largo, double altura, double peso){
+        this.duenioConsignee=duenio;
         this.ancho=ancho;
         this.largo=largo;
         this.altura=altura;
         this.peso=peso;
+        this.idConteiner(this.getDuenioConsignee().nombreCliente());
     }
 
     /*
@@ -94,4 +101,7 @@ public abstract class Conteiner {
 
 
     // *****************************************************************
-}
+
+
+
+
