@@ -1,12 +1,21 @@
 package ar.edu.unq.po2.empresa_transportista;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ar.edu.unq.po2.camion.Camion;
 import ar.edu.unq.po2.chofer.Chofer;
+import ar.edu.unq.po2.orden.Orden;
+import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
+
+/**
+* Definen los tests unitarios de la clase EmpresaTransportista.
+* @author Benjamin Maldonado.
+*/
 
 class EmpresaTransportistaTest {
 	private EmpresaTransportista andreani;
@@ -55,7 +64,76 @@ class EmpresaTransportistaTest {
 	}
 	
 	@Test
-	public void testRegistrarseEnTerminalPortuaria() {
+	public void testFuncionamientoDeAñadirChoferYCamion() {
+		assertEquals(2, andreani.getCamiones().size());
+		assertEquals(2, andreani.getChoferes().size());
 		
+		andreani.añadirCamion(scaniaR580);
+		andreani.añadirChofer(jose);
+		
+		assertEquals(2, andreani.getCamiones().size());
+		assertEquals(2, andreani.getChoferes().size());
+		
+		Camion scaniaP310 = new Camion("Scania P310", "HGP440");
+		Chofer ricardo = new Chofer("Ricardo Iorio", "27.908.100");
+		
+		andreani.añadirCamion(scaniaP310);
+		andreani.añadirChofer(ricardo);
+		
+		assertEquals(3, andreani.getCamiones().size());
+		assertEquals(3, andreani.getChoferes().size());
+	}
+	
+	@Test
+	public void testRegistrarseEnTerminalPortuaria() {
+		// Setup
+        TerminalPortuaria terminal = mock(TerminalPortuaria.class);
+        
+        // Exercise
+        andreani.registrarse(terminal);
+
+        // Verify
+        verify(terminal).registrarEmpresaTransportista(andreani);
+	}
+	
+	@Test
+	public void testDisponibilidadDeCamiones() {
+		// Setup
+		Camion camionDisponible = andreani.camionDisponible();
+		Orden orden = mock(Orden.class);		
+		
+		// Exercise & Verify
+		assertTrue(andreani.tieneCamionDisponible());
+		assertTrue(camionDisponible.estaDisponible());
+		
+		camionDisponible.cambiarOrdenActualPor(orden);
+		assertTrue(andreani.tieneCamionDisponible());
+		assertFalse(camionDisponible.estaDisponible());
+		
+		Camion camionDisponibleD = andreani.camionDisponible();
+		assertTrue(camionDisponibleD.estaDisponible());
+		
+		camionDisponibleD.cambiarOrdenActualPor(orden);
+		assertFalse(andreani.tieneCamionDisponible());
+		assertFalse(camionDisponibleD.estaDisponible());
+	}
+	
+	@Test
+	public void testDisponibilidadDeChoferes() {
+		// Exercise & Verify
+		Chofer choferDisponible = andreani.choferDisponible();
+		assertTrue(andreani.tieneChoferDisponible());
+		assertTrue(choferDisponible.estaDisponible());
+		
+		choferDisponible.cambiarEstaDisponiblePor(false);
+		assertTrue(andreani.tieneChoferDisponible());
+		assertFalse(choferDisponible.estaDisponible());
+		
+		Chofer choferDisponibleD = andreani.choferDisponible();
+		assertTrue(choferDisponibleD.estaDisponible());
+		
+		choferDisponibleD.cambiarEstaDisponiblePor(false);
+		assertFalse(andreani.tieneChoferDisponible());
+		assertFalse(choferDisponibleD.estaDisponible());
 	}
 }
