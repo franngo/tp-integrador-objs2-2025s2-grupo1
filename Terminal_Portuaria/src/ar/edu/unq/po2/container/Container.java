@@ -23,7 +23,7 @@ public abstract class Container {
 
     private double peso;
 
-    private List<TipoServicio> servicios;
+    List<TipoServicio> servicios;
 
     // ********************************* @Getters ********************************
     public Cliente getDuenioConsignee() {
