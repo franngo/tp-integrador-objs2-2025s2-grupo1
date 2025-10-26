@@ -1,7 +1,7 @@
 package ar.edu.unq.po2.container;
 
 
-import ar.edu.unq.po2.Servicio.TipoServicio;
+import ar.edu.unq.po2.servicio.TipoServicio;
 import ar.edu.unq.po2.cliente.Cliente;
 
 import java.util.List;
@@ -24,6 +24,8 @@ public abstract class Container {
     private double peso;
 
     List<TipoServicio> servicios;
+
+
 
     // ********************************* @Getters ********************************
     public Cliente getDuenioConsignee() {
@@ -54,6 +56,19 @@ public abstract class Container {
     public List<TipoServicio> getServicios() {
         return servicios;
     }
+
+    /*
+    * @return represanta un documento Bill of Lading con el tipo de carga y el peso del container
+    * */
+    public String documentoBillOfLading(){
+        //Esto esta recontra verde
+        return "Contenido Carga: "+ this.tipoCarga() +
+                "Peso: "+this.getPeso();
+    }
+
+
+    public abstract String tipoCarga();
+
 
     // ********************************* CONSTRUCTOR ********************************
     /*

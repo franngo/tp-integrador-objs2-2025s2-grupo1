@@ -1,4 +1,4 @@
-package ar.edu.unq.po2.Servicio;
+package ar.edu.unq.po2.servicio;
 
 public class ServicioLavado implements Servicio{
 }
