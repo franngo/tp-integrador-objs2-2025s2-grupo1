@@ -9,6 +9,11 @@ abstract public class Conector extends Condicion{
 	private Condicion subcondicionIzquierda;
 	private Condicion subcondicionDerecha;
 	
+	public Conector(Condicion subcondicionIzquierda, Condicion subcondicionDerecha) {
+		this.subcondicionIzquierda = subcondicionIzquierda;
+		this.subcondicionDerecha = subcondicionDerecha;
+	}
+	
 	abstract public List<Viaje> losQueCumplen(List<Viaje> viajes);
 	
 	public Conector getConector() {

@@ -8,6 +8,10 @@ import ar.edu.unq.po2.viaje.Viaje;
 
 public class And extends Conector {
 	
+	public And(Condicion subcondicionIzquierda, Condicion subcondicionDerecha) {
+		super(subcondicionIzquierda, subcondicionDerecha);
+	}
+	
 	@Override
 	public List<Viaje> losQueCumplen(List<Viaje> viajes) {
 		
