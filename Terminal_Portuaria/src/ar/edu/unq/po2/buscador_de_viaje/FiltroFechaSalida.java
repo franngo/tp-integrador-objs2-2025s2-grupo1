@@ -10,6 +10,10 @@ public class FiltroFechaSalida extends FiltroSimple {
 	
 	private LocalDate fechaSalida;
 	
+	public FiltroFechaSalida(LocalDate fechaSalida) {
+		this.fechaSalida = fechaSalida;
+	}
+	
 	@Override
 	public boolean cumpleFiltro(Viaje viaje) {
 		return this.fechaSalida.equals(viaje.fechaDeSalida());

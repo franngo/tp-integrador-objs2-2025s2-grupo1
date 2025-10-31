@@ -23,5 +23,9 @@ abstract public class Condicion {
 	public Conector getConector() {
 		return null;
 	}
+	
+	public int num() {
+		return 3;
+	}
 
 }

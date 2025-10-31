@@ -1,23 +1,20 @@
 package ar.edu.unq.po2.buscador_de_viaje;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import ar.edu.unq.po2.viaje.Viaje;
+import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 public class CondicionTest {
 	
-	Condicion cond = mock(Condicion.class);
-	List<Viaje> viajes = new ArrayList<Viaje>();
+	TerminalPortuaria puerto = mock(TerminalPortuaria.class);
+	Condicion cond = new FiltroPuertoDestino(puerto);
 	
 	@Test
-	public void losQueCumplen() {
-		
+	public void getConector() {
+		assertEquals(null, cond.getConector());
 	}
 
 }

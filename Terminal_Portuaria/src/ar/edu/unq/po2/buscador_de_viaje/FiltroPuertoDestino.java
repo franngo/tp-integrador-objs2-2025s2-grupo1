@@ -7,6 +7,10 @@ public class FiltroPuertoDestino extends FiltroSimple {
 	
 	private TerminalPortuaria puertoDestino;
 	
+	public FiltroPuertoDestino(TerminalPortuaria puertoDestino) {
+		this.puertoDestino = puertoDestino;
+	}
+	
 	@Override
 	public boolean cumpleFiltro(Viaje viaje) {
 		return this.puertoDestino.equals(viaje.puertoDestino());
