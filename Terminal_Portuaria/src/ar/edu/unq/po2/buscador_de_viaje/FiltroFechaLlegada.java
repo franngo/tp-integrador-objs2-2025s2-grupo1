@@ -6,22 +6,13 @@ import java.util.List;
 
 import ar.edu.unq.po2.viaje.Viaje;
 
-public class FiltroFechaLlegada extends Condicion {
+public class FiltroFechaLlegada extends FiltroSimple {
 	
 	private LocalDate fechaLlegada;
 	
-	public List<Viaje> losQueCumplen(List<Viaje> viajes) {
-		
-		List<Viaje> cumplen = new ArrayList<Viaje>();
-		
-		for (Viaje viaje : viajes) {
-			if(this.fechaLlegada.equals(viaje.fechaDeLlegada())) {
-				cumplen.add(viaje);
-			}
-		}
-		
-		return cumplen;
-		
+	@Override
+	public boolean cumpleFiltro(Viaje viaje) {
+		return this.fechaLlegada.equals(viaje.fechaDeLlegada());
 	}
 
 }
