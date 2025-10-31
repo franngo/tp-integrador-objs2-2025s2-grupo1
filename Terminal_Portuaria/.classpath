@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-24">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Mockito"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="lib" path="/home/fran/Documents/archivos-facu/materias/actuales/prog-con-objetosII-2025s2/TPs-y-teoria/tp7-test-doubles/nueva-version-mockito-5.14/mockito-core-5.14.2.jar"/>
+	<classpathentry kind="lib" path="/home/fran/Documents/archivos-facu/materias/actuales/prog-con-objetosII-2025s2/TPs-y-teoria/tp7-test-doubles/nueva-version-mockito-5.14/byte-buddy-1.15.7.jar"/>
+	<classpathentry kind="lib" path="/home/fran/Documents/archivos-facu/materias/actuales/prog-con-objetosII-2025s2/TPs-y-teoria/tp7-test-doubles/nueva-version-mockito-5.14/net.bytebuddy.byte-buddy-agent_1.15.7.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
