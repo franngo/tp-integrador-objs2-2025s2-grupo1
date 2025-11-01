@@ -26,6 +26,12 @@ public abstract class Container {
 
     
     public abstract List<Servicio> acceptVisitor(ConcreteVisitorContainer visitante);
+    
+    public  String billOfLading() {
+    	return "Tipo de carga: " + this.tipoCarga() + ", Peso: " + this.peso + " kg";
+    }
+    
+    public abstract String tipoCarga();
     	
     
     

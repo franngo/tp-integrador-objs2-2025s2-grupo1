@@ -15,7 +15,14 @@ public class Tanque extends Container{
 	@Override
 	public List<Servicio> acceptVisitor(ConcreteVisitorContainer visitante) {
 		// TODO Auto-generated method stub
-		return null;
+		return visitante.serviciosTanque(this);
 	}
 
+	@Override
+	public String tipoCarga() {
+		// TODO Auto-generated method stub
+		return "Tanque";
+	}
+
+	
 }

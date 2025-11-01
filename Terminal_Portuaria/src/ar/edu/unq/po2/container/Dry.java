@@ -17,7 +17,19 @@ public class Dry extends Container {
 	@Override
 	public List<Servicio> acceptVisitor(ConcreteVisitorContainer visitante) {
 		// TODO Auto-generated method stub
+		return visitante.serviciosDry(this);
+	}
+
+	@Override
+	public String billOfLading() {
+		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String tipoCarga() {
+		// TODO Auto-generated method stub
+		return "Dry";
 	}
    
 	

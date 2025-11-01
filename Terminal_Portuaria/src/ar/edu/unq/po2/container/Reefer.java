@@ -15,7 +15,14 @@ public class Reefer extends Container{
 	@Override
 	public List<Servicio> acceptVisitor(ConcreteVisitorContainer visitante) {
 		// TODO Auto-generated method stub
-		return null;
+		return visitante.serviciosReefer(this);
+	}
+
+	
+	@Override
+	public String tipoCarga() {
+		// TODO Auto-generated method stub
+		return "Reefer";
 	}
 
 }
