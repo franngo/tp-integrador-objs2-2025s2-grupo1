@@ -1,5 +1,5 @@
 package ar.edu.unq.po2.servicio;
 
-public class ServicioDesconsolidado {
+public class ServicioDesconsolidado extends Servicio{
 
 }

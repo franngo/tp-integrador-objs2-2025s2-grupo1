@@ -1,4 +1,4 @@
 package ar.edu.unq.po2.servicio;
 
-public class ServicioPesaje  {
+public class ServicioPesaje  extends Servicio{
 }

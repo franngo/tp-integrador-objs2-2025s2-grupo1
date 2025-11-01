@@ -20,11 +20,7 @@ public class Dry extends Container {
 		return visitante.serviciosDry(this);
 	}
 
-	@Override
-	public String billOfLading() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	@Override
 	public String tipoCarga() {

@@ -24,7 +24,9 @@ public abstract class Container {
     private double peso;
 
 
-    
+    /*
+     * recibe un visitante que le pregunta que Servicios instanciar y se le dice cuales
+     * */
     public abstract List<Servicio> acceptVisitor(ConcreteVisitorContainer visitante);
     
     public  String billOfLading() {
