@@ -90,8 +90,8 @@ class CamionTest {
         TerminalPortuaria terminal = mock(TerminalPortuaria.class);
         
         // Exercise
-        scaniaR580.ingresarA(terminal);
-        volvoFH460.ingresarA(terminal);
+        scaniaR580.transportarCargaA(terminal);
+        volvoFH460.transportarCargaA(terminal);
 
         // Verify
         verify(terminal).ingresarCamion(scaniaR580);
@@ -104,8 +104,8 @@ class CamionTest {
         TerminalPortuaria terminal = mock(TerminalPortuaria.class);
 
         // Exercise
-        scaniaR580.retirarseDe(terminal);
-        volvoFH460.retirarseDe(terminal);
+        scaniaR580.retirarCargaDe(terminal);
+        volvoFH460.retirarCargaDe(terminal);
         
         // Verify
         verify(terminal).retirarCamion(scaniaR580);

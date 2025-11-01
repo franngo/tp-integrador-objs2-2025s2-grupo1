@@ -1,7 +1,7 @@
 package ar.edu.unq.po2.container;
 
-import ar.edu.unq.po2.Servicio.TipoServicio;
 import ar.edu.unq.po2.cliente.Cliente;
+import ar.edu.unq.po2.servicio.TipoServicio;
 
 import java.util.Arrays;
 

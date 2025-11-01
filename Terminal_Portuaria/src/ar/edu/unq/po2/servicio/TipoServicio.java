@@ -1,4 +1,4 @@
-package ar.edu.unq.po2.Servicio;
+package ar.edu.unq.po2.servicio;
 
 import ar.edu.unq.po2.container.Container;
 import ar.edu.unq.po2.orden.Orden;

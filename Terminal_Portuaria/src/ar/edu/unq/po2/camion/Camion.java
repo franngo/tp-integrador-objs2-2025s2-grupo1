@@ -38,7 +38,7 @@ public class Camion {
 	}
 	
 	/**
-	 * Describe la orden actual de lo que transporta el camion actualmente (puede no transportar nada).
+	 * Describe la orden actual de lo que transporta el camion actualmente. Null si no transporta nada.
 	 */
 	public Orden getOrdenActual() {
 		return this.ordenActual;
@@ -59,18 +59,18 @@ public class Camion {
 	}
 	
 	/**
-	 * Ingresa el camión de la terminal portuaria dada.
-	 * @param terminalPortuaria es la terminal portuaria a la que ingresa el camión.
+	 * Transporta la carga actual del camión hacia la terminal portuaria dada.
+	 * @param terminalPortuaria es la terminal portuaria a la que ingresa el camión, dejando su carga en el lugar.
 	 */
-	public void ingresarA(TerminalPortuaria terminalPortuaria) {
+	public void transportarCargaA(TerminalPortuaria terminalPortuaria) {
 		terminalPortuaria.ingresarCamion(this);
 	}
 	
 	/**
-	 * Retira el camión de la terminal portuaria dada.
-	 * @param terminalPortuaria es la terminal portuaria de la que se retira el camión.
+	 * Retira la carga que tiene que ir a buscar el camión de la terminal portuaria dada.
+	 * @param terminalPortuaria es la terminal portuaria de la que se retira el camión, cargando en el lugar lo que debe transportar.
 	 */
-	public void retirarseDe(TerminalPortuaria terminalPortuaria) {
+	public void retirarCargaDe(TerminalPortuaria terminalPortuaria) {
 		terminalPortuaria.retirarCamion(this);
 	}
 	

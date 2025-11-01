@@ -6,30 +6,19 @@ import java.util.List;
 
 import ar.edu.unq.po2.camion.Camion;
 import ar.edu.unq.po2.chofer.Chofer;
-import ar.edu.unq.po2.registrable.Registrable;
-import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 /**
 * Describe una empresa transportista que posee una lista de choferes y camiones.
 * @author Benjamin Maldonado.
 */
 
-public class EmpresaTransportista implements Registrable {
+public class EmpresaTransportista {
 	private Set<Chofer> choferes;
 	private Set<Camion> camiones;
 	
 	public EmpresaTransportista() {
 		this.choferes = new HashSet<Chofer>();
 		this.camiones = new HashSet<Camion>();
-	}
-
-	/**
-	 * Realiza el registro de la empresa transportista a la terminal portuaria dada.
-	 * @param terminalPortuaria es la terminal portuaria en la que se registra la empresa transportista.
-	 */
-	@Override
-	public void registrarse(TerminalPortuaria terminalPortuaria) {
-		terminalPortuaria.registrarEmpresaTransportista(this);
 	}
 	
 	/**

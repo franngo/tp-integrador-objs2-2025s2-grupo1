@@ -2,7 +2,6 @@ package ar.edu.unq.po2.empresa_transportista;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import ar.edu.unq.po2.camion.Camion;
 import ar.edu.unq.po2.chofer.Chofer;
 import ar.edu.unq.po2.orden.Orden;
-import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 /**
 * Definen los tests unitarios de la clase EmpresaTransportista.
@@ -82,18 +80,6 @@ class EmpresaTransportistaTest {
 		
 		assertEquals(3, andreani.getCamiones().size());
 		assertEquals(3, andreani.getChoferes().size());
-	}
-	
-	@Test
-	public void testRegistrarseEnTerminalPortuaria() {
-		// Setup
-        TerminalPortuaria terminal = mock(TerminalPortuaria.class);
-        
-        // Exercise
-        andreani.registrarse(terminal);
-
-        // Verify
-        verify(terminal).registrarEmpresaTransportista(andreani);
 	}
 	
 	@Test
