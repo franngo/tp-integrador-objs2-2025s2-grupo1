@@ -25,7 +25,7 @@ public abstract class Container {
 
 
     
-    public abstract List<Servico> accept(ConcreteVisitorContainer visitante);
+    public abstract List<Servicio> acceptVisitor(ConcreteVisitorContainer visitante);
     	
     
     
@@ -55,9 +55,7 @@ public abstract class Container {
         return peso;
     }
 
-    public List<TipoServicio> getServicios() {
-        return servicios;
-    }
+    
 
     // ********************************* CONSTRUCTOR ********************************
     /*

@@ -2,7 +2,7 @@ package ar.edu.unq.po2.container;
 
 import java.util.List;
 
-import ar.edu.unq.po2.servicio.Servicio;
+import ar.edu.unq.po2.servicio.*;
 
 public class ConcreteVisitorContainer implements VisitorContainer{
 
