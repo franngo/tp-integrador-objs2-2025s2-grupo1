@@ -1,8 +1,6 @@
-package ar.edu.unq.po2.Servicio;
+package ar.edu.unq.po2.servicio;
 
-import ar.edu.unq.po2.container.Container;
-import ar.edu.unq.po2.orden.Orden;
-import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
+
 
 /*
 * @Autor: Matias Sanchez
@@ -14,6 +12,7 @@ import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 * de que la terminal le pase algun valor
 *
 * */
+/*
 public enum TipoServicio {
 
     LAVADO {
@@ -51,3 +50,4 @@ public enum TipoServicio {
 
     public abstract Servicio crearServicio(Orden ordenQueCobra, Container conteiner);
 }
+*/

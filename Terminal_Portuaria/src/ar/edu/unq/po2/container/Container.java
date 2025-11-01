@@ -1,8 +1,8 @@
 package ar.edu.unq.po2.container;
 
 
-import ar.edu.unq.po2.Servicio.TipoServicio;
 import ar.edu.unq.po2.cliente.Cliente;
+import ar.edu.unq.po2.servicio.*;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -23,8 +23,12 @@ public abstract class Container {
 
     private double peso;
 
-    List<TipoServicio> servicios;
 
+    
+    public abstract List<Servico> accept(ConcreteVisitorContainer visitante);
+    	
+    
+    
     // ********************************* @Getters ********************************
     public Cliente getDuenioConsignee() {
         return duenioConsignee;
