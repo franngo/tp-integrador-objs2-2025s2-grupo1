@@ -11,7 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
 * @Autor: Matias Sanchez
 * */
 public abstract class Container {
-    private Cliente duenioConsignee;
+    protected Cliente duenioConsignee;
 
     private String idConnteiner;
 
@@ -40,6 +40,10 @@ public abstract class Container {
     // ********************************* @Getters ********************************
     public Cliente getDuenioConsignee() {
         return duenioConsignee;
+    }
+    
+    protected void duenioConsignee(Cliente cliente) {
+    	 this.duenioConsignee=cliente;
     }
 
     public String getIdConnteiner() {
@@ -108,6 +112,8 @@ public abstract class Container {
     protected String num7Caracteres(int num) {
         return String.format("%07d", num);
     }
+    
+   
 
 	
 }

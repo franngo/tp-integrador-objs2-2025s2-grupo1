@@ -1,16 +1,17 @@
-package ar.edu.unq.po2.container;
+package ar.edu.unq.po2.container.dry;
 
 import java.util.List;
 
-import ar.edu.unq.po2.cliente.Cliente;
+import ar.edu.unq.po2.container.ConcreteVisitorContainer;
+import ar.edu.unq.po2.container.Container;
 import ar.edu.unq.po2.servicio.Servicio;
 
-
-public class Dry extends Container {
+//TODO esto tendria que ser un composite. Queda pendiente
+public abstract class Dry extends Container {
     
     //TODO : Implementar que sea un COMPOSITE y un ADAPTER
-	public Dry(Cliente duenio, double ancho, double largo, double altura, double peso) {
-		super(duenio, ancho, largo, altura, peso);
+	public Dry( double ancho, double largo, double altura, double peso) {
+		super(null, ancho, largo, altura, peso);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -20,7 +21,7 @@ public class Dry extends Container {
 		return visitante.serviciosDry(this);
 	}
 
-
+ 
 
 	@Override
 	public String tipoCarga() {

@@ -1,7 +1,7 @@
 package ar.edu.unq.po2.servicio;
 
 
-import ar.edu.unq.po2.container.Dry;
+import ar.edu.unq.po2.container.dry.Dry;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 
