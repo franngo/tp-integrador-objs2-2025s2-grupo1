@@ -37,11 +37,19 @@ public class TerminalPortuaria {
 	 private Set<PrecioServicioTerminal> servicios;
 
 	 public double precioServicio(PrecioServicioTerminal servicio) {
+		 
+		 this.validarServicio(servicio);
+		 return servicio.getPrecio();
+	 }
+
+	 private void validarServicio(PrecioServicioTerminal servicio) {
+		// TODO Auto-generated method stub
 		 if (!servicios.contains(servicio)) {
 			 throw new IllegalArgumentException("Servicio no disponible en esta terminal");
 		 }
-		 return servicio.getPrecio();
 	 }
+	 
+	 
 	 
 
 }
