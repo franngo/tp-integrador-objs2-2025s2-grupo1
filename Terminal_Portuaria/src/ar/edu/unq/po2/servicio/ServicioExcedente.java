@@ -1,4 +1,18 @@
 package ar.edu.unq.po2.servicio;
 
-public class ServicioExcedente {
+import ar.edu.unq.po2.container.Container;
+import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
+
+public class ServicioExcedente extends Servicio{
+
+	public ServicioExcedente(Container containerServ) {
+		super(containerServ);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public double costoServicio(TerminalPortuaria terminalPortuaria) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

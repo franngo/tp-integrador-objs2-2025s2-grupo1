@@ -4,6 +4,11 @@ package ar.edu.unq.po2.servicio;
 import ar.edu.unq.po2.container.Dry;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
+
+/*
+ * @Autor Matias Sanchez
+ * Este servicio es solo para Dry
+ * */
 public class ServicioDesconsolidado extends Servicio{
 
 	public ServicioDesconsolidado(Dry containerServ) {

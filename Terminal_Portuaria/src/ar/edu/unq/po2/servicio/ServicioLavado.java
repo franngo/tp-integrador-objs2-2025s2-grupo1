@@ -23,7 +23,9 @@ public class ServicioLavado extends Servicio{
 		if(this.superaCapacidad()) {
 			return terminalPortuaria.precioServicio(PrecioServicioTerminal.LAVADOPESADO);
 		}
-		else {return terminalPortuaria.precioServicio(PrecioServicioTerminal.LAVADOCOMUN);}
+		else {
+			return terminalPortuaria.precioServicio(PrecioServicioTerminal.LAVADOCOMUN);
+		}
 	}
 	
 	public double volumenContainer() {
