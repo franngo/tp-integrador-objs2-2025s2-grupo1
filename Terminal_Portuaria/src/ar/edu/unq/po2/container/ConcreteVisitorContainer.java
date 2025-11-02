@@ -1,31 +1,59 @@
 package ar.edu.unq.po2.container;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import ar.edu.unq.po2.servicio.*;
 
+
+/*
+ * @Autor: Matias Sanchez: crea una lista de servicios para cada Container
+ * */
 public class ConcreteVisitorContainer implements VisitorContainer{
-    //TODO implementar esta seccion
+ 
+	
 	@Override
 	public List<Servicio> serviciosDry(Dry container) {
-		List<Servicio> serviciosDry = new ArrayList<Servicio>();
-		return serviciosDry;
+				
+		return this.serviciosTotales(container);
 	}
 
 	@Override
 	public List<Servicio> serviciosTanque(Tanque container) {
-		List<Servicio> serviciosTanque = new ArrayList<Servicio>();
-		// TODO Auto-generated method stub
-		return serviciosTanque;
+		
+		
+		return this.serviciosTotales(container,new ServicioRevisionDiaria(container)) ;
 	}
 
 	@Override
 	public List<Servicio> serviciosReefer(Reefer container) {
-		List<Servicio> serviciosReefer = new ArrayList<Servicio>();
 		
-		// TODO Auto-generated method stub
-		return serviciosReefer;
+		
+		return this.serviciosTotales(container,new ServicioElectricidad(container));
 	}
 
+	@Override
+	public List<Servicio> servicioDryCompuesto(Dry container) {
+		
+		return null;
+	}
+	
+	
+	
+	private final List<Servicio> serviciosTotales(Container container, Servicio... adicionales) {
+        List<Servicio> servicios = new ArrayList<>();
+        
+        // Servicios comunes
+        servicios.add(new ServicioLavado(container));
+        servicios.add(new ServicioPesaje(container));
+        
+        // Servicios específicos
+        servicios.addAll(Arrays.asList(adicionales));
+        
+        return servicios;
+    } 
+
 }
+
+

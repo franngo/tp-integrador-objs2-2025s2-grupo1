@@ -32,7 +32,9 @@ public abstract class Servicio {
 	public abstract String tipoServicio();
 		
 	
-	
+	/*
+	 * cuando se invoca este metodo se supone que se descuenta el horario actual del de la instancia
+	 * */
 	public abstract double costoServicio(TerminalPortuaria terminalPortuaria); 
 		
 	
