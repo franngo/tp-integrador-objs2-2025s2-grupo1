@@ -41,4 +41,10 @@ public class ServicioLavado extends Servicio{
 	public boolean superaCapacidad() {
 		return this.volumenContainer()>this.volumenMaximo();
 	}
+
+	@Override
+	public String tipoServicio() {
+		// TODO Auto-generated method stub
+		return "Servicio Lavado";
+	}
 }

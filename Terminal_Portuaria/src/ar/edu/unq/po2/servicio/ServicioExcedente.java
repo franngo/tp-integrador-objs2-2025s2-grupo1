@@ -15,4 +15,10 @@ public class ServicioExcedente extends Servicio{
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public String tipoServicio() {
+		// TODO Auto-generated method stub
+		return "Servicio Excedente";
+	}
 }

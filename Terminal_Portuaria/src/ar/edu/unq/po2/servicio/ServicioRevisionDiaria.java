@@ -16,4 +16,10 @@ public class ServicioRevisionDiaria extends Servicio{
 		return 0;
 	}
 
+	@Override
+	public String tipoServicio() {
+		// TODO Auto-generated method stub
+		return "Servicio revision Diaria";
+	}
+
 }

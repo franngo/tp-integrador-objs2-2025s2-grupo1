@@ -12,15 +12,19 @@ public class ServicioElectricidad extends Servicio {
 		// TODO Auto-generated constructor stub
 	}
 
+	
 	@Override
 	public double costoServicio(TerminalPortuaria terminalPortuaria) {
 		// TODO Auto-generated method stub
 		 
 		 return terminalPortuaria.precioServicio(PrecioServicioTerminal.KILOWATTCONSUMIDO)
-				* ((Reefer) containerServ).getConsumoPorHora() 
+				* ((Reefer) containerServ).getConsumoPorHora();
+	}
+
+	@Override
+	public String tipoServicio() {
+		// TODO Auto-generated method stub
+		return "Servicio Electricidad";
 	}
 	
-	/*
-	 * calcular con el tiempo que tengo que ver
-	 * */
 }
