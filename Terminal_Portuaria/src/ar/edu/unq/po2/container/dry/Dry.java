@@ -28,6 +28,11 @@ public abstract class Dry extends Container {
 		// TODO Auto-generated method stub
 		return "Dry";
 	}
+	
+	public abstract List<Dry> cargas();
+		// TODO Auto-generated method stub
+		
+	
    
 	
 

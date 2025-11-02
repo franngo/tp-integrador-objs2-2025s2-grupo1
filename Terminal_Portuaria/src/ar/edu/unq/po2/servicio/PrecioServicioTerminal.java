@@ -6,7 +6,8 @@ public enum PrecioServicioTerminal {
     LAVADOCOMUN(15000.0),
     KILOWATTCONSUMIDO(10.0),
     PESAJE(5000),
-    DIAEXCEDENTE(3000.0);
+    DIAEXCEDENTE(3000.0),
+	PRECIODESCONSOLIDADO(20000);
     
 
     private final double precio;

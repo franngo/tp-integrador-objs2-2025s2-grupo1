@@ -1,5 +1,7 @@
 package ar.edu.unq.po2.container.dry;
 
+import java.util.List;
+
 import ar.edu.unq.po2.cliente.Cliente;
 
 public class DryUnico extends Dry{
@@ -11,6 +13,13 @@ public class DryUnico extends Dry{
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public List<Dry> cargas() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+    
+  
 
 	
 	

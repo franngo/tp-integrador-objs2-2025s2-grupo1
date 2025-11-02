@@ -2,13 +2,13 @@ package ar.edu.unq.po2.orden;
 
 
 
-import java.time.LocalDate;
 import java.util.List;
 
 import ar.edu.unq.po2.container.ConcreteVisitorContainer;
 import ar.edu.unq.po2.container.Container;
+import ar.edu.unq.po2.container.dry.DryCompuesto;
 import ar.edu.unq.po2.servicio.Servicio;
-import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
+
 
 /*
  * @Autor : Benjamin Maldonado
@@ -30,8 +30,11 @@ public abstract class Orden {
 	 * Este método debe llamarse UNA sola vez
 	 * */
 	public void crearServiciosACobrar() {
+		
+		
       	List<Servicio> serviciosACobrar =  containerAsociado.acceptVisitor(visitanteContainer);
 		serviciosACobrar.addAll(serviciosACobrar);
+		
 	}
 	
 	 

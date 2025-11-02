@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import ar.edu.unq.po2.container.dry.Dry;
+import ar.edu.unq.po2.container.dry.DryCompuesto;
 import ar.edu.unq.po2.servicio.*;
 
 
@@ -35,9 +36,9 @@ public class ConcreteVisitorContainer implements VisitorContainer{
 	}
 
 	@Override
-	public List<Servicio> servicioDryCompuesto(Dry container) {
-		
-		return null;
+	public List<Servicio> serviciosDryCompuesto(DryCompuesto container) {
+		//TODO implementar
+		return this.serviciosTotalesDryCompuesto(container);
 	}
 	
 	
@@ -54,6 +55,30 @@ public class ConcreteVisitorContainer implements VisitorContainer{
         
         return servicios;
     } 
+	
+	private final List<Servicio> serviciosTotalesDryCompuesto(DryCompuesto containerDry){
+		List<Servicio> servicios = new ArrayList<>();
+		/*
+		 * containersParticulares: todas las hojas del DryCompuesto
+		 * */
+		List<Dry> containersParticulares = containerDry.cargas();
+		
+		containersParticulares.stream().
+		forEach(container ->  this.servicioParticular(
+				                   containerDry,
+				                   this.porcentajeServicio(containersParticulares),
+				                   servicios));
+	
+        return servicios;
+	}
+	
+	public void servicioParticular(Container containerCompuesto, double descuentoAplicable, List<Servicio> servicios) {
+		servicios.add(new ServicioDesconsolidado(containerCompuesto,descuentoAplicable));
+	}
+	
+	public int porcentajeServicio(List<Dry> cargas) {
+  		return cargas.size();
+	}
 
 }
 
