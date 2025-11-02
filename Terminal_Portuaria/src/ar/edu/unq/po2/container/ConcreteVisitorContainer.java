@@ -6,7 +6,7 @@ import java.util.List;
 import ar.edu.unq.po2.servicio.*;
 
 public class ConcreteVisitorContainer implements VisitorContainer{
-
+    //TODO implementar esta seccion
 	@Override
 	public List<Servicio> serviciosDry(Dry container) {
 		List<Servicio> serviciosDry = new ArrayList<Servicio>();

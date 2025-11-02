@@ -22,12 +22,17 @@ public class TerminalPortuaria {
 	public void ingresarCamion(Camion camion) {
 		// TODO Auto-generated method stub
 	}
-	
+	/*
+	 * 
+	 * mensaje para Benja: el constructor de TerminalPortuaria tiene que recibir un Set de 
+	 * enumerativos PrecioServicioTerminal(o en su defecto instanciar la lista). Tambien habria que agrega
+	 * un setter por si hay que agregar otro PrecioServicioTerminal
+	 * */
 	
 	/*
 	 * @Autor: Matias Sanchez
 	 * metodos para los cobros de servicios
-	 * el constructor tiene que recibir una lista de enumerativos
+	 
 	 * */
 	 private Set<PrecioServicioTerminal> servicios;
 
