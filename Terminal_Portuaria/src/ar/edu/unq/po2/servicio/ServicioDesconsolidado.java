@@ -1,11 +1,12 @@
 package ar.edu.unq.po2.servicio;
 
-import ar.edu.unq.po2.container.Container;
+
+import ar.edu.unq.po2.container.Dry;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 public class ServicioDesconsolidado extends Servicio{
 
-	public ServicioDesconsolidado(Container containerServ) {
+	public ServicioDesconsolidado(Dry containerServ) {
 		super(containerServ);
 		// TODO Auto-generated constructor stub
 	}
