@@ -14,7 +14,7 @@ public class ServicioRevisionDiaria extends Servicio{
 	@Override
 	public double costoServicio(TerminalPortuaria terminalPortuaria) {
 		// TODO Auto-generated method stub
-		return 0;
+		return terminalPortuaria.precioServicio(PrecioServicioTerminal.REVISIONDIARIA);
 	}
 
 	@Override

@@ -65,15 +65,15 @@ public class ConcreteVisitorContainer implements VisitorContainer{
 		
 		containersParticulares.stream().
 		forEach(container ->  this.servicioParticular(
-				                   containerDry,
+				                   container,
 				                   this.porcentajeServicio(containersParticulares),
 				                   servicios));
 	
         return servicios;
 	}
 	
-	public void servicioParticular(Container containerCompuesto, double descuentoAplicable, List<Servicio> servicios) {
-		servicios.add(new ServicioDesconsolidado(containerCompuesto,descuentoAplicable));
+	public void servicioParticular(Container containerHoja, double descuentoAplicable, List<Servicio> servicios) {
+		servicios.add(new ServicioDesconsolidado(containerHoja,descuentoAplicable));
 	}
 	
 	public int porcentajeServicio(List<Dry> cargas) {

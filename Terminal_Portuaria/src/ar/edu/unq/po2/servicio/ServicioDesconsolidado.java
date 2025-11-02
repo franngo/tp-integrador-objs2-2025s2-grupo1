@@ -15,9 +15,11 @@ import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 public class ServicioDesconsolidado extends Servicio{
     
 	private Cliente clienteParticular;
-	private double monto;
-	
-	public ServicioDesconsolidado(Container containerServ,double monto) {
+	private double porcentajeServicio;
+	/*
+	 * @param descuentoAAplicar: la car
+	 * */
+	public ServicioDesconsolidado(Container containerServ,double porcentajeServicio) {
 		super(containerServ);
 		
 		// TODO Auto-generated constructor stub
@@ -37,12 +39,13 @@ public class ServicioDesconsolidado extends Servicio{
 	@Override
 	public double costoServicio(TerminalPortuaria terminalPortuaria) {
 		// TODO Auto-generated method stub
-		return this.monto();
+		return terminalPortuaria.precioServicio(PrecioServicioTerminal.PRECIODESCONSOLIDADO) 
+				/ porcentajeServicio()  ;
 	}
 
-	private double monto() {
+	private double porcentajeServicio() {
 		// TODO Auto-generated method stub
-		return monto;
+		return porcentajeServicio;
 	}
 
 
