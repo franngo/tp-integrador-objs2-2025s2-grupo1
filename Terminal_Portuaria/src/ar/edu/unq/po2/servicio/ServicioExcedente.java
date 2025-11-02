@@ -13,7 +13,8 @@ public class ServicioExcedente extends Servicio{
 
 	@Override
 	public double costoServicio(TerminalPortuaria terminalPortuaria) {
-		// TODO Auto-generated method stub
+		// PENSAR
+		
 		return terminalPortuaria.precioServicio(PrecioServicioTerminal.DIAEXCEDENTE);
 	}
 

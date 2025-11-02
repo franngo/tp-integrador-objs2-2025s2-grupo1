@@ -17,7 +17,7 @@ public class ServicioElectricidad extends Servicio {
 	@Override
 	public double costoServicio(TerminalPortuaria terminalPortuaria) {
 		// TODO Auto-generated method stub
-		 
+		 //pensar
 		 return terminalPortuaria.precioServicio(PrecioServicioTerminal.KILOWATTCONSUMIDO)
 				* ((Reefer) containerServ).getConsumoPorHora();
 	}
