@@ -29,6 +29,10 @@ public abstract class Servicio {
 		return containerServ;
 	}
 	
+	public abstract String tipoServicio();
+		
+	
+	
 	public abstract double costoServicio(TerminalPortuaria terminalPortuaria); 
 		
 	

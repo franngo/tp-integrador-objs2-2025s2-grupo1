@@ -1,5 +1,5 @@
 package ar.edu.unq.po2.orden;
 
-public class OrdenExportacion {
+public class OrdenExportacion extends Orden{
 
 }
