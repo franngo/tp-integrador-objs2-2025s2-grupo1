@@ -1,9 +1,9 @@
 package ar.edu.unq.po2.container;
 
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertEquals;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -17,19 +17,26 @@ import ar.edu.unq.po2.container.dry.Dry;
 import ar.edu.unq.po2.container.dry.DryCompuesto;
 import ar.edu.unq.po2.container.dry.DryUnico;
 import ar.edu.unq.po2.servicio.Servicio;
+import ar.edu.unq.po2.servicio.ServicioDesconsolidado;
+import ar.edu.unq.po2.servicio.ServicioElectricidad;
 import ar.edu.unq.po2.servicio.ServicioLavado;
 import ar.edu.unq.po2.servicio.ServicioPesaje;
+import ar.edu.unq.po2.servicio.ServicioRevisionDiaria;
 
 class VisitorContainerTest {
 
     ConcreteVisitorContainer miVisitanteContainer; //SUT
 	
-    List<Dry> cargaDryCompuesto;
+    
 	DryCompuesto containerDryCompuesto; // DOC
 	DryUnico containerDryUnico;
 	Tanque containerTanque; //DOC
 	Reefer containerRefeer; //DOC
 	
+	//carga de Dry's mockeados para el dryCompuesto
+	List<Dry> cargaDryCompuesto;
+	
+	//Servicios que crea el VisitanteConcretoContainer
 	List<Servicio> serviciosDryUnico;
 	List<Servicio> serviciosDryCompuesto;
 	List<Servicio> serviciosReefer;
@@ -92,5 +99,53 @@ class VisitorContainerTest {
 		    );
 		});
 	}
+	
+	
+	/*
+	 * Verifica que se creen las instancias de servicios extra de 
+	 * un Container Dry Compuesto
+	 * */
+	@Test
+	public void creacionServiciosExtraDryCompuesto() {
+		assertTrue(
+				serviciosDryCompuesto.stream().anyMatch(s -> s instanceof ServicioDesconsolidado),
+		        "Debe existir al menos un ServicioDesconsolidado en la lista"
+		    );
+	}
+	
+	
+	/*
+	 * Verifica que se creen las instancias de servicios extra de 
+	 * un Container Tanque
+	 * */
+	@Test
+	public void creacionServiciosExtraTanque() {
+		assertTrue(
+				serviciosTanque.stream().anyMatch(s -> s instanceof ServicioRevisionDiaria),
+		        "Debe existir al menos un ServicioRevisionDiaria en la lista"
+		    );
+	}
+	
+	
+	/*
+	 * Verifica que se creen las instancias de servicios extra de 
+	 * un Container Reefer
+	 * */
+	@Test
+	public void creacionServiciosExtraReefer() {
+		assertTrue(
+				serviciosReefer.stream().anyMatch(s -> s instanceof ServicioElectricidad),
+		        "Debe existir al menos un ServicioElectricidad en la lista"
+		    );
+	}
+	
+	/*
+	 * Verifica que sea valido el porcentaje a aplicar si es container Compuesto
+	 * */
+	@Test
+	public void valoresValidosPorcentajes() {
+	   assertEquals(1, miVisitanteContainer.porcentajeServicio(cargaDryCompuesto));
+	}
+	
 	
 }
