@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ class VisitorContainerTest {
 
     ConcreteVisitorContainer miVisitanteContainer; //SUT
 	
-    
+    List<Dry> cargaDryCompuesto;
 	DryCompuesto containerDryCompuesto; // DOC
 	DryUnico containerDryUnico;
 	Tanque containerTanque; //DOC
@@ -38,13 +39,20 @@ class VisitorContainerTest {
 	public void setUp() {
 		miVisitanteContainer = new ConcreteVisitorContainer();
 	    containerDryUnico = mock(DryUnico.class);
+	    containerDryCompuesto = mock(DryCompuesto.class);
 		containerTanque = mock(Tanque.class);
 		containerRefeer = mock(Reefer.class);
 		
+	//Simulo que mi container mockeado tiene una carga	
+	  cargaDryCompuesto = List.of(containerDryUnico);
+	  
+		when(containerDryCompuesto.cargas()).
+		 thenReturn(cargaDryCompuesto);
+		
 		serviciosReefer= miVisitanteContainer.serviciosReefer(containerRefeer);
 		serviciosTanque = miVisitanteContainer.serviciosTanque(containerTanque);
-		//serviciosDryCompuesto = miVisitanteContainer.serviciosDryCompuesto(containerDryCompuesto);
-		//serviciosDryUnico = miVisitanteContainer.serviciosDry(containerDryUnico);
+		serviciosDryCompuesto = miVisitanteContainer.serviciosDryCompuesto(containerDryCompuesto);
+		serviciosDryUnico = miVisitanteContainer.serviciosDry(containerDryUnico);
 		
 	}
 	/*
@@ -55,7 +63,10 @@ class VisitorContainerTest {
 		containerDryUnico.acceptVisitor(miVisitanteContainer);
 		containerTanque.acceptVisitor(miVisitanteContainer);
 		containerRefeer.acceptVisitor(miVisitanteContainer);
+		containerDryCompuesto.acceptVisitor(miVisitanteContainer);
 		
+		
+		verify(containerDryCompuesto).acceptVisitor(miVisitanteContainer);
 		verify(containerDryUnico).acceptVisitor(miVisitanteContainer);
 		verify(containerTanque,times(1)).acceptVisitor(miVisitanteContainer);
 		verify(containerRefeer,times(1)).acceptVisitor(miVisitanteContainer);
@@ -68,7 +79,7 @@ class VisitorContainerTest {
 	@Test
 	public void testServiciosComunes() {
 		List<List<Servicio>> todasLasListas = 
-				List.of(serviciosReefer,serviciosTanque);
+				List.of(serviciosReefer,serviciosTanque,serviciosDryUnico);
 		todasLasListas.forEach(lista -> {
 		    assertTrue(
 		        lista.stream().anyMatch(s -> s instanceof ServicioLavado),
