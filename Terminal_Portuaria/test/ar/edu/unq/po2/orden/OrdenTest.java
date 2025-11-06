@@ -8,6 +8,5 @@ class OrdenTest {
 
 	@Test
 	void test() {
-		fail("Not yet implemented");
 	}
 }

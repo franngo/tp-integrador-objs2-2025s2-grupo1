@@ -59,19 +59,19 @@ public class Camion {
 	}
 	
 	/**
-	 * Transporta la carga actual del camión hacia la terminal portuaria dada.
-	 * @param terminalPortuaria es la terminal portuaria a la que ingresa el camión, dejando su carga en el lugar.
+	 * Transporta la carga actual del camión hacia la terminal portuaria dada para ser registrada como exportación.
+	 * @param terminalPortuaria es la terminal portuaria a la que ingresa el camión, dejando su carga en el lugar para ser registrada como exportación.
 	 */
-	public void transportarCargaA(TerminalPortuaria terminalPortuaria) {
-		terminalPortuaria.ingresarCamion(this);
+	public void transportarExportacionA(TerminalPortuaria terminalPortuaria) {
+		terminalPortuaria.registrarExportacion(this);
 	}
 	
 	/**
 	 * Retira la carga que tiene que ir a buscar el camión de la terminal portuaria dada.
 	 * @param terminalPortuaria es la terminal portuaria de la que se retira el camión, cargando en el lugar lo que debe transportar.
 	 */
-	public void retirarCargaDe(TerminalPortuaria terminalPortuaria) {
-		terminalPortuaria.retirarCamion(this);
+	public void retirarImportacionDe(TerminalPortuaria terminalPortuaria) {
+		terminalPortuaria.retirarImportacion(this);
 	}
 	
 	@Override

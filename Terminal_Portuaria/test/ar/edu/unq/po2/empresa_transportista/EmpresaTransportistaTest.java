@@ -85,7 +85,7 @@ class EmpresaTransportistaTest {
 	@Test
 	public void testDisponibilidadDeCamiones() {
 		// Setup
-		Camion camionDisponible = andreani.camionDisponible();
+		Camion camionDisponible = andreani.contratarCamion();
 		Orden orden = mock(Orden.class);		
 		
 		// Exercise & Verify
@@ -96,7 +96,7 @@ class EmpresaTransportistaTest {
 		assertTrue(andreani.tieneCamionDisponible());
 		assertFalse(camionDisponible.estaDisponible());
 		
-		Camion camionDisponibleD = andreani.camionDisponible();
+		Camion camionDisponibleD = andreani.contratarCamion();
 		assertTrue(camionDisponibleD.estaDisponible());
 		
 		camionDisponibleD.cambiarOrdenActualPor(orden);
@@ -107,7 +107,7 @@ class EmpresaTransportistaTest {
 	@Test
 	public void testDisponibilidadDeChoferes() {
 		// Exercise & Verify
-		Chofer choferDisponible = andreani.choferDisponible();
+		Chofer choferDisponible = andreani.contratarChofer();
 		assertTrue(andreani.tieneChoferDisponible());
 		assertTrue(choferDisponible.estaDisponible());
 		
@@ -115,7 +115,7 @@ class EmpresaTransportistaTest {
 		assertTrue(andreani.tieneChoferDisponible());
 		assertFalse(choferDisponible.estaDisponible());
 		
-		Chofer choferDisponibleD = andreani.choferDisponible();
+		Chofer choferDisponibleD = andreani.contratarChofer();
 		assertTrue(choferDisponibleD.estaDisponible());
 		
 		choferDisponibleD.cambiarEstaDisponiblePor(false);

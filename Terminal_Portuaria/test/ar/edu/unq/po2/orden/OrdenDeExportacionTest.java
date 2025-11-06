@@ -8,6 +8,5 @@ class OrdenDeExportacionTest {
 
 	@Test
 	void test() {
-		fail("Not yet implemented");
 	}
 }

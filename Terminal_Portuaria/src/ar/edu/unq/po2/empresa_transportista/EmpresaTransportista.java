@@ -53,7 +53,7 @@ public class EmpresaTransportista {
 	/**
 	 * Describe un camión disponible de la empresa transportista para ser asignado a un trabajo.
 	 */
-	public Camion camionDisponible() {
+	public Camion contratarCamion() {
 		return this.camionesDisponibles().getFirst();
 	}
 	
@@ -84,7 +84,7 @@ public class EmpresaTransportista {
 	/**
 	 * Describe un chofer disponible de la empresa transportista para ser asignado a un trabajo.
 	 */
-	public Chofer choferDisponible() {
+	public Chofer contratarChofer() {
 		return this.choferesDisponibles().getFirst();
 	}
 	
