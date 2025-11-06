@@ -7,7 +7,7 @@ import ar.edu.unq.po2.circuito_maritimo.CircuitoMaritimo;
 
 public class BuscadorPorCantidadTerminales implements BuscadorDeCircuito {
 	
-	public CircuitoMaritimo buscarCircuito(List<CircuitoMaritimo> circuitos) {
+	public CircuitoMaritimo buscarMejorCircuito(List<CircuitoMaritimo> circuitos) {
 		return circuitos.stream().min(Comparator.comparing(CircuitoMaritimo::cantidadDeTerminales)).get();
 	}
 

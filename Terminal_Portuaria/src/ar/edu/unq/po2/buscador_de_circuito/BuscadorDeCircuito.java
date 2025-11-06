@@ -10,6 +10,6 @@ public interface BuscadorDeCircuito {
 	 * Ya se le pasa directamente la lista de circuitos entre la terminal gestionada y la otra terminal de la consulta.
 	 * No hace falta realizar ese filtro sobre la lista de circuitos acá.
 	 */
-	public CircuitoMaritimo buscarCircuito(List<CircuitoMaritimo> circuitos);
+	public CircuitoMaritimo buscarMejorCircuito(List<CircuitoMaritimo> circuitos);
 	
 }
