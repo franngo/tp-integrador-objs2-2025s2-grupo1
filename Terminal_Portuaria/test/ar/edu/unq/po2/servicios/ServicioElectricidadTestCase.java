@@ -5,48 +5,41 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ar.edu.unq.po2.container.Dry;
 
-import ar.edu.unq.po2.servicio.ServicioDesconsolidado;
+import ar.edu.unq.po2.container.Reefer;
+
+import ar.edu.unq.po2.servicio.ServicioElectricidad;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
-/*
- * 
- * Autor: Matias Sanchez 
- * */
-class ServiciosDesconsolidadoTestCase {
-     
+class ServicioElectricidadTestCase {
+
 	TerminalPortuaria terminalDumb = mock(TerminalPortuaria.class);
-	ServicioDesconsolidado miServConDry;
+	ServicioElectricidad miServElectricidad;
 
 	
-	Dry dumbDry;
-	
+	Reefer dumbContainer;
 	
 	
 	@BeforeEach
 	void setUp(){
-		dumbDry = mock(Dry.class);
+		dumbContainer = mock(Reefer.class);
+		when(dumbContainer.getConsumoPorHora()).thenReturn(10d);
 		when(terminalDumb.precioServicio(any())).thenReturn(20000d);
-		miServConDry= new ServicioDesconsolidado(dumbDry);
+		miServElectricidad = new ServicioElectricidad(dumbContainer);
 		
 	}
 	
 	@Test
 	public void costoDeServicioTest() {
-		assertEquals(20000d,miServConDry.costoServicio(terminalDumb));
+		assertEquals(200000d,miServElectricidad.costoServicio(terminalDumb));
 	}
 	
 	@Test
 	public void tipoServicioTest() {
-		assertEquals("Servicio Desconsolidado",miServConDry.tipoServicio());
+		assertEquals("Servicio Electricidad",miServElectricidad.tipoServicio());
 	}
-
-	
 
 }
