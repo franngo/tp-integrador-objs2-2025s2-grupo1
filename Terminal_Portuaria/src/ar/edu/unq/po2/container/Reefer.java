@@ -27,7 +27,7 @@ public class Reefer extends Container{
 	@Override
 	public String tipoCarga() {
 		// TODO Auto-generated method stub
-		return "Reefer";
+		return "Refeer";
 	}
 
 }
