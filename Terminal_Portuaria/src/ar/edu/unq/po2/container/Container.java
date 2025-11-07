@@ -1,8 +1,8 @@
 package ar.edu.unq.po2.container;
 
 
-import ar.edu.unq.po2.Servicio.TipoServicio;
 import ar.edu.unq.po2.cliente.Cliente;
+import ar.edu.unq.po2.servicio.*;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -11,9 +11,9 @@ import java.util.concurrent.ThreadLocalRandom;
 * @Autor: Matias Sanchez
 * */
 public abstract class Container {
-    private Cliente duenioConsignee;
+    protected Cliente duenioConsignee;
 
-    private String idConnteiner;
+    protected String idContainer;
 
     private double ancho;
 
@@ -23,15 +23,31 @@ public abstract class Container {
 
     private double peso;
 
-    List<TipoServicio> servicios;
 
+    /*
+     * recibe un visitante que le pregunta que Servicios instanciar y se le dice cuales
+     * */
+    public abstract List<Servicio> acceptVisitor(ConcreteVisitorContainer visitante);
+    
+    public  String billOfLading() {
+    	return "Tipo de carga: " + this.tipoCarga() + ", Peso: " + this.peso + " kg";
+    }
+    
+    public abstract String tipoCarga();
+    	
+    
+    
     // ********************************* @Getters ********************************
     public Cliente getDuenioConsignee() {
         return duenioConsignee;
     }
+    
+    protected void duenioConsignee(Cliente cliente) {
+    	 this.duenioConsignee=cliente;
+    }
 
     public String getIdConnteiner() {
-        return idConnteiner;
+        return idContainer;
     }
 
     public double getAncho() {
@@ -51,9 +67,7 @@ public abstract class Container {
         return peso;
     }
 
-    public List<TipoServicio> getServicios() {
-        return servicios;
-    }
+    
 
     // ********************************* CONSTRUCTOR ********************************
     /*
@@ -66,7 +80,8 @@ public abstract class Container {
         this.largo = largo;
         this.altura = altura;
         this.peso = peso;
-        this.idConteiner(this.getDuenioConsignee().nombreCliente());
+        this.idContainer = this.generarIdConteiner(this.duenioConsignee);
+        
     }
 
     /*
@@ -74,9 +89,9 @@ public abstract class Container {
      * seguido de 7 numero
      * @param cliente: representa al duenio de la carga
      * */
-    protected void idConteiner(String cliente) {
-        String nuevaClave = this.codigoCliente(cliente) + this.codigoNumericoRandom();
-        this.idConnteiner = nuevaClave;
+    protected String generarIdConteiner(Cliente cliente) {
+        String nuevaClave = this.codigoCliente(cliente.nombreCliente()) + this.codigoNumericoRandom();
+       return nuevaClave;
     }
 
     /*
@@ -98,6 +113,10 @@ public abstract class Container {
     protected String num7Caracteres(int num) {
         return String.format("%07d", num);
     }
+    
+   
+
+	
 }
 
 
