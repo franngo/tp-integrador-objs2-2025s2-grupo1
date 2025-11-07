@@ -1,13 +1,14 @@
 package ar.edu.unq.po2.container;
 import java.util.List;
 
-import ar.edu.unq.po2.container.dry.Dry;
+
 import ar.edu.unq.po2.container.dry.DryCompuesto;
+import ar.edu.unq.po2.container.dry.DryUnico;
 import ar.edu.unq.po2.servicio.Servicio;
 
 
 public interface VisitorContainer{
-    public List<Servicio> serviciosDry(Dry container);
+    public List<Servicio> serviciosDry(DryUnico container);
     public List <Servicio> serviciosTanque(Tanque container);
     public List <Servicio> serviciosReefer(Reefer container);
    public List<Servicio> serviciosDryCompuesto(DryCompuesto container);

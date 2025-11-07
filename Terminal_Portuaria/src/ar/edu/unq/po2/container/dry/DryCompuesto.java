@@ -3,14 +3,17 @@ package ar.edu.unq.po2.container.dry;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import ar.edu.unq.po2.cliente.Cliente;
 import ar.edu.unq.po2.container.ConcreteVisitorContainer;
-
+import ar.edu.unq.po2.container.Container;
 import ar.edu.unq.po2.servicio.Servicio;
 
 public class DryCompuesto implements Dry{
 	
 	
+	
+
+
 	public DryCompuesto(List<Dry> cargas) {
 		cargasAgrupadas = new ArrayList<Dry>();
 		cargasAgrupadas.addAll(cargas);

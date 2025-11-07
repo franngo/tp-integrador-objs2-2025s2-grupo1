@@ -29,6 +29,12 @@ public class DryUnico extends Container implements Dry{
 		return visitante.serviciosDry(this);
 	}
 
+	@Override
+	public List<Dry> cargas() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
     
   

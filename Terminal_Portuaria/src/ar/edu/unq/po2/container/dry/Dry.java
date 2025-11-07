@@ -13,6 +13,8 @@ public interface Dry {
    
 	public List<Servicio> acceptVisitor(ConcreteVisitorContainer visitante);
 	public String tipoCarga();
+	public List<Dry> cargas();
+	
 }		
 	
 
