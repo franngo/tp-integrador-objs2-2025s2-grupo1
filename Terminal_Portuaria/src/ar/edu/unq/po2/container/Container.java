@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public abstract class Container {
     protected Cliente duenioConsignee;
 
-    private String idConnteiner;
+    private String idContainer;
 
     private double ancho;
 
@@ -47,7 +47,7 @@ public abstract class Container {
     }
 
     public String getIdConnteiner() {
-        return idConnteiner;
+        return idContainer;
     }
 
     public double getAncho() {
@@ -80,7 +80,8 @@ public abstract class Container {
         this.largo = largo;
         this.altura = altura;
         this.peso = peso;
-        this.idConteiner(this.getDuenioConsignee().nombreCliente());
+        this.idContainer = this.generarIdConteiner(this.duenioConsignee);
+        
     }
 
     /*
@@ -88,9 +89,9 @@ public abstract class Container {
      * seguido de 7 numero
      * @param cliente: representa al duenio de la carga
      * */
-    protected void idConteiner(String cliente) {
-        String nuevaClave = this.codigoCliente(cliente) + this.codigoNumericoRandom();
-        this.idConnteiner = nuevaClave;
+    protected String generarIdConteiner(Cliente cliente) {
+        String nuevaClave = this.codigoCliente(cliente.nombreCliente()) + this.codigoNumericoRandom();
+       return nuevaClave;
     }
 
     /*
