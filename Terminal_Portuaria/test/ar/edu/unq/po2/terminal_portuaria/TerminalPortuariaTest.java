@@ -7,8 +7,10 @@ import org.junit.jupiter.api.Test;
 
 import ar.edu.unq.po2.camion.Camion;
 import ar.edu.unq.po2.chofer.Chofer;
-import ar.edu.unq.po2.container.Container;
+import ar.edu.unq.po2.container.*;
 import ar.edu.unq.po2.empresa_transportista.EmpresaTransportista;
+import ar.edu.unq.po2.orden.*;
+import ar.edu.unq.po2.viaje.Viaje;
 
 /**
 * Definen los tests unitarios de la clase TerminalPortuaria.
@@ -33,9 +35,9 @@ class TerminalPortuariaTest {
 		Viaje viajeElegido = terminalGestionada.buscarViaje();
 		Camion camionContratado = andreani.contratarCamion();
 		Chofer choferContratado = andreani.contratarChofer();
+		Container container = new Dry(null, 0, 0, 0, 0);
 		
-		OrdenDeExportacion orden = terminalGestionada.crearOrdenDeExportacion(viajeElegido, container, camionContratado, choferContratado);
-		
+		Orden orden = terminalGestionada.generarOrden(camionContratado, choferContratado, container, viajeElegido);
 	}
 	
 	@Test

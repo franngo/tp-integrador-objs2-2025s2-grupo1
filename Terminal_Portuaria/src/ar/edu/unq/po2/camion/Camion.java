@@ -63,7 +63,17 @@ public class Camion {
 	 * @param terminalPortuaria es la terminal portuaria a la que ingresa el camión, dejando su carga en el lugar para ser registrada como exportación.
 	 */
 	public void transportarExportacionA(TerminalPortuaria terminalPortuaria) {
+		this.validarTransportarExportacion();
 		terminalPortuaria.registrarExportacion(this);
+	}
+	
+	/**
+	 * TODO:
+	 */
+	private void validarTransportarExportacion() {
+		if(this.estaDisponible()) {
+			new RuntimeException("No puede transportar niguna exportación porque no tiene cargada una orden para ello.");
+		}
 	}
 	
 	/**
@@ -71,7 +81,17 @@ public class Camion {
 	 * @param terminalPortuaria es la terminal portuaria de la que se retira el camión, cargando en el lugar lo que debe transportar.
 	 */
 	public void retirarImportacionDe(TerminalPortuaria terminalPortuaria) {
+		this.validarRetirarImportacion();
 		terminalPortuaria.retirarImportacion(this);
+	}
+	
+	/**
+	 * TODO:
+	 */
+	private void validarRetirarImportacion() {
+		if(!this.estaDisponible()) {
+			new RuntimeException("No puede retirar la importación porque ya se encuentra cargado con una orden.");
+		}
 	}
 	
 	// #################################### MÉTODOS AUXILIARES ################################## \\

@@ -1,5 +1,15 @@
 package ar.edu.unq.po2.orden;
 
-public class Orden {
+import java.time.LocalDate;
 
+public abstract class Orden {
+	private LocalDate fechaDeSalida;
+	
+	public Orden(LocalDate fechaDeSalida) {
+		this.fechaDeSalida = fechaDeSalida;
+	}
+	
+	public LocalDate getFechaDeSalida() {
+		return fechaDeSalida;
+	}
 }
