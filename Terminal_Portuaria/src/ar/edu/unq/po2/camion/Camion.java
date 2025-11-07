@@ -4,7 +4,7 @@ import ar.edu.unq.po2.orden.Orden;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 /**
-* Describe a un camión con marca y modelo, su patente y la orden de lo que transporta (si transporta algo).
+* Describe un camión, el cual posee marca y modelo, patente y la orden de lo que transporta (si es que se encuentra transportando algo).
 * @author Benjamin Maldonado.
 */
 
@@ -24,14 +24,14 @@ public class Camion {
 	}
 	
 	/**
-	 * Describe la marca y modelo del camión.
+	 * Describe la marca y modelo del camión representado en un String.
 	 */
 	public String getMarcaYModelo() {
 		return this.marcaYModelo;
 	}
 
 	/**
-	 * Describe la combinación de letras y números de la placa de identificación del camión.
+	 * Describe la combinación de letras y números de la placa de identificación del camión representado en un String.
 	 */
 	public String getPatente() {
 		return this.patente;
@@ -73,6 +73,8 @@ public class Camion {
 	public void retirarImportacionDe(TerminalPortuaria terminalPortuaria) {
 		terminalPortuaria.retirarImportacion(this);
 	}
+	
+	// #################################### MÉTODOS AUXILIARES ################################## \\
 	
 	@Override
 	public boolean equals(Object object) {

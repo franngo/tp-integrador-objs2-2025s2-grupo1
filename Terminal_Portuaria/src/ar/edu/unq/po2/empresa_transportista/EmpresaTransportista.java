@@ -8,7 +8,7 @@ import ar.edu.unq.po2.camion.Camion;
 import ar.edu.unq.po2.chofer.Chofer;
 
 /**
-* Describe una empresa transportista que posee una lista de choferes y camiones.
+* Describe una empresa transportista capaz de poseer choferes y camiones; inicialmente vacía.
 * @author Benjamin Maldonado.
 */
 
@@ -54,7 +54,17 @@ public class EmpresaTransportista {
 	 * Describe un camión disponible de la empresa transportista para ser asignado a un trabajo.
 	 */
 	public Camion contratarCamion() {
+		this.validarContratarCamion();
 		return this.camionesDisponibles().getFirst();
+	}
+	
+	/**
+	 * Valida si se encuentra algún camión disponible para ser contratado.
+	 */
+	private void validarContratarCamion() {
+		if(!this.tieneCamionDisponible()) {
+			new RuntimeException("No hay ningún camión disponible.");
+		}
 	}
 	
 	/**
@@ -85,7 +95,17 @@ public class EmpresaTransportista {
 	 * Describe un chofer disponible de la empresa transportista para ser asignado a un trabajo.
 	 */
 	public Chofer contratarChofer() {
+		this.validarContratarChofer();
 		return this.choferesDisponibles().getFirst();
+	}
+	
+	/**
+	 * Valida si se encuentra algún chofer disponible para ser contratado.
+	 */
+	private void validarContratarChofer() {
+		if(!this.tieneChoferDisponible()) {
+			new RuntimeException("No hay ningún chofer disponible.");
+		}
 	}
 	
 	/**
