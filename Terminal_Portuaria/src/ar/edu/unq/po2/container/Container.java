@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public abstract class Container {
     protected Cliente duenioConsignee;
 
-    private String idContainer;
+    protected String idContainer;
 
     private double ancho;
 

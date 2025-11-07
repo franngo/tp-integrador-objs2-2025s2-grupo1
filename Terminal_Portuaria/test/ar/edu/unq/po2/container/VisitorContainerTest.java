@@ -13,9 +13,8 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ar.edu.unq.po2.container.dry.Dry;
+import ar.edu.unq.po2.container.dry.IDry;
 import ar.edu.unq.po2.container.dry.DryCompuesto;
-import ar.edu.unq.po2.container.dry.DryUnico;
 import ar.edu.unq.po2.servicio.Servicio;
 import ar.edu.unq.po2.servicio.ServicioDesconsolidado;
 import ar.edu.unq.po2.servicio.ServicioElectricidad;
@@ -29,12 +28,12 @@ class VisitorContainerTest {
 	
     
 	DryCompuesto containerDryCompuesto; // DOC
-	DryUnico containerDryUnico;
+	Dry containerDryUnico;
 	Tanque containerTanque; //DOC
 	Reefer containerRefeer; //DOC
 	
 	//carga de Dry's mockeados para el dryCompuesto
-	List<Dry> cargaDryCompuesto;
+	List<IDry> cargaDryCompuesto;
 	
 	//Servicios que crea el VisitanteConcretoContainer
 	List<Servicio> serviciosDryUnico;
@@ -45,7 +44,7 @@ class VisitorContainerTest {
 	@BeforeEach
 	public void setUp() {
 		miVisitanteContainer = new ConcreteVisitorContainer();
-	    containerDryUnico = mock(DryUnico.class);
+	    containerDryUnico = mock(Dry.class);
 	    containerDryCompuesto = mock(DryCompuesto.class);
 		containerTanque = mock(Tanque.class);
 		containerRefeer = mock(Reefer.class);

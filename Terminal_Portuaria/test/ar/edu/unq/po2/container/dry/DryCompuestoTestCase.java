@@ -14,25 +14,26 @@ import org.mockito.Mock;
 
 
 import ar.edu.unq.po2.container.ConcreteVisitorContainer;
+import ar.edu.unq.po2.container.Dry;
 
 public class DryCompuestoTestCase {
 	DryCompuesto miDryCompuesto; 
 	@Mock
-	DryUnico dumbDryUnico;
-	DryUnico dumbDryUnico2;
-	DryUnico dumbDryUnico3;
-	DryUnico dumbDryUnico4;
+	Dry dumbDryUnico;
+	Dry dumbDryUnico2;
+	Dry dumbDryUnico3;
+	Dry dumbDryUnico4;
 	
-	List<Dry> dumbDrys;
+	List<IDry> dumbDrys;
 	ConcreteVisitorContainer mockVisitor; 
 	
 	@BeforeEach
 	void setUp() throws Exception {
 		
-		dumbDryUnico= mock(DryUnico.class);
-		dumbDryUnico2 = mock(DryUnico.class);
-		dumbDryUnico3 = mock(DryUnico.class);
-		dumbDryUnico4 = mock(DryUnico.class);
+		dumbDryUnico= mock(Dry.class);
+		dumbDryUnico2 = mock(Dry.class);
+		dumbDryUnico3 = mock(Dry.class);
+		dumbDryUnico4 = mock(Dry.class);
 		
 		when(dumbDryUnico.tipoCarga()).thenReturn("algo");
 		when(dumbDryUnico2.tipoCarga()).thenReturn("algo2");

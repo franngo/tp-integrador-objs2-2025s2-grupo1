@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import ar.edu.unq.po2.container.dry.Dry;
+import ar.edu.unq.po2.container.dry.IDry;
 import ar.edu.unq.po2.container.dry.DryCompuesto;
-import ar.edu.unq.po2.container.dry.DryUnico;
 import ar.edu.unq.po2.servicio.*;
 
 
@@ -17,7 +16,7 @@ public class ConcreteVisitorContainer implements VisitorContainer{
  
 	
 	@Override
-	public List<Servicio> serviciosDry(DryUnico container) {
+	public List<Servicio> serviciosDry(Dry container) {
 				
 		return this.serviciosTotales(container);
 	}
@@ -57,12 +56,12 @@ public class ConcreteVisitorContainer implements VisitorContainer{
         return servicios;
     } 
 	
-	private final List<Servicio> serviciosTotalesDryCompuesto(Dry containerDry){
+	private final List<Servicio> serviciosTotalesDryCompuesto(IDry containerDry){
 		List<Servicio> servicios = new ArrayList<>();
 		/*
 		 * containersParticulares: todas las hojas del DryCompuesto
 		 * */
-		List<Dry> containersParticulares = containerDry.cargas();
+		List<IDry> containersParticulares = containerDry.cargas();
 		
 		containersParticulares.stream().
 		forEach(container ->  this.servicioParticular(
@@ -73,18 +72,18 @@ public class ConcreteVisitorContainer implements VisitorContainer{
         return servicios;
 	}
 	
-	public void servicioParticular(Dry containerHoja, double descuentoAplicable, List<Servicio> servicios) {
+	public void servicioParticular(IDry containerHoja, double descuentoAplicable, List<Servicio> servicios) {
 		if(containerHoja instanceof DryCompuesto ) {
 			List<Servicio> serviciosDryParticular = this.serviciosTotalesDryCompuesto(containerHoja);
 			servicios.addAll(serviciosDryParticular);
 		
 		}
 		else {
-			servicios.add(new ServicioDesconsolidado((DryUnico) containerHoja,descuentoAplicable));
+			servicios.add(new ServicioDesconsolidado((Dry) containerHoja,descuentoAplicable));
 		}
 	}
 	
-	public int porcentajeServicio(List<Dry> cargas) {
+	public int porcentajeServicio(List<IDry> cargas) {
   		return cargas.size();
 	}
 

@@ -8,19 +8,20 @@ import ar.edu.unq.po2.container.ConcreteVisitorContainer;
 import ar.edu.unq.po2.container.Container;
 import ar.edu.unq.po2.servicio.Servicio;
 
-public class DryCompuesto implements Dry{
+public class DryCompuesto extends Container{
 	
 	
-	
-
-
-	public DryCompuesto(List<Dry> cargas) {
-		cargasAgrupadas = new ArrayList<Dry>();
-		cargasAgrupadas.addAll(cargas);
+    public DryCompuesto(List<Container> containers) {
+		super(null, 0, 0, 0, 0);
+		// TODO Auto-generated constructor stub
 		
+		cargasAgrupadas = new ArrayList<IDry>();
+		cargasAgrupadas.addAll(containers);
 	}
 
-    List <Dry> cargasAgrupadas;
+
+
+	List <IDry> cargasAgrupadas;
     
 	
 	
@@ -34,7 +35,7 @@ public class DryCompuesto implements Dry{
 
 
     
-	public List<Dry> cargas() {
+	public List<IDry> cargas() {
 		// TODO Auto-generated method stub
 		return cargasAgrupadas;
 	}

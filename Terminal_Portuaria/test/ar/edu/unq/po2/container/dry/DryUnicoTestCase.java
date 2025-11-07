@@ -12,10 +12,11 @@ import org.mockito.Mock;
 
 import ar.edu.unq.po2.cliente.Consignee;
 import ar.edu.unq.po2.container.ConcreteVisitorContainer;
+import ar.edu.unq.po2.container.Dry;
 
 
 public class DryUnicoTestCase {
-	DryUnico miDryUnico; 
+	Dry miDryUnico; 
 	@Mock
 	Consignee dumbCliente;
 	ConcreteVisitorContainer mockVisitor; 
@@ -24,7 +25,7 @@ public class DryUnicoTestCase {
 		dumbCliente = mock(Consignee.class);
 		when(dumbCliente.nombreCliente()).thenReturn("Matias");
 	
-		miDryUnico= new DryUnico(dumbCliente,10d,20d,30d,400d);
+		miDryUnico= new Dry(dumbCliente,10d,20d,30d,400d);
 		mockVisitor = mock(ConcreteVisitorContainer.class);
 	}
     
