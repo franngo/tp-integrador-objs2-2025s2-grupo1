@@ -6,15 +6,15 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.List;
+
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import ar.edu.unq.po2.cliente.Cliente;
+
 import ar.edu.unq.po2.cliente.Consignee;
-import ar.edu.unq.po2.servicio.Servicio;
+
 
 
 /*
@@ -27,7 +27,7 @@ class ReeferTestCase {
 	Consignee dumbCliente;
 	ConcreteVisitorContainer mockVisitor; 
 	@BeforeEach
-	void setUp() throws Exception {
+	void setUp()  {
 		dumbCliente = mock(Consignee.class);
 		when(dumbCliente.nombreCliente()).thenReturn("Matias");
 	
@@ -50,7 +50,7 @@ class ReeferTestCase {
 	
 	@Test
 	public void comunicacionConVisitante() {
-		List<Servicio> serviciosReefer = miRefeer.acceptVisitor(mockVisitor);
+	    miRefeer.acceptVisitor(mockVisitor);
 		verify(mockVisitor,times(1)).serviciosReefer(miRefeer);
 		
 	}

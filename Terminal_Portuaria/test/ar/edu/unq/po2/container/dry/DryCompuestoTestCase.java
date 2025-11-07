@@ -1,33 +1,29 @@
-package ar.edu.unq.po2.container;
+package ar.edu.unq.po2.container.dry;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import ar.edu.unq.po2.cliente.Consignee;
+import ar.edu.unq.po2.container.ConcreteVisitorContainer;
 
-
-class TanqueTestCase {
-    
-	
-	Tanque miTanque; 
+public class DryCompuestoTestCase {
+	DryUnico miDryUnico; 
 	@Mock
 	Consignee dumbCliente;
 	ConcreteVisitorContainer mockVisitor; 
 	@BeforeEach
-	void setUp() {
+	void setUp() throws Exception {
 		dumbCliente = mock(Consignee.class);
 		when(dumbCliente.nombreCliente()).thenReturn("Matias");
 	
-		miTanque= new Tanque(dumbCliente,10d,20d,30d,400d);
+		miDryUnico= new DryUnico(dumbCliente,10d,20d,30d,400d);
 		mockVisitor = mock(ConcreteVisitorContainer.class);
 	}
     
@@ -37,23 +33,22 @@ class TanqueTestCase {
 	@Test
 	public void variablesDeInstanciaCoherentes() {
 	
-	assertEquals(10d,miTanque.getAncho());
-	assertEquals(20d,miTanque.getLargo());
-	assertEquals(30d,miTanque.getAltura());
-	assertEquals(400d,miTanque.getPeso());
+	assertEquals(10d,miDryUnico.getAncho());
+	assertEquals(20d,miDryUnico.getLargo());
+	assertEquals(30d,miDryUnico.getAltura());
+	assertEquals(400d,miDryUnico.getPeso());
+	
 	}
 	
 	@Test
 	public void comunicacionConVisitante() {
-		 miTanque.acceptVisitor(mockVisitor);
-		verify(mockVisitor,times(1)).serviciosTanque(miTanque);
+		miDryUnico.acceptVisitor(mockVisitor);
+		verify(mockVisitor,times(1)).serviciosDry(miDryUnico);
 		
 	}
 	
 	@Test 
 	public void testNombreNombreCrga() {
-		assertEquals("Tanque",miTanque.tipoCarga());
+		assertEquals("Dry individual",miDryUnico.tipoCarga());
 	}
-	
-
 }
