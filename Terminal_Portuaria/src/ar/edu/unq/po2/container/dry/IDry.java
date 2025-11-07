@@ -7,7 +7,7 @@ import ar.edu.unq.po2.container.ConcreteVisitorContainer;
 
 import ar.edu.unq.po2.servicio.Servicio;
 
-
+/*
 public interface IDry {
     
    
@@ -17,7 +17,7 @@ public interface IDry {
 	
 }		
 	
-
+*/
  
 
 

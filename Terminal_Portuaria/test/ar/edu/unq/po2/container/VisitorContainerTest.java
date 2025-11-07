@@ -13,8 +13,8 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ar.edu.unq.po2.container.dry.IDry;
-import ar.edu.unq.po2.container.dry.DryCompuesto;
+import ar.edu.unq.po2.container.bls.CargaBL;
+
 import ar.edu.unq.po2.servicio.Servicio;
 import ar.edu.unq.po2.servicio.ServicioDesconsolidado;
 import ar.edu.unq.po2.servicio.ServicioElectricidad;
@@ -27,38 +27,38 @@ class VisitorContainerTest {
     ConcreteVisitorContainer miVisitanteContainer; //SUT
 	
     
-	DryCompuesto containerDryCompuesto; // DOC
-	Dry containerDryUnico;
+	//DryCompuesto containerDryCompuesto; // DOC
+	Dry containerDry;
 	Tanque containerTanque; //DOC
 	Reefer containerRefeer; //DOC
 	
 	//carga de Dry's mockeados para el dryCompuesto
-	List<IDry> cargaDryCompuesto;
+	CargaBL cargaDryCompuesto;
 	
 	//Servicios que crea el VisitanteConcretoContainer
-	List<Servicio> serviciosDryUnico;
-	List<Servicio> serviciosDryCompuesto;
+	List<Servicio> serviciosDry;
+	//List<Servicio> serviciosDryCompuesto;
 	List<Servicio> serviciosReefer;
 	List<Servicio> serviciosTanque;
 	
 	@BeforeEach
 	public void setUp() {
 		miVisitanteContainer = new ConcreteVisitorContainer();
-	    containerDryUnico = mock(Dry.class);
-	    containerDryCompuesto = mock(DryCompuesto.class);
+	    containerDry = mock(Dry.class);
+	   // cargaDryCompuesto = mock(DryCompuesto.class);
 		containerTanque = mock(Tanque.class);
 		containerRefeer = mock(Reefer.class);
 		
 	//Simulo que mi container mockeado tiene una carga	
-	  cargaDryCompuesto = List.of(containerDryUnico);
+	 
 	  
-		when(containerDryCompuesto.cargas()).
+		when(containerDry.carga()).
 		 thenReturn(cargaDryCompuesto);
 		
 		serviciosReefer= miVisitanteContainer.serviciosReefer(containerRefeer);
 		serviciosTanque = miVisitanteContainer.serviciosTanque(containerTanque);
-		serviciosDryCompuesto = miVisitanteContainer.serviciosDryCompuesto(containerDryCompuesto);
-		serviciosDryUnico = miVisitanteContainer.serviciosDry(containerDryUnico);
+		
+		serviciosDry = miVisitanteContainer.serviciosDry(containerDry);
 		
 	}
 	/*
@@ -66,14 +66,14 @@ class VisitorContainerTest {
 	 * */
 	@Test
 	void testComportamientoVisitor() {
-		containerDryUnico.acceptVisitor(miVisitanteContainer);
+		containerDry.acceptVisitor(miVisitanteContainer);
 		containerTanque.acceptVisitor(miVisitanteContainer);
 		containerRefeer.acceptVisitor(miVisitanteContainer);
-		containerDryCompuesto.acceptVisitor(miVisitanteContainer);
 		
 		
-		verify(containerDryCompuesto).acceptVisitor(miVisitanteContainer);
-		verify(containerDryUnico).acceptVisitor(miVisitanteContainer);
+		
+		
+		verify(containerDry,times(1)).acceptVisitor(miVisitanteContainer);
 		verify(containerTanque,times(1)).acceptVisitor(miVisitanteContainer);
 		verify(containerRefeer,times(1)).acceptVisitor(miVisitanteContainer);
 	}
@@ -85,7 +85,7 @@ class VisitorContainerTest {
 	@Test
 	public void testServiciosComunes() {
 		List<List<Servicio>> todasLasListas = 
-				List.of(serviciosReefer,serviciosTanque,serviciosDryUnico);
+				List.of(serviciosReefer,serviciosTanque,serviciosDry);
 		todasLasListas.forEach(lista -> {
 		    assertTrue(
 		        lista.stream().anyMatch(s -> s instanceof ServicioLavado),
@@ -107,7 +107,7 @@ class VisitorContainerTest {
 	@Test
 	public void creacionServiciosExtraDryCompuesto() {
 		assertTrue(
-				serviciosDryCompuesto.stream().anyMatch(s -> s instanceof ServicioDesconsolidado),
+				serviciosDry.stream().anyMatch(s -> s instanceof ServicioDesconsolidado),
 		        "Debe existir al menos un ServicioDesconsolidado en la lista"
 		    );
 	}
@@ -138,13 +138,6 @@ class VisitorContainerTest {
 		    );
 	}
 	
-	/*
-	 * Verifica que sea valido el porcentaje a aplicar si es container Compuesto
-	 * */
-	@Test
-	public void valoresValidosPorcentajes() {
-	   assertEquals(1, miVisitanteContainer.porcentajeServicio(cargaDryCompuesto));
-	}
 	
 	
 }

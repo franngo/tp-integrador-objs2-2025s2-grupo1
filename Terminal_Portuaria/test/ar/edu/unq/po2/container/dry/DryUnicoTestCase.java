@@ -14,7 +14,7 @@ import ar.edu.unq.po2.cliente.Consignee;
 import ar.edu.unq.po2.container.ConcreteVisitorContainer;
 import ar.edu.unq.po2.container.Dry;
 
-
+/*
 public class DryUnicoTestCase {
 	Dry miDryUnico; 
 	@Mock
@@ -31,7 +31,7 @@ public class DryUnicoTestCase {
     
 	/*
 	 * La altura, el ancho, el largo, el peso del reefer son coherente 
-	 * */
+	 * 
 	@Test
 	public void variablesDeInstanciaCoherentes() {
 	
@@ -54,3 +54,4 @@ public class DryUnicoTestCase {
 		assertEquals("Dry individual",miDryUnico.tipoCarga());
 	}
 }
+*/

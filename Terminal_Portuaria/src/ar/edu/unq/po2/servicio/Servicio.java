@@ -15,7 +15,7 @@ public abstract class Servicio {
 	
 	protected Container containerServ;
 	
-	private Cliente clienteConsignee;
+	protected Cliente clienteConsignee;
 	
 	private LocalDate inicioServicio;
 	

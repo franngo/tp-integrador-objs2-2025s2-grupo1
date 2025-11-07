@@ -8,6 +8,7 @@ import ar.edu.unq.po2.container.ConcreteVisitorContainer;
 import ar.edu.unq.po2.container.Container;
 import ar.edu.unq.po2.servicio.Servicio;
 
+/*
 public class DryCompuesto extends Container{
 	
 	
@@ -51,3 +52,4 @@ public class DryCompuesto extends Container{
 
 
 }
+*/

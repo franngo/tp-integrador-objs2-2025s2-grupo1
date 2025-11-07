@@ -6,7 +6,7 @@ import java.util.List;
 
 import ar.edu.unq.po2.container.ConcreteVisitorContainer;
 import ar.edu.unq.po2.container.Container;
-import ar.edu.unq.po2.container.dry.DryCompuesto;
+
 import ar.edu.unq.po2.servicio.Servicio;
 
 
@@ -36,14 +36,5 @@ public abstract class Orden {
 		serviciosACobrar.addAll(serviciosACobrar);
 		
 	}
-	
-	 
-	/*
-	public  double montoTotalServicios(TerminalPortuaria terminalPortuaria) {
-		return serviciosACobrar.stream().
-				mapToDouble(servicio -> servicio.costoServicio(terminalPortuaria)).
-				sum();
-	}
-	
-	*/
+		
 }

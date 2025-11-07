@@ -2,9 +2,9 @@ package ar.edu.unq.po2.servicio;
 
 
 
-import ar.edu.unq.po2.cliente.Cliente;
+
 import ar.edu.unq.po2.container.Container;
-import ar.edu.unq.po2.container.dry.IDry;
+
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 
@@ -14,40 +14,25 @@ import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
  * */
 public class ServicioDesconsolidado extends Servicio{
     
-	private Cliente clienteParticular;
-	private double porcentajeServicio;
 
-
-	/*
-	 * @param descuentoAAplicar: la car
-	 * */
-	public ServicioDesconsolidado(Container containerServ,double porcentajeServicio) {
 	
-		// TODO Auto-generated constructor stub
+	public ServicioDesconsolidado(Container containerServ) {
+		super(containerServ);
+	
+		
 	}
-
-
-
-	
-	public Cliente getDuenioParticular() {
-		return clienteParticular;
-	}
-
-	
-
-	
-
+    /*
+     * Se necesita que cuando la terminal cobre el servicio divida 
+     * el costo por la cantidad de clientes que tenga el containerServ 
+     * */
 	@Override
 	public double costoServicio(TerminalPortuaria terminalPortuaria) {
 		// TODO Auto-generated method stub
 		return terminalPortuaria.precioServicio(PrecioServicioTerminal.PRECIODESCONSOLIDADO) 
-				/ porcentajeServicio()  ;
+					;
 	}
 
-	private double porcentajeServicio() {
-		// TODO Auto-generated method stub
-		return porcentajeServicio;
-	}
+	
 
 
 

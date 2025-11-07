@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import ar.edu.unq.po2.container.ConcreteVisitorContainer;
 import ar.edu.unq.po2.container.Dry;
 
+/*
 public class DryCompuestoTestCase {
 	DryCompuesto miDryCompuesto; 
 	@Mock
@@ -49,7 +50,7 @@ public class DryCompuestoTestCase {
     
 	/*
 	 * La altura, el ancho, el largo, el peso del reefer son coherente 
-	 * */
+	 * 
 	
 	
 	@Test
@@ -66,9 +67,9 @@ public class DryCompuestoTestCase {
 	
 	/*
 	 * El container compuesto devuelve sus cargas
-	 * */
+	 * 
 	@Test 
 	public void testCargas() {
 		assertEquals(dumbDrys,miDryCompuesto.cargas());
 	}
-}
+}*/

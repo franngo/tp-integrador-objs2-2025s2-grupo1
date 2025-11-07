@@ -45,42 +45,15 @@ public class Dry extends Container {
 		// TODO Auto-generated method stub
 		return visitante.serviciosDry(this);
 	}
-
-	
-	
-	
-
-	
     
-  
-        @Override
-	    public Cliente getDuenioConsignee() {
-	        return duenioConsignee;
-	    }
-        @Override
-	    protected void duenioConsignee(Cliente cliente) {
-	    	 this.duenioConsignee=cliente;
-	    }
-        @Override
-	    public String getIdConnteiner() {
-	        return idContainer;
-	    }
-        @Override
-	    public double getAncho() {
-	        return ancho;
-	    }
-        @Override
-	    public double getLargo() {
-	        return largo;
-	    }
-        @Override
-	    public double getAltura() {
-	        return altura;
-	    }
+	
+	public CargaBL carga(){
+		return cargaBL;
+	}
 
 
 	    public double getPeso() {
-	        return peso;
+	        return cargaBL.getPeso();
 	    }
 	
 
