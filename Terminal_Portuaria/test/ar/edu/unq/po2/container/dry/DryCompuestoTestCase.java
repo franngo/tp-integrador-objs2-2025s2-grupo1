@@ -6,49 +6,47 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import ar.edu.unq.po2.cliente.Consignee;
+
 import ar.edu.unq.po2.container.ConcreteVisitorContainer;
 
 public class DryCompuestoTestCase {
-	DryUnico miDryUnico; 
+	DryCompuesto miDryCompuesto; 
 	@Mock
-	Consignee dumbCliente;
+	DryUnico dumbDryUnico;
+	DryUnico dumbDryUnico2;
+	DryUnico dumbDryUnico3;
+	DryUnico dumbDryUnico4;
+	
+	List<Dry> dumbDrys= List.of(dumbDryUnico,dumbDryUnico2,dumbDryUnico3,dumbDryUnico4);
 	ConcreteVisitorContainer mockVisitor; 
+	
 	@BeforeEach
 	void setUp() throws Exception {
-		dumbCliente = mock(Consignee.class);
-		when(dumbCliente.nombreCliente()).thenReturn("Matias");
-	
-		miDryUnico= new DryUnico(dumbCliente,10d,20d,30d,400d);
+		
+		miDryCompuesto= new DryCompuesto(dumbDrys);
 		mockVisitor = mock(ConcreteVisitorContainer.class);
 	}
     
 	/*
 	 * La altura, el ancho, el largo, el peso del reefer son coherente 
 	 * */
-	@Test
-	public void variablesDeInstanciaCoherentes() {
 	
-	assertEquals(10d,miDryUnico.getAncho());
-	assertEquals(20d,miDryUnico.getLargo());
-	assertEquals(30d,miDryUnico.getAltura());
-	assertEquals(400d,miDryUnico.getPeso());
-	
-	}
 	
 	@Test
 	public void comunicacionConVisitante() {
-		miDryUnico.acceptVisitor(mockVisitor);
-		verify(mockVisitor,times(1)).serviciosDry(miDryUnico);
+		miDryCompuesto.acceptVisitor(mockVisitor);
+		verify(mockVisitor,times(1)).serviciosDry(miDryCompuesto);
 		
 	}
 	
 	@Test 
 	public void testNombreNombreCrga() {
-		assertEquals("Dry individual",miDryUnico.tipoCarga());
+		assertEquals("Dry compuesto por 4 containers Dry",miDryCompuesto.tipoCarga());
 	}
 }

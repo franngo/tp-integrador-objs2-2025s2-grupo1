@@ -3,15 +3,16 @@ package ar.edu.unq.po2.container.dry;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.edu.unq.po2.cliente.Cliente;
 import ar.edu.unq.po2.container.ConcreteVisitorContainer;
 import ar.edu.unq.po2.servicio.Servicio;
 
 public class DryCompuesto extends Dry{
 	
+	
 	List <Dry> cargasAgrupadas = new ArrayList<Dry>();
-
-	public DryCompuesto( double ancho, double largo, double altura, double peso,List<Dry> cargasBLs) {
-		super(null, ancho, largo, altura, peso);
+    
+	public DryCompuesto(List<Dry> cargasBLs) {
 		this.cargasAgrupadas.addAll(cargasBLs);
 		// TODO Auto-generated constructor stub
 	}
