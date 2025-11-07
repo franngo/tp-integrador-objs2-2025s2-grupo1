@@ -3,19 +3,23 @@ package ar.edu.unq.po2.container.dry;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.edu.unq.po2.cliente.Cliente;
+
 import ar.edu.unq.po2.container.ConcreteVisitorContainer;
+
 import ar.edu.unq.po2.servicio.Servicio;
 
-public class DryCompuesto extends Dry{
+public class DryCompuesto implements Dry{
 	
 	
-	List <Dry> cargasAgrupadas = new ArrayList<Dry>();
-    
-	public DryCompuesto(List<Dry> cargasBLs) {
-		this.cargasAgrupadas.addAll(cargasBLs);
-		// TODO Auto-generated constructor stub
+	public DryCompuesto(List<Dry> cargas) {
+		cargasAgrupadas = new ArrayList<Dry>();
+		cargasAgrupadas.addAll(cargas);
+		
 	}
+
+    List <Dry> cargasAgrupadas;
+    
+	
 	
 	
 	@Override
@@ -33,7 +37,7 @@ public class DryCompuesto extends Dry{
 	}
 
 
-	@Override
+	
 	public String tipoCarga() {
 		// TODO Auto-generated method stub
 		return "Dry compuesto por "+ this.cargas().size() +" containers Dry";

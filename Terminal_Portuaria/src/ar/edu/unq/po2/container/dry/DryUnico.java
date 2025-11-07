@@ -2,11 +2,14 @@ package ar.edu.unq.po2.container.dry;
 
 
 
+import java.util.List;
+
 import ar.edu.unq.po2.cliente.Cliente;
+import ar.edu.unq.po2.container.ConcreteVisitorContainer;
+import ar.edu.unq.po2.container.Container;
+import ar.edu.unq.po2.servicio.Servicio;
 
-public class DryUnico extends Dry{
-	
-
+public class DryUnico extends Container implements Dry{
 	
 
 	public DryUnico(Cliente cliente, double ancho, double largo, double altura, double peso) {
@@ -18,6 +21,12 @@ public class DryUnico extends Dry{
 	public String tipoCarga() {
 		// TODO Auto-generated method stub
 		return "Dry individual";
+	}
+
+	@Override
+	public List<Servicio> acceptVisitor(ConcreteVisitorContainer visitante) {
+		// TODO Auto-generated method stub
+		return visitante.serviciosDry(this);
 	}
 
 	
