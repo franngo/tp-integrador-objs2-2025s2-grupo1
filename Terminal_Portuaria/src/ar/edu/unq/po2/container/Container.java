@@ -46,7 +46,7 @@ public abstract class Container {
     	 this.duenioConsignee=cliente;
     }
 
-    public String getIdConnteiner() {
+    protected String getIdConnteiner() {
         return idContainer;
     }
 
@@ -63,7 +63,7 @@ public abstract class Container {
     }
 
 
-    public double getPeso() {
+    protected double getPeso() {
         return peso;
     }
 
