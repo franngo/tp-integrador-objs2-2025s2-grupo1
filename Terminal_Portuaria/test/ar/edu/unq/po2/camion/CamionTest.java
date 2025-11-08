@@ -94,8 +94,8 @@ class CamionTest {
         volvoFH460.transportarExportacionA(terminal);
 
         // Verify
-        verify(terminal).registrarExportacion(scaniaR580);
-        verify(terminal).registrarExportacion(volvoFH460);
+        verify(terminal).registrarExportacion(scaniaR580.getOrdenActual());
+        verify(terminal).registrarExportacion(volvoFH460.getOrdenActual());
 	}
 	
 	@Test

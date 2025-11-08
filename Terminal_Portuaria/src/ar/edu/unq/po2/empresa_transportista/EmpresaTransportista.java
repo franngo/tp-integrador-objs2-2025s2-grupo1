@@ -116,4 +116,13 @@ public class EmpresaTransportista {
 				   	   .filter(chofer -> chofer.estaDisponible())
 				   	   .toList();
 	}
+
+	/**
+	 * Indica si la empresa transportista tiene registrados al camion y al chofer dados.
+	 * @param camion es el camion a verificar si está registrado en la empresa transportista.
+	 * @param chofer es el chofer a verificar si está registrado en la empresa transportista.
+	 */
+	public boolean tieneCamionYChoferRegistrados(Camion camion, Chofer chofer) {
+		return camiones.contains(camion) && choferes.contains(chofer);
+	}
 }

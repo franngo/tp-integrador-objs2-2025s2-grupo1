@@ -1,5 +1,6 @@
 package ar.edu.unq.po2.terminal_portuaria;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -35,7 +36,7 @@ public class TerminalPortuaria {
 	private Set<Orden> ordenesDeImportacion;
 	private Set<Orden> ordenesDeExportacion;
 	private Set<Servicio> serviciosDisponibles;
-	private List<Reporte> reportes;
+	private List<Reporte> reportesGenerados;
 	
 	/**
 	 * @param coordenada son las coordenadas de la Terminal Portuaria.
@@ -51,7 +52,7 @@ public class TerminalPortuaria {
 		this.ordenesDeExportacion = new HashSet<Orden>();
 		this.ordenesDeImportacion = new HashSet<Orden>();
 		this.serviciosDisponibles = new HashSet<Servicio>();
-		this.reportes = new ArrayList<Reporte>();
+		this.reportesGenerados = new ArrayList<Reporte>();
 	}
 	
 	/**
@@ -77,13 +78,12 @@ public class TerminalPortuaria {
 	}
 
 	/**
-	 * Registra como exportación en la Terminal Portuaria la orden que posee el camión dado.
-	 * @param camion es el camion que transporta la orden a ser registrada como exportación en la Terminal Portuaria.
+	 * Registra como exportación en la Terminal Portuaria la orden dada.
+	 * @param orden es la orden a ser registrada como exportación en la Terminal Portuaria.
 	 */
-	public void registrarExportacion(Camion camion) {
-		Orden ordenARegistrar = camion.getOrdenActual();
-		this.validarRegistrarExportacion(ordenARegistrar);
-		this.ordenesDeExportacion.add(ordenARegistrar);
+	public void registrarExportacion(Orden orden) {
+		this.validarRegistrarExportacion(orden);
+		this.ordenesDeExportacion.add(orden);
 	}
 
 	/**
@@ -92,11 +92,32 @@ public class TerminalPortuaria {
 	 */
 	private void validarRegistrarExportacion(Orden orden) {
 		if(!this.cumpleHorarioExportacion(orden) || !this.cumpleElTransporte(orden)) {
-			new RuntimeException("No se encuentra en horario de exportación, o bien el camion y/o el chofer no son los previamente informados.");
+			new RuntimeException("No se encuentra en horario de exportación, o bien el camion y/o el chofer no estan registrados en la Terminal.");
 		}
 	}
 	
+	/**
+	 * Indica si la orden dada cumple el horario de exportación. Es decir, si se encuentra 3 horas antes de la hora de salida en el momento de consulta.
+	 * @param orden es la orden que se toma de referencia para evaluar si cumple con el horario de exportación.
+	 */
+	private boolean cumpleHorarioExportacion(Orden orden) {
+		LocalDateTime fechaAhora  = LocalDateTime.now();
+		LocalDateTime fechaSalida = orden.fechaDeSalida();
+		LocalDateTime fechaMinimaPermitida = fechaSalida.minusHours(3);
+		return fechaAhora.isAfter(fechaMinimaPermitida) && fechaAhora.isBefore(fechaSalida);
+	}
 	
+	/**
+	 * Indica si tiene registrados en la Terminal el camion y chofer que se encuentran en la orden dada.
+	 * @param orden es la orden que se toma de referencia para evaluar si cumple con el transporte asociado a la misma.
+	 */
+	private boolean cumpleElTransporte(Orden orden) {
+		Camion camion = orden.getCamion();
+		Chofer chofer = orden.getChofer();
+		
+		return empresasTransportistasRegistradas.stream()
+												.anyMatch(e -> e.tieneCamionYChoferRegistrados(camion, chofer));
+	}
 
 	/**
 	 * Registra la empresa transportista dada en la Terminal Portuaria.
@@ -139,5 +160,26 @@ public class TerminalPortuaria {
 	 */
 	public Orden generarOrden(Camion camion, Chofer chofer, Container container, Viaje viaje) {
 		return new OrdenDeExportacion(camion, chofer, container, viaje);
+	}
+	
+	// #################################### MÉTODOS AUXILIARES ################################## \\
+	
+	@Override
+	public boolean equals(Object object) {
+		return (this == object) || (this.esTerminalPortuaria(object) && (this.esElMismoQue(object)));
+	}
+	
+	private boolean esTerminalPortuaria(Object object) {
+		return object instanceof TerminalPortuaria;
+	}
+	
+	private boolean esElMismoQue(Object object) {
+		TerminalPortuaria terminalAComparar = (TerminalPortuaria) object;
+		return coordenada.equals(terminalAComparar.getCoordenada());
+	}
+	
+	@Override
+	public int hashCode() {
+		return coordenada.hashCode();
 	}
 }

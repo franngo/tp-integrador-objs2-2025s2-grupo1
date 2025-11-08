@@ -8,6 +8,6 @@ import ar.edu.unq.po2.viaje.Viaje;
 public class OrdenDeExportacion extends Orden {
 
 	public OrdenDeExportacion(Camion camion, Chofer chofer, Container container, Viaje viaje) {
-		// TODO Auto-generated constructor stub
+		super(camion, chofer, container, viaje);
 	}
 }

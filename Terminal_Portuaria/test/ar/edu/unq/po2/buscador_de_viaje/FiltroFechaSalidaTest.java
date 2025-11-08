@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 
@@ -12,8 +13,7 @@ import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 import ar.edu.unq.po2.viaje.Viaje;
 
 public class FiltroFechaSalidaTest {
-	
-	LocalDate fecha = LocalDate.now();
+	LocalDateTime fecha = LocalDateTime.now();
 	FiltroFechaSalida filtro = new FiltroFechaSalida(fecha);
 	Viaje viaje = mock(Viaje.class);
 	
@@ -22,5 +22,4 @@ public class FiltroFechaSalidaTest {
 		when(viaje.fechaDeSalida()).thenReturn(fecha);
 		assertTrue(filtro.cumpleFiltro(viaje));
 	}
-
 }

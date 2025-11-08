@@ -1,5 +1,6 @@
 package ar.edu.unq.po2.tramo;
 
+import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 import ar.edu.unq.po2.tramo.Tramo;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,8 +27,11 @@ public class tramoTestCase {
     public void setUp(){
         //buenosAires = Mockito.mock(TerminalPortuaria.class);
         //nuevaYork = Mockito.mock(TerminalPortuaria.class);
-        buenosAires = new TerminalPortuaria();
-        nuevaYork = new TerminalPortuaria();
+    	Coordenada coordenadaBuenosAires = new Coordenada(-34.6417, -58.3443);
+    	Coordenada coordenadaNuevaYork = new Coordenada(40.6721, -74.0808);
+    	
+        buenosAires = new TerminalPortuaria(coordenadaBuenosAires);
+        nuevaYork = new TerminalPortuaria(coordenadaNuevaYork);
         miTramo = new Tramo(nuevaYork,buenosAires, Duration.ofDays(2),15000);
     }
 
@@ -62,6 +66,4 @@ public class tramoTestCase {
     public void precioTramo(){
         assertEquals((double) 15000,miTramo.getPrecioTramo());
     }
-
-    
 }

@@ -1,21 +1,22 @@
 package ar.edu.unq.po2.viaje;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 public class Viaje {
 	
-	public LocalDate fechaDeSalida() {
+	public LocalDateTime fechaDeSalida() {
 		//TODO
 		//devuelvo cualquier cosa porque necesito la interfaz definida para poder mockear la clase en los tests
-		return LocalDate.now();
+		return LocalDateTime.now(); // Esto lo agregué porque necesito tener algo como "2025/04/10T08:30" en la Terminal. Es decir, la fecha y el horario.
 	}
 	
-	public LocalDate fechaDeLlegada() {
+	public LocalDateTime fechaDeLlegada() {
 		//TODO
 		//devuelvo cualquier cosa porque necesito la interfaz definida para poder mockear la clase en los tests
-		return LocalDate.now();
+		return LocalDateTime.now(); // Esto lo agregué porque necesito tener algo como "2025/04/10T08:30" en la Terminal. Es decir, la fecha y el horario.
 	}
 	
 	public TerminalPortuaria puertoDestino() {
@@ -24,7 +25,7 @@ public class Viaje {
 		 * circuito marítimo asociado a este viaje.
 		 */
 		//devuelvo cualquier cosa porque necesito la interfaz definida para poder mockear la clase en los tests
-		return new TerminalPortuaria();
+		return new TerminalPortuaria(new Coordenada(40.1004, 40.49181));
 	}
 	
 }

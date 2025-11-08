@@ -64,11 +64,11 @@ public class Camion {
 	 */
 	public void transportarExportacionA(TerminalPortuaria terminalPortuaria) {
 		this.validarTransportarExportacion();
-		terminalPortuaria.registrarExportacion(this);
+		terminalPortuaria.registrarExportacion(ordenActual);
 	}
 	
 	/**
-	 * TODO:
+	 * Valida que el camión puede transportar una exportación. Solo puede hacerlo si tiene un trabajo asignado.
 	 */
 	private void validarTransportarExportacion() {
 		if(this.estaDisponible()) {
@@ -86,7 +86,7 @@ public class Camion {
 	}
 	
 	/**
-	 * TODO:
+	 * Valida que el camión puede retirar una importación. Solo puede hacerlo si está disponible.
 	 */
 	private void validarRetirarImportacion() {
 		if(!this.estaDisponible()) {

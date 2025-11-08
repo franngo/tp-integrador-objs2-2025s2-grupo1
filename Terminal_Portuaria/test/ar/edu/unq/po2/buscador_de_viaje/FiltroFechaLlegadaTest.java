@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +13,7 @@ import ar.edu.unq.po2.viaje.Viaje;
 
 public class FiltroFechaLlegadaTest {
 	
-	LocalDate fecha = LocalDate.now();
+	LocalDateTime fecha = LocalDateTime.now();
 	FiltroFechaLlegada filtro = new FiltroFechaLlegada(fecha);
 	Viaje viaje = mock(Viaje.class);
 	
