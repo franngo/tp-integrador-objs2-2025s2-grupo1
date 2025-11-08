@@ -21,7 +21,7 @@ import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
  * */
 class ServiciosDesconsolidadoTestCase {
      
-	TerminalPortuaria terminalDumb = mock(TerminalPortuaria.class);
+	TerminalPortuaria terminalDumb;
 	ServicioDesconsolidado miServConDry;
 
 	
@@ -31,6 +31,7 @@ class ServiciosDesconsolidadoTestCase {
 	
 	@BeforeEach
 	void setUp(){
+		terminalDumb = mock(TerminalPortuaria.class);
 		dumbDry = mock(Dry.class);
 		when(terminalDumb.precioServicio(any())).thenReturn(20000d);
 		miServConDry= new ServicioDesconsolidado(dumbDry);

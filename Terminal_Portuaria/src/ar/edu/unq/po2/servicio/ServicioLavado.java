@@ -15,7 +15,8 @@ public class ServicioLavado extends Servicio{
 		// TODO Auto-generated constructor stub
 	}
 
-	Container containerServ;
+
+	
 	
 
 	@Override

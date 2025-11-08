@@ -11,6 +11,8 @@ public class Tanque extends Container{
 		super(duenio, ancho, largo, altura, peso);
 		// TODO Auto-generated constructor stub
 	}
+	
+	
 
 	@Override
 	public List<Servicio> acceptVisitor(ConcreteVisitorContainer visitante) {
