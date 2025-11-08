@@ -3,7 +3,7 @@ package ar.edu.unq.po2.container.bls;
 import ar.edu.unq.po2.cliente.Cliente;
 
 public class CargaBLHoja implements CargaBL{
-    
+   
 	Cliente cliente;
 	double peso;
 	public CargaBLHoja(Cliente cliente,double peso) {
@@ -12,13 +12,21 @@ public class CargaBLHoja implements CargaBL{
 	@Override
 	public String tipoCargaBL() {
 		// TODO Auto-generated method stub
-		return "CargaBL";
+		return "Carga BL Individual";
+		
 	}
+	
+	
 
 	@Override
 	public double getPeso() {
 		// TODO Auto-generated method stub
 		return peso;
+	}
+	@Override
+	public String dueños() {
+		// TODO Auto-generated method stub
+		return cliente.nombreCliente();
 	}
 
 }

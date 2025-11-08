@@ -26,7 +26,7 @@ public class Dry extends Container {
 		return this.cargaSegunContenido(); 
 	}
 	@Override
-	protected String generarIdConteiner(Cliente cliente) {
+	protected String generarIdConteiner(Cliente cliente) { //por polimorfismo queda 
 		//queda por polimorfismo
         String nuevaClave = this.codigoGenerico() + this.codigoNumericoRandom();
        return nuevaClave;
@@ -54,6 +54,10 @@ public class Dry extends Container {
 
 	    public double getPeso() {
 	        return cargaBL.getPeso();
+	    }
+	 
+	    public String getDueños() {
+	    	return cargaBL.dueños();
 	    }
 	
 
