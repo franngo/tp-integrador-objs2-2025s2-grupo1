@@ -2,6 +2,7 @@ package ar.edu.unq.po2.buque;
 
 import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
+import ar.edu.unq.po2.viaje.Viaje;
 
 /*
  * @Autor : Matias Sanchez
@@ -9,6 +10,18 @@ import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
  *
  * */
 public class Buque {
+	
+	private String nombre;
+	private Viaje viajeActual;
+	
+	public String getNombre() {
+		return this.nombre;
+	}
+	
+	public Viaje getViajeActual() {
+		return this.viajeActual;
+	}
+	
   /*
     Viaje viajeActual;
     Coordenada posicionActual;
