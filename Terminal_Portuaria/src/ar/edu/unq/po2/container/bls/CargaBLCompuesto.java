@@ -1,6 +1,7 @@
 package ar.edu.unq.po2.container.bls;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CargaBLCompuesto implements CargaBL{
    
@@ -14,7 +15,11 @@ public class CargaBLCompuesto implements CargaBL{
 	@Override
 	public String tipoCargaBL() {
 		// TODO Auto-generated method stub
-		return "Carga compuesta";
+		return "Carga compuesta por "+ this.cantidadCarga() + " BL's";
+	}
+	
+	public int cantidadCarga() {
+		return this.cargas.size();
 	}
 
 	@Override
@@ -23,6 +28,14 @@ public class CargaBLCompuesto implements CargaBL{
 		return cargas.stream().
 				mapToDouble(carga -> carga.getPeso()).
 				sum();
+	}
+
+	@Override
+	public String dueños() {
+		// TODO Auto-generated method stub
+		return cargas.stream()
+                .map(CargaBL::dueños)
+                .collect(Collectors.joining(","));
 	}
 
 }
