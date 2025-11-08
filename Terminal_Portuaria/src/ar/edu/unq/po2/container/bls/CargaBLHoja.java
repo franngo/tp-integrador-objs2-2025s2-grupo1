@@ -8,6 +8,7 @@ public class CargaBLHoja implements CargaBL{
 	double peso;
 	public CargaBLHoja(Cliente cliente,double peso) {
 		this.cliente=cliente;
+		this.peso=peso;
 	}
 	@Override
 	public String tipoCargaBL() {

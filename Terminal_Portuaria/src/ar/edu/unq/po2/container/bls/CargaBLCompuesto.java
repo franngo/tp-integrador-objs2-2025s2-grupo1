@@ -35,7 +35,7 @@ public class CargaBLCompuesto implements CargaBL{
 		// TODO Auto-generated method stub
 		return cargas.stream()
                 .map(CargaBL::dueños)
-                .collect(Collectors.joining());
+                .collect(Collectors.joining(","));
 	}
 
 }
