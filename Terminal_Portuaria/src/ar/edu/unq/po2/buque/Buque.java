@@ -9,7 +9,7 @@ import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
  *
  * */
 public class Buque {
-  /*
+  
     Viaje viajeActual;
     Coordenada posicionActual;
     TerminalPortuaria terminalDestino;
@@ -32,7 +32,7 @@ public class Buque {
     public void notificarNuevaPosicion(TerminalPortuaria terminal){
         terminal.notificarPosicion(this);
     }
-*/
+
 
 
 }
