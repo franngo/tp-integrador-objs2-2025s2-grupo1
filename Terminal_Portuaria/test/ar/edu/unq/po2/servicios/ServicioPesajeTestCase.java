@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import ar.edu.unq.po2.container.Container;
 import ar.edu.unq.po2.container.Tanque;
+import ar.edu.unq.po2.servicio.PrecioServicioTerminal;
 import ar.edu.unq.po2.servicio.ServicioPesaje;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
@@ -22,7 +23,8 @@ class ServicioPesajeTestCase {
    TerminalPortuaria terminalDumb; 
 	@BeforeEach
 	public void setUp() throws Exception {
-		when(terminalDumb.precioServicio(any())).thenReturn(20000d);
+		terminalDumb= mock(TerminalPortuaria.class);
+		when(terminalDumb.precioServicio(PrecioServicioTerminal.PESAJE)).thenReturn(20000d);
 		miContainer = mock(Tanque.class);
 		miServPesaje = new ServicioPesaje(miContainer);
 	}
