@@ -1,5 +1,7 @@
 package ar.edu.unq.po2.camion;
 
+import ar.edu.unq.po2.chofer.Chofer;
+import ar.edu.unq.po2.cliente.Cliente;
 import ar.edu.unq.po2.orden.Orden;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
@@ -79,10 +81,12 @@ public class Camion {
 	/**
 	 * Retira la carga que tiene que ir a buscar el camión de la terminal portuaria dada.
 	 * @param terminalPortuaria es la terminal portuaria de la que se retira el camión, cargando en el lugar lo que debe transportar.
+	 * @param chofer es el chofer encargado de manejar el camion hacia la terminal portuaria dada.
+	 * @param consignee es el cliente dueño de la orden que va a retirar el camión a la terminal portuaria dada.
 	 */
-	public void retirarImportacionDe(TerminalPortuaria terminalPortuaria) {
+	public void retirarImportacionDe(TerminalPortuaria terminalPortuaria, Chofer chofer, Cliente consignee) {
 		this.validarRetirarImportacion();
-		terminalPortuaria.retirarImportacion(this);
+		terminalPortuaria.retirarImportacion(this, chofer, consignee);
 	}
 	
 	/**

@@ -16,7 +16,7 @@ import ar.edu.unq.po2.empresa_transportista.EmpresaTransportista;
 import ar.edu.unq.po2.naviera.Naviera;
 import ar.edu.unq.po2.orden.*;
 import ar.edu.unq.po2.reporte.Reporte;
-import ar.edu.unq.po2.servicio.Servicio;
+import ar.edu.unq.po2.servicio.PrecioServicioTerminal;
 import ar.edu.unq.po2.viaje.Viaje;
 
 /**
@@ -32,14 +32,13 @@ public class TerminalPortuaria {
 	private Set<Cliente> clientesRegistrados;
 	private Set<CircuitoMaritimo> circuitosMaritimosRegistrados;
 
-	// TODO: Implementar todo lo relacionado a esto:
+	private Set<PrecioServicioTerminal> serviciosDisponibles;
 	private Set<Orden> ordenesDeImportacion;
 	private Set<Orden> ordenesDeExportacion;
-	private Set<Servicio> serviciosDisponibles;
 	private List<Reporte> reportesGenerados;
 	
 	/**
-	 * @param coordenada son las coordenadas de la Terminal Portuaria.
+	 * @param coordenada son las coordenadas en donde se encuentra geográficamente la Terminal Portuaria.
 	 */
 	public TerminalPortuaria(Coordenada coordenada) {
 		this.coordenada = coordenada;
@@ -49,10 +48,18 @@ public class TerminalPortuaria {
 		this.clientesRegistrados = new HashSet<Cliente>();
 		this.circuitosMaritimosRegistrados = new HashSet<CircuitoMaritimo>();
 		
+		this.serviciosDisponibles = new HashSet<PrecioServicioTerminal>();
 		this.ordenesDeExportacion = new HashSet<Orden>();
 		this.ordenesDeImportacion = new HashSet<Orden>();
-		this.serviciosDisponibles = new HashSet<Servicio>();
 		this.reportesGenerados = new ArrayList<Reporte>();
+		
+		serviciosDisponibles.add(PrecioServicioTerminal.DIAEXCEDENTE);
+		serviciosDisponibles.add(PrecioServicioTerminal.KILOWATTCONSUMIDO);
+		serviciosDisponibles.add(PrecioServicioTerminal.LAVADOCOMUN);
+		serviciosDisponibles.add(PrecioServicioTerminal.LAVADOPESADO);
+		serviciosDisponibles.add(PrecioServicioTerminal.PESAJE);
+		serviciosDisponibles.add(PrecioServicioTerminal.PRECIODESCONSOLIDADO);
+		serviciosDisponibles.add(PrecioServicioTerminal.REVISIONDIARIA);
 	}
 	
 	/**
@@ -63,20 +70,50 @@ public class TerminalPortuaria {
 	}
 
 	/**
-	 * TODO:
+	 * 
 	 */
-	public void retirarImportacion(Camion camion) {
-		// Se baja la orden del barco, queda almacenada en la terminal como orden de importación.
+	public void retirarImportacion(Camion camion, Chofer chofer, Cliente consignee) {
+		this.validarRetirarImportacion(camion, chofer, consignee);
+		Orden orden = ordenesDeImportacion.;
+		Cliente consignee = orden.getConsignee();
 		
-		// Al mismo tiempo se le envía un mail al dueño diciendo que tiene que venir a buscarla, y darle un lapso maximo de 24 horas.
+		this.añadirAlmacenamientoExcedenteSiAplica(orden)
 		
-		// Si viene cumpliendo el lapso de tiempo, se instancian los servicios necesarios menos el de almacenamiento excedente.
-		
-		// Si no cumple, sucede lo contrario.
-		
-		// Supongo que aca iria el desglose de conceptos.
+		consignee.enviar(this.desgloseConceptos(orden)); // Supongo que aca iria el desglose de conceptos.
 	}
 
+	
+	
+	
+	/**
+	 * 
+	 */
+	private Orden añadirAlmacenamientoExcedenteSiAplica(Orden orden) {
+		Orden ordenResultante;
+		
+		if(this.cumplePlazoAlmacenamientoGratuito(orden)) {
+			ordenResultante = orden.añadirServicio();
+		} else {
+			ordenResultante = orden;
+		}
+		
+		return ordenResultante;
+	}
+	
+	/**
+	 * Indica si la orden dada cumple con el plazo de almacenamiento que ofrece la Terminal Portuaria, el cual es de 24 horas almacenado en la misma.
+	 * @param orden es la orden a verificar si cumple con el plazo de almacenamiento gratuito.
+	 */
+	private boolean cumplePlazoAlmacenamientoGratuito(Orden orden) {
+		LocalDateTime fechaActual  = LocalDateTime.now(); 
+		LocalDateTime fechaLlegada = orden.fechaDeLlegada();
+		LocalDateTime fechaMaxima  = fechaLlegada.plusDays(1);
+		return fechaActual.isAfter(fechaLlegada) && fechaActual.isBefore(fechaMaxima);
+	}
+	
+	
+	
+	
 	/**
 	 * Registra como exportación en la Terminal Portuaria la orden dada.
 	 * @param orden es la orden a ser registrada como exportación en la Terminal Portuaria.
@@ -101,10 +138,10 @@ public class TerminalPortuaria {
 	 * @param orden es la orden que se toma de referencia para evaluar si cumple con el horario de exportación.
 	 */
 	private boolean cumpleHorarioExportacion(Orden orden) {
-		LocalDateTime fechaAhora  = LocalDateTime.now();
+		LocalDateTime fechaActual  = LocalDateTime.now();
 		LocalDateTime fechaSalida = orden.fechaDeSalida();
 		LocalDateTime fechaMinimaPermitida = fechaSalida.minusHours(3);
-		return fechaAhora.isAfter(fechaMinimaPermitida) && fechaAhora.isBefore(fechaSalida);
+		return fechaActual.isAfter(fechaMinimaPermitida) && fechaActual.isBefore(fechaSalida);
 	}
 	
 	/**
@@ -114,10 +151,15 @@ public class TerminalPortuaria {
 	private boolean cumpleElTransporte(Orden orden) {
 		Camion camion = orden.getCamion();
 		Chofer chofer = orden.getChofer();
-		
 		return empresasTransportistasRegistradas.stream()
 												.anyMatch(e -> e.tieneCamionYChoferRegistrados(camion, chofer));
 	}
+	
+	// ########################################################################################################### 
+	
+	
+	
+	
 
 	/**
 	 * Registra la empresa transportista dada en la Terminal Portuaria.
@@ -161,6 +203,36 @@ public class TerminalPortuaria {
 	public Orden generarOrden(Camion camion, Chofer chofer, Container container, Viaje viaje) {
 		return new OrdenDeExportacion(camion, chofer, container, viaje);
 	}
+	
+	
+	
+	
+	
+	
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	 /*private double precioServicio(PrecioServicioTerminal servicio) {
+		 this.validarPrecioServicio(servicio);
+		 return serviciosDisponibles.stream()
+				 					.filter(s -> s.equals(servicio))
+				 					.findFirst()
+				 					.get()
+				 					.getPrecio();
+	 }
+
+	 private void validarPrecioServicio(PrecioServicioTerminal servicio) {
+		 if (!serviciosDisponibles.contains(servicio)) {
+			 throw new RuntimeException("Servicio no disponible en esta terminal");
+		 }
+	 }*/
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	
+	
 	
 	// #################################### MÉTODOS AUXILIARES ################################## \\
 	
