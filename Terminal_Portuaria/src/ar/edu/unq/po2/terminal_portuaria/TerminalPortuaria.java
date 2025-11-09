@@ -75,31 +75,12 @@ public class TerminalPortuaria {
 	 */
 	public void retirarImportacion(Camion camion, Chofer chofer, Cliente consignee) {
 		this.validarRetirarImportacion(camion, chofer, consignee);
-		Orden orden = ordenesDeImportacion.;
-		Cliente consignee = orden.getConsignee();
 		
-		this.añadirAlmacenamientoExcedenteSiAplica(orden)
 		
-		consignee.enviar(this.desgloseConceptos(orden)); // Supongo que aca iria el desglose de conceptos.
+		// Desglose de conceptos.
 	}
-
 	
 	
-	
-	/**
-	 * 
-	 */
-	private Orden añadirAlmacenamientoExcedenteSiAplica(Orden orden) {
-		Orden ordenResultante;
-		
-		if(this.cumplePlazoAlmacenamientoGratuito(orden)) {
-			ordenResultante = orden.añadirServicio(new ServicioExcedente());
-		} else {
-			ordenResultante = orden;
-		}
-		
-		return ordenResultante;
-	}
 	
 	/**
 	 * Indica si la orden dada cumple con el plazo de almacenamiento que ofrece la Terminal Portuaria, el cual es de 24 horas almacenado en la misma.
@@ -156,7 +137,6 @@ public class TerminalPortuaria {
 												.anyMatch(e -> e.tieneCamionYChoferRegistrados(camion, chofer));
 	}
 	
-	// ########################################################################################################### 
 	
 	
 	
