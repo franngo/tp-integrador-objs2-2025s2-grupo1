@@ -55,9 +55,10 @@ public class Camion {
 
 	/**
 	 * Cambia la orden actual del camión por la orden dada por parámetro.
+	 * @param orden es la orden que el camión va a tener almacenada.
 	 */
-	public void cambiarOrdenActualPor(Orden nuevaOrden) {
-		this.ordenActual = nuevaOrden;
+	public void cambiarOrdenActualPor(Orden orden) {
+		this.ordenActual = orden;
 	}
 	
 	/**
