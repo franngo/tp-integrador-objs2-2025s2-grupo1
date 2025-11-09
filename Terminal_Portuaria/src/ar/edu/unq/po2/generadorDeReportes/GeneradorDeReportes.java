@@ -18,7 +18,7 @@ public class GeneradorDeReportes {
 		this.visitorB = new VisitorReporteBuque();
 	}
 		
-	protected Map<String,Reporte> generarReportesConImportaciones(Buque buque, List<Orden> ordenes) {
+	public Map<String,Reporte> generarReportesConImportaciones(Buque buque, List<Orden> ordenes) {
 		
 		String nombreBuque = buque.getNombre();
 		String fechaPartida = buque.getViajeActual().fechaDeSalida().toString();
@@ -80,7 +80,7 @@ public class GeneradorDeReportes {
 				
 	}
 	
-	protected List<Reporte> finalizarReportesConExportaciones(Map<String,Reporte> reportes, List<Orden> ordenes) {
+	public List<Reporte> finalizarReportesConExportaciones(Map<String,Reporte> reportes, List<Orden> ordenes) {
 		
 		///////////////////////Reporte muelle/////////////////////////
 		///
