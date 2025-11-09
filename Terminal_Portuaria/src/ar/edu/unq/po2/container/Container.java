@@ -67,7 +67,14 @@ public abstract class Container {
         return peso;
     }
 
+    public List<TipoServicio> getServicios() {
+        return servicios;
+    }
     
+    public String tipo() {
+    	//TODO
+    	return "";
+    }
 
     // ********************************* CONSTRUCTOR ********************************
     /*

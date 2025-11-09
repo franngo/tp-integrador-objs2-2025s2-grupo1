@@ -1,13 +1,14 @@
 package ar.edu.unq.po2.orden;
 
-
-
 import java.util.List;
 
 import ar.edu.unq.po2.container.ConcreteVisitorContainer;
 import ar.edu.unq.po2.container.Container;
 
 import ar.edu.unq.po2.servicio.Servicio;
+
+import ar.edu.unq.po2.container.Container;
+import ar.edu.unq.po2.generadorDeReportes.VisitorReporte;
 
 
 /*
@@ -19,6 +20,7 @@ public abstract class Orden {
 	ConcreteVisitorContainer visitanteContainer;
 	Container containerAsociado;
     List <Servicio> serviciosACobrar;	
+	private Container carga;
     
     public  List <Servicio> serviciosOrden(){
     	return serviciosACobrar;
@@ -36,5 +38,11 @@ public abstract class Orden {
 		serviciosACobrar.addAll(serviciosACobrar);
 		
 	}
+
+	public Container getCarga() {
+		return this.carga;
+	}
+	
+	abstract public String accept(VisitorReporte visitor);
 		
 }
