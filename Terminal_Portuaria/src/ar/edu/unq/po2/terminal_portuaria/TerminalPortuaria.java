@@ -4,12 +4,23 @@ package ar.edu.unq.po2.terminal_portuaria;
 
 import java.util.Set;
 
+import ar.edu.unq.po2.buque.Buque;
 import ar.edu.unq.po2.camion.Camion;
+import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.empresa_transportista.EmpresaTransportista;
 import ar.edu.unq.po2.servicio.PrecioServicioTerminal;
 
-public class TerminalPortuaria {
+public class TerminalPortuaria implements Observador{
 	
+	
+	public TerminalPortuaria() {
+		
+	}
+	Coordenada coordenadasTerminal;
+	
+	public Coordenada coordenadasTerminal() {
+		return coordenadasTerminal;
+	}
 	
 	public void registrarEmpresaTransportista(EmpresaTransportista empresaTransportista) {
 		// TODO Auto-generated method stub
@@ -48,6 +59,15 @@ public class TerminalPortuaria {
 			 throw new IllegalArgumentException("Servicio no disponible en esta terminal");
 		 }
 	 }
+
+	 
+
+	 public void actualizar(Buque buque) {
+	
+		
+	 } 
+
+	 
 	 
 	 
 	 

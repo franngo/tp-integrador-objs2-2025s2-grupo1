@@ -15,7 +15,7 @@ import ar.edu.unq.po2.viaje.Viaje;
  *
  *
  * */
-public class Buque {
+public class Buque implements BuqueObservado{
 	
 	
     List<Orden> ordenesExportacion;
@@ -25,13 +25,16 @@ public class Buque {
     Viaje viajeActual = null;
     Coordenada posicionActual;
     
-    TerminalPortuaria terminalAArribar;
-    /*
-    public TerminalPortuaria terminalActual() {
-    	return viajeActual.
-    }*/
-
+    TerminalPortuaria terminalAArribar; // el OBSERVER
+  
+    public void adscribirObservador(TerminalPortuaria terminalObservadora) {
+    	this.terminalAArribar = terminalObservadora;
+    }
     EstadoBuque estadoBuque;
+    
+    public EstadoBuque obtenerEstado() {
+    	return estadoBuque;
+    }
 
     public Buque(Coordenada coordenadas,
     		List<Orden> ordenesImportacion, 
@@ -42,27 +45,43 @@ public class Buque {
     	this.ordenesImportacion=ordenesImportacion;
     }
     
-    //public TerminalPortuaria terminalAArribar() {
-    	//return viaje.terminalSiguiente()
-    //} 
+    
 
     public void avanzarHacia(double latitud, double longitud){
         posicionActual.nuevaPosicion(latitud,longitud);
-        // this.notificarNuevaPosicion(); ESPERAR A QUE BENJA IMPLEMENTE TERMINAL
+        this.notificarEstado(terminalAArribar);
     }
 
-    public void iniciarViaje(Viaje viajeActual){
+    private void notificarEstado(TerminalPortuaria terminalAArribar) {
+		terminalAArribar.actualizar(this);
+		
+	}
+
+	public void iniciarViaje(Viaje viajeActual){
         this.viajeActual=viajeActual;
         estadoBuque = new OutBound();
     }
     
     
+    public void descargarContainers() {}
+    public void cargarContainers() {}
 
-   /*
-    public void notificarNuevaPosicion(TerminalPortuaria terminal){
-        terminal.notificarPosicion(this);
-    }*/
+	@Override
+	public void establecerEstado() {
+		// TODO Auto-generated method stub
+		
+	}
 
+	@Override
+	public void notificarEstado() {
+		// TODO Auto-generated method stub
+		
+	}
+    
 
+   
+   
+    
+   
 
 }
