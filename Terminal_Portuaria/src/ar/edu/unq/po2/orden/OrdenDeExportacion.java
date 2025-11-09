@@ -10,4 +10,8 @@ public class OrdenDeExportacion extends Orden {
 	public OrdenDeExportacion(Camion camion, Chofer chofer, Container container, Viaje viaje) {
 		super(camion, chofer, container, viaje);
 	}
+  
+  public String accept(VisitorReporte visitor) {
+		return visitor.visitOrdenDeExportacion(this);
+	}
 }

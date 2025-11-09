@@ -87,5 +87,11 @@ public abstract class Orden {
 		if(!serviciosACobrar.isEmpty()) {
 			throw new RuntimeException("No se pueden crear los servicios a cobrar porque ya fueron creados anteriormente.");
 		}
+    
+    public Container getCarga() {
+		return this.carga;
+	  }
+	
+	  abstract public String accept(VisitorReporte visitor);
 	}
 }

@@ -27,6 +27,7 @@ import ar.edu.unq.po2.viaje.Viaje;
 
 public class TerminalPortuaria {
 	private Coordenada coordenada;
+  private GeneradorDeReportes generadorReportes;
 	
 	private Set<EmpresaTransportista> empresasTransportistasRegistradas;
 	private Set<Naviera> navierasRegistradas;
@@ -36,8 +37,8 @@ public class TerminalPortuaria {
 	private Set<PrecioServicioTerminal> serviciosDisponibles;
 	private Set<Orden> ordenesDeImportacion;
 	private Set<Orden> ordenesDeExportacion;
-	private List<Reporte> reportesGenerados;
-	
+  private List<Reporte> reportesGenerados;
+  	
 	/**
 	 * @param coordenada son las coordenadas en donde se encuentra geográficamente la Terminal Portuaria.
 	 */
@@ -235,4 +236,36 @@ public class TerminalPortuaria {
 	public int hashCode() {
 		return coordenada.hashCode();
 	}
+
+
+	 
+	 	/*
+	 - Genera reportes que unicamente tienen cargada la información de las importaciones.
+ 
+	 - Se debería llamar después de descargar los containers de importaciones del buque.
+	 */
+	protected Map<String,Reporte> generarReportesConImportaciones(Buque buque) {
+  
+		List<Orden> ordenes = ordenesParaImportacion.stream().filter((o) -> buque.getOrdenes().contains(o)).toList();
+		return generadorReportes.generarReportesConImportaciones(buque, ordenes);
+  
+	}
+	
+	/*
+	 - Agrega la información de las exportaciones a los Reportes pasados y los guarda en la lista de reportes de la 
+	   terminal gestionada (debido a que ya son considerados Reportes completos).
+ 	   
+	 - Se debería llamar después de cargar los containers de exportaciones al buque.
+	 
+ 	 - Se le deben pasar por parámetro lo que devuelve el método generarReportesConImportaciones(), que son los reportes que 
+ 	   tienen las importaciones cargadas, y a estos se les agregará la información de las exportaciones.
+	 */
+	protected void finalizarReportesConExportaciones(Buque buque, Map<String,Reporte> reportes) {
+    
+		List<Orden> ordenes = ordenesParaExportacion.stream().filter((o) -> buque.getOrdenes().contains(o)).toList();
+		List<Reporte> reportesPorAgregar = generadorReportes.finalizarReportesConExportaciones(reportes, ordenes);
+		reportesGenerados.addAll(reportesPorAgregar);
+    
+	}
+	 
 }

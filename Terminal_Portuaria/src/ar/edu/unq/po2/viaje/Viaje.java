@@ -7,25 +7,33 @@ import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 public class Viaje {
 	
-	public LocalDateTime fechaDeSalida() {
-		//TODO
-		//devuelvo cualquier cosa porque necesito la interfaz definida para poder mockear la clase en los tests
-		return LocalDateTime.now(); // Esto lo agregué porque necesito tener algo como "2025/04/10T08:30" en la Terminal. Es decir, la fecha y el horario.
+	private LocalDate fechaDeSalida;
+	private CircuitoMaritimo circuito;
+	private Buque buque;
+	
+	public Viaje(LocalDate fechaDeSalida, CircuitoMaritimo circuito, Buque buque) {
+		this.fechaDeSalida = fechaDeSalida;
+		this.circuito = circuito;
+		this.buque = buque;
+	}
+	
+	public LocalDate fechaDeSalida() {
+		return this.fechaDeSalida;
 	}
 	
 	public LocalDateTime fechaDeLlegada() {
 		//TODO
 		//devuelvo cualquier cosa porque necesito la interfaz definida para poder mockear la clase en los tests
-		return LocalDateTime.now(); // Esto lo agregué porque necesito tener algo como "2025/04/10T08:30" en la Terminal. Es decir, la fecha y el horario.
+		//Se calcularía en base a la fecha de salida y a los tramos del circuito marítimo asociado.
+		return LocalDate.now();
 	}
 	
 	public TerminalPortuaria puertoDestino() {
 		//TODO
-		/*este no lo definimos en el UML, pero se necesita para el buscador de viaje. Sería agarrar el último puerto del
-		 * circuito marítimo asociado a este viaje.
-		 */
 		//devuelvo cualquier cosa porque necesito la interfaz definida para poder mockear la clase en los tests
-		return new TerminalPortuaria(new Coordenada(40.1004, 40.49181));
+		/*Sería agarrar el último puerto del circuito marítimo asociado a este viaje.
+		 */
+		return new TerminalPortuaria();
 	}
 	
 }
