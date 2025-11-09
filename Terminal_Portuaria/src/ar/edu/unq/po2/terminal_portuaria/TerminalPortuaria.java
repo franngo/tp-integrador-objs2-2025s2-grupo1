@@ -17,6 +17,7 @@ import ar.edu.unq.po2.naviera.Naviera;
 import ar.edu.unq.po2.orden.*;
 import ar.edu.unq.po2.reporte.Reporte;
 import ar.edu.unq.po2.servicio.PrecioServicioTerminal;
+import ar.edu.unq.po2.servicio.ServicioExcedente;
 import ar.edu.unq.po2.viaje.Viaje;
 
 /**
@@ -92,7 +93,7 @@ public class TerminalPortuaria {
 		Orden ordenResultante;
 		
 		if(this.cumplePlazoAlmacenamientoGratuito(orden)) {
-			ordenResultante = orden.añadirServicio();
+			ordenResultante = orden.añadirServicio(new ServicioExcedente());
 		} else {
 			ordenResultante = orden;
 		}
