@@ -1,23 +1,25 @@
 package ar.edu.unq.po2.viaje;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import ar.edu.unq.po2.buque.Buque;
+import ar.edu.unq.po2.circuito_maritimo.CircuitoMaritimo;
 import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 public class Viaje {
-	
-	private LocalDate fechaDeSalida;
+	private LocalDateTime fechaDeSalida;
 	private CircuitoMaritimo circuito;
 	private Buque buque;
 	
-	public Viaje(LocalDate fechaDeSalida, CircuitoMaritimo circuito, Buque buque) {
+	public Viaje(LocalDateTime fechaDeSalida, CircuitoMaritimo circuito, Buque buque) {
 		this.fechaDeSalida = fechaDeSalida;
 		this.circuito = circuito;
 		this.buque = buque;
 	}
 	
-	public LocalDate fechaDeSalida() {
+	public LocalDateTime fechaDeSalida() {
 		return this.fechaDeSalida;
 	}
 	
@@ -25,7 +27,7 @@ public class Viaje {
 		//TODO
 		//devuelvo cualquier cosa porque necesito la interfaz definida para poder mockear la clase en los tests
 		//Se calcularía en base a la fecha de salida y a los tramos del circuito marítimo asociado.
-		return LocalDate.now();
+		return LocalDateTime.now();
 	}
 	
 	public TerminalPortuaria puertoDestino() {
@@ -33,7 +35,6 @@ public class Viaje {
 		//devuelvo cualquier cosa porque necesito la interfaz definida para poder mockear la clase en los tests
 		/*Sería agarrar el último puerto del circuito marítimo asociado a este viaje.
 		 */
-		return new TerminalPortuaria();
+		return new TerminalPortuaria(new Coordenada(40, 40)); // Tiene un valor aleatorio para que no tire error, es necesario que una subtarea defina el destino.
 	}
-	
 }

@@ -15,12 +15,10 @@ import ar.edu.unq.po2.cliente.Cliente;
 import ar.edu.unq.po2.container.Container;
 import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.empresa_transportista.EmpresaTransportista;
-import ar.edu.unq.po2.generadorDeReportes.GeneradorDeReportes;
+import ar.edu.unq.po2.generadorDeReportes.*;
 import ar.edu.unq.po2.naviera.Naviera;
 import ar.edu.unq.po2.orden.*;
-import ar.edu.unq.po2.reporte.Reporte;
 import ar.edu.unq.po2.servicio.PrecioServicioTerminal;
-import ar.edu.unq.po2.servicio.ServicioExcedente;
 import ar.edu.unq.po2.viaje.Viaje;
 
 /**
@@ -40,13 +38,14 @@ public class TerminalPortuaria {
 	private Set<PrecioServicioTerminal> serviciosDisponibles;
 	private Set<Orden> ordenesDeImportacion;
 	private Set<Orden> ordenesDeExportacion;
-  private List<Reporte> reportesGenerados;
+	private List<Reporte> reportesGenerados;
   	
 	/**
 	 * @param coordenada son las coordenadas en donde se encuentra geográficamente la Terminal Portuaria.
 	 */
 	public TerminalPortuaria(Coordenada coordenada) {
 		this.coordenada = coordenada;
+		this.generadorReportes = new GeneradorDeReportes();
 		
 		this.empresasTransportistasRegistradas = new HashSet<EmpresaTransportista>();
 		this.navierasRegistradas = new HashSet<Naviera>();
@@ -54,8 +53,8 @@ public class TerminalPortuaria {
 		this.circuitosMaritimosRegistrados = new HashSet<CircuitoMaritimo>();
 		
 		this.serviciosDisponibles = new HashSet<PrecioServicioTerminal>();
-		this.ordenesDeExportacion = new HashSet<Orden>();
 		this.ordenesDeImportacion = new HashSet<Orden>();
+		this.ordenesDeExportacion = new HashSet<Orden>();
 		this.reportesGenerados = new ArrayList<Reporte>();
 		
 		serviciosDisponibles.add(PrecioServicioTerminal.DIAEXCEDENTE);
@@ -78,7 +77,7 @@ public class TerminalPortuaria {
 	 * 
 	 */
 	public void retirarImportacion(Camion camion, Chofer chofer, Cliente consignee) {
-		this.validarRetirarImportacion(camion, chofer, consignee);
+		// this.validarRetirarImportacion(camion, chofer, consignee);
 		
 		
 		// Desglose de conceptos.
@@ -189,6 +188,29 @@ public class TerminalPortuaria {
 		return new OrdenDeExportacion(camion, chofer, container, viaje);
 	}
 	
+	/**
+	 * 
+	 * @param servicio
+	 */
+	public double precioServicio(PrecioServicioTerminal servicio) {
+		this.validarPrecioServicio(servicio);
+		return serviciosDisponibles.stream()
+								   .filter(s -> s.equals(servicio))
+								   .findFirst()
+								   .get()
+								   .getPrecio();
+	}
+
+	/**
+	 * 
+	 * @param servicio
+	 */
+	private void validarPrecioServicio(PrecioServicioTerminal servicio) {
+		if (!serviciosDisponibles.contains(servicio)) {
+			throw new RuntimeException("El servicio dado no se encuentra disponible en la terminal.");
+		}
+	}
+	
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -196,9 +218,12 @@ public class TerminalPortuaria {
 	 * Genera reportes que unicamente tienen cargada la información de las importaciones.
 	 * Se debería llamar después de descargar los containers de importaciones del buque.
 	 * @param buque...
+	 * por qué protected y no private?
 	 */
-	protected Map<String,Reporte> generarReportesConImportaciones(Buque buque) {
-		List<Orden> ordenes = ordenesParaImportacion.stream().filter((o) -> buque.getOrdenes().contains(o)).toList();
+	protected Map<String, Reporte> generarReportesConImportaciones(Buque buque) {
+		List<Orden> ordenes = ordenesDeImportacion.stream()
+												  .filter(o -> buque.getOrdenes().contains(o))
+												  .toList();
 		return generadorReportes.generarReportesConImportaciones(buque, ordenes);
 	}
 	
@@ -208,11 +233,14 @@ public class TerminalPortuaria {
 	 * Se debería llamar después de cargar los containers de exportaciones al buque.
 	 * Se le deben pasar por parámetro lo que devuelve el método generarReportesConImportaciones(), que son los reportes que 
  	   tienen las importaciones cargadas, y a estos se les agregará la información de las exportaciones.
+   	 * por qué protected y no private?
 	 * @param buque...
 	 * @param Map<String, Reporte> es el map...
 	 */
 	protected void finalizarReportesConExportaciones(Buque buque, Map<String, Reporte> reportes) {
-		List<Orden> ordenes = ordenesParaExportacion.stream().filter((o) -> buque.getOrdenes().contains(o)).toList();
+		List<Orden> ordenes = ordenesDeExportacion.stream()
+												  .filter(o -> buque.getOrdenes().contains(o))
+												  .toList();
 		List<Reporte> reportesPorAgregar = generadorReportes.finalizarReportesConExportaciones(reportes, ordenes);
 		reportesGenerados.addAll(reportesPorAgregar);
 	}
