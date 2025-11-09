@@ -12,7 +12,8 @@ public class VisitorReporteAduana implements VisitorReporte {
 	}
 	
 	public String visitOrdenDeExportacion(OrdenDeExportacion orden) {
-		
+		Container c = orden.getCarga();
+		return "    			<li><p> Tipo: " + c.tipo() + ", ID: " + c.getIdConnteiner() + "</p></li>\n";
 	}
 
 }

@@ -46,7 +46,7 @@ public class GeneradorDeReportes {
 				+ "    		<h1>Fecha de partida: " + fechaPartida + "</h1>\n"
 				+ "    		<h1>Fecha de arribo: " + fechaArribo + "</h1>\n"
 				+ "	   		<h2>Lista de contenedores (con su tipo y ID): </h2>\n"
-				+ "    		<ul>";
+				+ "    		<ul>\n";
 		
 		for(Orden orden : ordenes) {
 			aduana = aduana + orden.accept(visitorA);
@@ -87,54 +87,50 @@ public class GeneradorDeReportes {
 		String muelle = "Contenedores cargados: " + ordenes.size();
 		
 		Reporte r1 = reportes.get("muelle"); //el reporte muelle con únicamente la información de importaciones
-		r1.setTexto(r1.getTexto() + muelle);
+		r1.setTexto(r1.getTexto() + muelle); //el reporte muelle listo, con la información de importaciones y exportaciones
 		
 		///////////////////////Reporte muelle/////////////////////////
 		
 		///////////////////////Reporte aduana/////////////////////////
 		
-		String aduana = "<html lang=\"en\">\n"
-				+ "    <head>\n"
-				+ "        <meta charset=\"utf-8\">\n"
-				+ "        <title>Reporte aduana</title>\n"
-				+ "    </head>\n"
-				+ "    <body>"
-				+ "	   		<h2>Nombre del buque: " + nombreBuque +"</h2>\n"
-				+ "    		<h1>Fecha de partida: " + fechaPartida + "</h1>\n"
-				+ "    		<h1>Fecha de arribo: " + fechaArribo + "</h1>\n"
-				+ "	   		<h2>Lista de contenedores (con su tipo y ID): </h2>\n"
-				+ "    		<ul>";
+		String aduana = "";
 		
 		for(Orden orden : ordenes) {
 			aduana = aduana + orden.accept(visitorA);
 		}
-		
-		/* esto se hace recién en el segundo método!!!
+
 		aduana = aduana
-				+ "    		</ul>"
-				+ "    </body>"	
-				+ "</html>";	
-		*/
-		Reporte r2 = reportes.get("muelle"); //el reporte muelle con únicamente la información de importaciones
-		r1.setTexto(r1.getTexto() + muelle);
+				+ "    		</ul>\n"
+				+ "    </body>\n"	
+				+ "</html>";
+
+		Reporte r2 = reportes.get("aduana"); //el reporte aduana con únicamente la información de importaciones
+		r2.setTexto(r2.getTexto() + aduana); //el reporte aduana listo, con la información de importaciones y exportaciones
 		
 		///////////////////////Reporte aduana/////////////////////////
 			
 		///////////////////////Reporte buque/////////////////////////
 		
-		String repBuque = "<report>\n"
-					+	  "		<import>\n";
+		String repBuque = "		<export>\n";
 		
 		for(Orden orden : ordenes) {
 			repBuque = repBuque + orden.accept(visitorB);
 		}
 		
-		repBuque = repBuque +	"		</import>\n";
+		repBuque = repBuque +	"		</export>\n"
+							+ "/report";
 		
-		Reporte r3 = reportes.get("muelle"); //el reporte muelle con únicamente la información de importaciones
-		r1.setTexto(r1.getTexto() + muelle);
+		Reporte r3 = reportes.get("buque"); //el reporte buque con únicamente la información de importaciones
+		r3.setTexto(r3.getTexto() + repBuque); //el reporte buque listo, con la información de importaciones y exportaciones
 		
 		///////////////////////Reporte buque/////////////////////////
+		
+		List<Reporte> rs = new ArrayList<Reporte>();
+		rs.add(r1);
+		rs.add(r2);
+		rs.add(r3);
+		
+		return rs;
 		
 	}
 
