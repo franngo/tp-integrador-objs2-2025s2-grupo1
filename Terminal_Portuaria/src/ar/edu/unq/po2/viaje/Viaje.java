@@ -1,10 +1,8 @@
 package ar.edu.unq.po2.viaje;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
 
-import ar.edu.unq.po2.buque.Buque;
-import ar.edu.unq.po2.circuito_maritimo.CircuitoMaritimo;
+import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 public class Viaje {
@@ -23,7 +21,7 @@ public class Viaje {
 		return this.fechaDeSalida;
 	}
 	
-	public LocalDate fechaDeLlegada() {
+	public LocalDateTime fechaDeLlegada() {
 		//TODO
 		//devuelvo cualquier cosa porque necesito la interfaz definida para poder mockear la clase en los tests
 		//Se calcularía en base a la fecha de salida y a los tramos del circuito marítimo asociado.

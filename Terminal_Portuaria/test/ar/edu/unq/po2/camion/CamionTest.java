@@ -90,12 +90,12 @@ class CamionTest {
         TerminalPortuaria terminal = mock(TerminalPortuaria.class);
         
         // Exercise
-        scaniaR580.ingresarA(terminal);
-        volvoFH460.ingresarA(terminal);
+        scaniaR580.transportarExportacionA(terminal);
+        volvoFH460.transportarExportacionA(terminal);
 
         // Verify
-        verify(terminal).ingresarCamion(scaniaR580);
-        verify(terminal).ingresarCamion(volvoFH460);
+        verify(terminal).registrarExportacion(scaniaR580.getOrdenActual());
+        verify(terminal).registrarExportacion(volvoFH460.getOrdenActual());
 	}
 	
 	@Test
@@ -104,11 +104,11 @@ class CamionTest {
         TerminalPortuaria terminal = mock(TerminalPortuaria.class);
 
         // Exercise
-        scaniaR580.retirarseDe(terminal);
-        volvoFH460.retirarseDe(terminal);
+        scaniaR580.retirarImportacionDe(terminal);
+        volvoFH460.retirarImportacionDe(terminal);
         
         // Verify
-        verify(terminal).retirarCamion(scaniaR580);
-        verify(terminal).retirarCamion(volvoFH460);
+        verify(terminal).retirarImportacion(scaniaR580);
+        verify(terminal).retirarImportacion(volvoFH460);
 	}
 }

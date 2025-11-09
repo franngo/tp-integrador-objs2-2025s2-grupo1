@@ -1,7 +1,7 @@
 package ar.edu.unq.po2.chofer;
 
 /**
-* Describe a un chofer con nombre y apellido, su DNI, y un booleano que indica si se encuentra disponible para ser asignado a un trabajo.
+* Describe un chofer, el cual posee nombre y apellido, DNI, y un booleano que indica si se encuentra disponible para ser asignado a un trabajo.
 * @author Benjamin Maldonado.
 */
 
@@ -21,14 +21,14 @@ public class Chofer {
 	}
 	
 	/**
-	 * Describe el número del DNI del chofer.
+	 * Describe el número del DNI del chofer representado en un String.
 	 */
 	public String getDni() {
 		return this.dni;
 	}
 	
 	/**
-	 * Describe el nombre y el apellido del chofer.
+	 * Describe el nombre y el apellido del chofer representado en un String.
 	 */
 	public String getNombreYApellido() {
 		return this.nombreYApellido;
@@ -42,12 +42,14 @@ public class Chofer {
 	}
 
 	/**
-	 * Cambia la disponibilidad del chofer a la dada por parámetro.
+	 * Cambia la disponibilidad del chofer a la dada por parámetro. Si es true, está disponible para un trabajo. Si es false, no se encuentra disponible.
 	 */
 	public void cambiarEstaDisponiblePor(boolean nuevoValor) {
 		this.estaDisponible = nuevoValor;
 	}
 
+	// #################################### MÉTODOS AUXILIARES ################################## \\
+	
 	@Override
 	public boolean equals(Object object) {
 		return (this == object) || (this.esChofer(object) && (this.esElMismoQue(object)));

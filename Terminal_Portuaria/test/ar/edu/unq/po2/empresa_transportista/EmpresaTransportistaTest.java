@@ -2,7 +2,6 @@ package ar.edu.unq.po2.empresa_transportista;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import ar.edu.unq.po2.camion.Camion;
 import ar.edu.unq.po2.chofer.Chofer;
 import ar.edu.unq.po2.orden.Orden;
-import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 /**
 * Definen los tests unitarios de la clase EmpresaTransportista.
@@ -85,21 +83,9 @@ class EmpresaTransportistaTest {
 	}
 	
 	@Test
-	public void testRegistrarseEnTerminalPortuaria() {
-		// Setup
-        TerminalPortuaria terminal = mock(TerminalPortuaria.class);
-        
-        // Exercise
-        andreani.registrarse(terminal);
-
-        // Verify
-        verify(terminal).registrarEmpresaTransportista(andreani);
-	}
-	
-	@Test
 	public void testDisponibilidadDeCamiones() {
 		// Setup
-		Camion camionDisponible = andreani.camionDisponible();
+		Camion camionDisponible = andreani.contratarCamion();
 		Orden orden = mock(Orden.class);		
 		
 		// Exercise & Verify
@@ -110,7 +96,7 @@ class EmpresaTransportistaTest {
 		assertTrue(andreani.tieneCamionDisponible());
 		assertFalse(camionDisponible.estaDisponible());
 		
-		Camion camionDisponibleD = andreani.camionDisponible();
+		Camion camionDisponibleD = andreani.contratarCamion();
 		assertTrue(camionDisponibleD.estaDisponible());
 		
 		camionDisponibleD.cambiarOrdenActualPor(orden);
@@ -121,7 +107,7 @@ class EmpresaTransportistaTest {
 	@Test
 	public void testDisponibilidadDeChoferes() {
 		// Exercise & Verify
-		Chofer choferDisponible = andreani.choferDisponible();
+		Chofer choferDisponible = andreani.contratarChofer();
 		assertTrue(andreani.tieneChoferDisponible());
 		assertTrue(choferDisponible.estaDisponible());
 		
@@ -129,7 +115,7 @@ class EmpresaTransportistaTest {
 		assertTrue(andreani.tieneChoferDisponible());
 		assertFalse(choferDisponible.estaDisponible());
 		
-		Chofer choferDisponibleD = andreani.choferDisponible();
+		Chofer choferDisponibleD = andreani.contratarChofer();
 		assertTrue(choferDisponibleD.estaDisponible());
 		
 		choferDisponibleD.cambiarEstaDisponiblePor(false);

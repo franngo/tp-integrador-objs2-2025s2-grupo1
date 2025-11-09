@@ -1,18 +1,14 @@
 package ar.edu.unq.po2.buscador_de_viaje;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
-import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 import ar.edu.unq.po2.viaje.Viaje;
 
 public class FiltroFechaLlegada extends FiltroSimple {
+	private LocalDateTime fechaLlegada;
 	
-	private LocalDate fechaLlegada;
-	
-	public FiltroFechaLlegada(LocalDate fechaLlegada) {
-		this.fechaLlegada = fechaLlegada;
+	public FiltroFechaLlegada(LocalDateTime fecha) {
+		this.fechaLlegada = fecha;
 	}
 	
 	@Override

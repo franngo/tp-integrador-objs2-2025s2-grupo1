@@ -6,30 +6,19 @@ import java.util.List;
 
 import ar.edu.unq.po2.camion.Camion;
 import ar.edu.unq.po2.chofer.Chofer;
-import ar.edu.unq.po2.registrable.Registrable;
-import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 /**
-* Describe una empresa transportista que posee una lista de choferes y camiones.
+* Describe una empresa transportista capaz de poseer choferes y camiones; inicialmente vacía.
 * @author Benjamin Maldonado.
 */
 
-public class EmpresaTransportista implements Registrable {
+public class EmpresaTransportista {
 	private Set<Chofer> choferes;
 	private Set<Camion> camiones;
 	
 	public EmpresaTransportista() {
 		this.choferes = new HashSet<Chofer>();
 		this.camiones = new HashSet<Camion>();
-	}
-
-	/**
-	 * Realiza el registro de la empresa transportista a la terminal portuaria dada.
-	 * @param terminalPortuaria es la terminal portuaria en la que se registra la empresa transportista.
-	 */
-	@Override
-	public void registrarse(TerminalPortuaria terminalPortuaria) {
-		terminalPortuaria.registrarEmpresaTransportista(this);
 	}
 	
 	/**
@@ -64,8 +53,18 @@ public class EmpresaTransportista implements Registrable {
 	/**
 	 * Describe un camión disponible de la empresa transportista para ser asignado a un trabajo.
 	 */
-	public Camion camionDisponible() {
+	public Camion contratarCamion() {
+		this.validarContratarCamion();
 		return this.camionesDisponibles().getFirst();
+	}
+	
+	/**
+	 * Valida si se encuentra algún camión disponible para ser contratado.
+	 */
+	private void validarContratarCamion() {
+		if(!this.tieneCamionDisponible()) {
+			new RuntimeException("No hay ningún camión disponible.");
+		}
 	}
 	
 	/**
@@ -95,8 +94,18 @@ public class EmpresaTransportista implements Registrable {
 	/**
 	 * Describe un chofer disponible de la empresa transportista para ser asignado a un trabajo.
 	 */
-	public Chofer choferDisponible() {
+	public Chofer contratarChofer() {
+		this.validarContratarChofer();
 		return this.choferesDisponibles().getFirst();
+	}
+	
+	/**
+	 * Valida si se encuentra algún chofer disponible para ser contratado.
+	 */
+	private void validarContratarChofer() {
+		if(!this.tieneChoferDisponible()) {
+			new RuntimeException("No hay ningún chofer disponible.");
+		}
 	}
 	
 	/**
@@ -106,5 +115,14 @@ public class EmpresaTransportista implements Registrable {
 		return choferes.stream()
 				   	   .filter(chofer -> chofer.estaDisponible())
 				   	   .toList();
+	}
+
+	/**
+	 * Indica si la empresa transportista tiene registrados al camion y al chofer dados.
+	 * @param camion es el camion a verificar si está registrado en la empresa transportista.
+	 * @param chofer es el chofer a verificar si está registrado en la empresa transportista.
+	 */
+	public boolean tieneCamionYChoferRegistrados(Camion camion, Chofer chofer) {
+		return camiones.contains(camion) && choferes.contains(chofer);
 	}
 }
