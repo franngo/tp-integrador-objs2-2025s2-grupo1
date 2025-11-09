@@ -4,8 +4,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import ar.edu.unq.po2.buque.Buque;
 import ar.edu.unq.po2.camion.Camion;
 import ar.edu.unq.po2.chofer.Chofer;
 import ar.edu.unq.po2.circuito_maritimo.CircuitoMaritimo;
@@ -13,6 +15,7 @@ import ar.edu.unq.po2.cliente.Cliente;
 import ar.edu.unq.po2.container.Container;
 import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.empresa_transportista.EmpresaTransportista;
+import ar.edu.unq.po2.generadorDeReportes.GeneradorDeReportes;
 import ar.edu.unq.po2.naviera.Naviera;
 import ar.edu.unq.po2.orden.*;
 import ar.edu.unq.po2.reporte.Reporte;
@@ -27,7 +30,7 @@ import ar.edu.unq.po2.viaje.Viaje;
 
 public class TerminalPortuaria {
 	private Coordenada coordenada;
-  private GeneradorDeReportes generadorReportes;
+	private GeneradorDeReportes generadorReportes;
 	
 	private Set<EmpresaTransportista> empresasTransportistasRegistradas;
 	private Set<Naviera> navierasRegistradas;
@@ -186,35 +189,33 @@ public class TerminalPortuaria {
 		return new OrdenDeExportacion(camion, chofer, container, viaje);
 	}
 	
-	
-	
-	
-	
-	
-	
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	 /*private double precioServicio(PrecioServicioTerminal servicio) {
-		 this.validarPrecioServicio(servicio);
-		 return serviciosDisponibles.stream()
-				 					.filter(s -> s.equals(servicio))
-				 					.findFirst()
-				 					.get()
-				 					.getPrecio();
-	 }
-
-	 private void validarPrecioServicio(PrecioServicioTerminal servicio) {
-		 if (!serviciosDisponibles.contains(servicio)) {
-			 throw new RuntimeException("Servicio no disponible en esta terminal");
-		 }
-	 }*/
+	/**
+	 * Genera reportes que unicamente tienen cargada la información de las importaciones.
+	 * Se debería llamar después de descargar los containers de importaciones del buque.
+	 * @param buque...
+	 */
+	protected Map<String,Reporte> generarReportesConImportaciones(Buque buque) {
+		List<Orden> ordenes = ordenesParaImportacion.stream().filter((o) -> buque.getOrdenes().contains(o)).toList();
+		return generadorReportes.generarReportesConImportaciones(buque, ordenes);
+	}
 	
-	////////////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	
-	
+	/**
+	 * Agrega la información de las exportaciones a los Reportes pasados y los guarda en la lista de reportes de la 
+	   terminal gestionada (debido a que ya son considerados Reportes completos).
+	 * Se debería llamar después de cargar los containers de exportaciones al buque.
+	 * Se le deben pasar por parámetro lo que devuelve el método generarReportesConImportaciones(), que son los reportes que 
+ 	   tienen las importaciones cargadas, y a estos se les agregará la información de las exportaciones.
+	 * @param buque...
+	 * @param Map<String, Reporte> es el map...
+	 */
+	protected void finalizarReportesConExportaciones(Buque buque, Map<String, Reporte> reportes) {
+		List<Orden> ordenes = ordenesParaExportacion.stream().filter((o) -> buque.getOrdenes().contains(o)).toList();
+		List<Reporte> reportesPorAgregar = generadorReportes.finalizarReportesConExportaciones(reportes, ordenes);
+		reportesGenerados.addAll(reportesPorAgregar);
+	}
 	
 	// #################################### MÉTODOS AUXILIARES ################################## \\
 	
@@ -236,36 +237,4 @@ public class TerminalPortuaria {
 	public int hashCode() {
 		return coordenada.hashCode();
 	}
-
-
-	 
-	 	/*
-	 - Genera reportes que unicamente tienen cargada la información de las importaciones.
- 
-	 - Se debería llamar después de descargar los containers de importaciones del buque.
-	 */
-	protected Map<String,Reporte> generarReportesConImportaciones(Buque buque) {
-  
-		List<Orden> ordenes = ordenesParaImportacion.stream().filter((o) -> buque.getOrdenes().contains(o)).toList();
-		return generadorReportes.generarReportesConImportaciones(buque, ordenes);
-  
-	}
-	
-	/*
-	 - Agrega la información de las exportaciones a los Reportes pasados y los guarda en la lista de reportes de la 
-	   terminal gestionada (debido a que ya son considerados Reportes completos).
- 	   
-	 - Se debería llamar después de cargar los containers de exportaciones al buque.
-	 
- 	 - Se le deben pasar por parámetro lo que devuelve el método generarReportesConImportaciones(), que son los reportes que 
- 	   tienen las importaciones cargadas, y a estos se les agregará la información de las exportaciones.
-	 */
-	protected void finalizarReportesConExportaciones(Buque buque, Map<String,Reporte> reportes) {
-    
-		List<Orden> ordenes = ordenesParaExportacion.stream().filter((o) -> buque.getOrdenes().contains(o)).toList();
-		List<Reporte> reportesPorAgregar = generadorReportes.finalizarReportesConExportaciones(reportes, ordenes);
-		reportesGenerados.addAll(reportesPorAgregar);
-    
-	}
-	 
 }
