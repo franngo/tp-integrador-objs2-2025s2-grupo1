@@ -1,5 +1,19 @@
 package ar.edu.unq.po2.buque.estadosBuque;
 
-public class Inbound {
+import ar.edu.unq.po2.buque.Buque;
+
+public class Inbound implements EstadoBuque{
+
+	@Override
+	public void notificarAccionesTerminal() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void actualizarSiSeRequiere(Buque buque) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

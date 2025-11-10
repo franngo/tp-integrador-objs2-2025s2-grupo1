@@ -10,7 +10,7 @@ import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.empresa_transportista.EmpresaTransportista;
 import ar.edu.unq.po2.servicio.PrecioServicioTerminal;
 
-public class TerminalPortuaria implements Observador{
+public class TerminalPortuaria implements TerminalObservadora{
 	
 	
 	public TerminalPortuaria() {

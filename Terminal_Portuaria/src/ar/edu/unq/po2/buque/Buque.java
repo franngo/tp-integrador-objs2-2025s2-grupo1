@@ -49,10 +49,16 @@ public class Buque implements BuqueObservado{
 
     public void avanzarHacia(double latitud, double longitud){
         posicionActual.nuevaPosicion(latitud,longitud);
+        this.actualizarEstado();
         this.notificarEstado(terminalAArribar);
     }
-
-    private void notificarEstado(TerminalPortuaria terminalAArribar) {
+    
+    
+    public void actualizarEstado(){
+    	estadoBuque.actualizarSiSeRequiere(this);
+    }
+    
+    public void notificarEstado(TerminalPortuaria terminalAArribar) {
 		terminalAArribar.actualizar(this);
 		
 	}
@@ -72,10 +78,10 @@ public class Buque implements BuqueObservado{
 		
 	}
 
-	@Override
-	public void notificarEstado() {
-		// TODO Auto-generated method stub
-		
+	
+	
+	public TerminalPortuaria terminalAArribar() {
+		return terminalAArribar;
 	}
     
 
