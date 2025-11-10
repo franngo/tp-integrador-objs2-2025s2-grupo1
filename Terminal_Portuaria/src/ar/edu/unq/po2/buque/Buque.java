@@ -52,7 +52,7 @@ public class Buque implements BuqueObservado{
     public void avanzarHacia(double latitud, double longitud){
         posicionActual.nuevaPosicion(latitud,longitud);
         this.actualizarEstado();
-        this.notificarEstado(terminalAArribar);
+        estadoBuque.notificarEstado(this.terminalAArribar());
     }
     
     

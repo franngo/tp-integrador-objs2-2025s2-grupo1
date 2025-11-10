@@ -53,6 +53,14 @@ public class Coordenada {
          return Math.sqrt(dx * dx + dy * dy);
     	
     }
+    
+    public boolean enMismaPosicionCon(Coordenada otraCoordenada) {
+    	boolean mismaLongitud = this.longitud == otraCoordenada.getLongitud();
+    	boolean mismLatitud = this.latitud == otraCoordenada.getLatitud();
+    	return mismLatitud && mismaLongitud;
+    }
+    
+
 
 
     }

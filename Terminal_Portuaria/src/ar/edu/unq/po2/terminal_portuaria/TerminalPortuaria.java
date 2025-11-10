@@ -61,11 +61,26 @@ public class TerminalPortuaria implements TerminalObservadora{
 	 }
 
 	 
+	 
+	 
+	 // METODOS PARA LO QUE  ES EL BUQUE, REFACTORIZAR UNA VEZ ESTEN IMPLEMENTADOS
 
 	 public void actualizar(Buque buque) {
 	
 		
-	 } 
+	 }
+
+	 public boolean puedeIniciarWorking(Buque miBuque) {
+		// TODO Auto-generated method stub
+		return false;
+	 }
+
+	 public boolean partidaHabilitada(Buque miBuque) {
+		// TODO Auto-generated method stub
+		return false;
+	 }
+
+	
 
 	 
 	 

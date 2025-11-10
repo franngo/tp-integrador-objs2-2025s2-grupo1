@@ -2,17 +2,16 @@ package ar.edu.unq.po2.buque.estadosBuque;
 
 import ar.edu.unq.po2.buque.Buque;
 import ar.edu.unq.po2.coordenada.Coordenada;
+import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 
 public class OutBound extends EstadoBuque {
 	
-	Buque miBuque;
 	
 	public OutBound(Buque miBuque) {
-		this.miBuque = miBuque;
+		super(miBuque);
+		// TODO Auto-generated constructor stub
 	}
-
-	
 
 	@Override
 	public void modificarEstadoBuque() {
@@ -21,14 +20,25 @@ public class OutBound extends EstadoBuque {
 	
 	@Override
 	public boolean debeCambiarDeFase() {
-		Coordenada ubicacionTerminal = miBuque.terminalAArribar().coordenadasTerminal();
-		Coordenada ubicacionBuque = miBuque.posicionActual();
-		return this.estaAMenosDe50km(ubicacionBuque,ubicacionTerminal);
+		
+		return this.estaAMenosDe50km(miBuque.posicionActual(),terminalAArribar.coordenadasTerminal());
 	}
 	
 	public boolean estaAMenosDe50km(Coordenada ubicacionBuque, Coordenada ubicacionTerminal){
 		return ubicacionBuque.distanciaA(ubicacionTerminal) < 50;
 	}
+
+
+
+	@Override
+	public void notificarEstado(TerminalPortuaria terminal) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	
 	
 
 }
