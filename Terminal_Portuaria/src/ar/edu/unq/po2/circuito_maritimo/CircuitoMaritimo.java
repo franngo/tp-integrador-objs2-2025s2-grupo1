@@ -24,8 +24,8 @@ public class CircuitoMaritimo {
 	}
 	
 	public Duration tiempoHastaTerminal(TerminalPortuaria terminal) {
-		if(this.tramos.stream().noneMatch((t) -> t.getTerminalOrigen().equals(terminal))) {
-			throw new RuntimeException("Dicha terminal no forma parte de este circuito marítimo");
+		if(this.tramos.stream().noneMatch((t) -> t.getTerminalDestino().equals(terminal))) {
+			throw new RuntimeException("Dicha terminal no es un destino de este circuito marítimo");
 		}
 		
 		//Primero consigo la lista de tramos hasta la terminal deseada.
@@ -44,9 +44,7 @@ public class CircuitoMaritimo {
 	}
 	
 	public double precioTotal() {
-		//TODO
-		//devuelvo cualquier cosa porque necesito la interfaz definida para poder mockear la clase en los tests
-		return 0.0;
+		return this.tramos.stream().map((t) -> t.getPrecioTramo()).mapToDouble(Double::doubleValue).sum();
 	}
 	
 	/*
