@@ -81,10 +81,10 @@ public class CircuitoMaritimo {
 	}
 	
 	/*
-	 * Observación: La razón de que se devuelva la cantidad de tramos sumada en uno es que, por ejemplo, en un circuito con
-	 * 2 tramos hay 3 terminales involucradas: la origen y la destino del primer tramo, y la origen y la destino del
-	 * segundo tramo, pero la origen del segundo tramo es la misma que la destino del primero, así que el total de terminales
-	 * diferentes del circuito es de 3.
+	 * Observación: La razón de que se devuelva la cantidad de tramos sumada en uno es que, por ejemplo, en un circuito 
+	 * con 2 tramos hay 3 terminales involucradas: la origen y la destino del primer tramo, y la origen y la destino del
+	 * segundo tramo, pero la origen del segundo tramo es la misma que la destino del primero, así que el total de 
+	 * terminales diferentes del circuito es de 3.
 	 */
 	public int cantidadDeTerminales() {
 		
