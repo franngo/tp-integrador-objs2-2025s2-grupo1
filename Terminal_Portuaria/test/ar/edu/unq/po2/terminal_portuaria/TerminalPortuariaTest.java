@@ -18,6 +18,7 @@ import ar.edu.unq.po2.container.Container;
 import ar.edu.unq.po2.container.Reefer;
 import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.empresa_transportista.EmpresaTransportista;
+import ar.edu.unq.po2.naviera.Naviera;
 import ar.edu.unq.po2.orden.Orden;
 import ar.edu.unq.po2.orden.OrdenDeExportacion;
 import ar.edu.unq.po2.viaje.Viaje;
@@ -28,11 +29,12 @@ import ar.edu.unq.po2.viaje.Viaje;
 */
 
 class TerminalPortuariaTest {
-
+	TerminalPortuaria terminalGestionada;
+	
 	@BeforeEach
 	public void setUp() {
 		// Inicializacion de la Terminal Gestionada junto a la empresa transportista
-		TerminalPortuaria terminalGestionada = new TerminalPortuaria(new Coordenada(-34.6412, -58.3439));
+		this.terminalGestionada = new TerminalPortuaria(new Coordenada(-34.6412, -58.3439));
 		
 		EmpresaTransportista andreani = new EmpresaTransportista();
 		Camion scaniaR580 = new Camion("Scania R580", "AE471WD");
@@ -43,6 +45,8 @@ class TerminalPortuariaTest {
 		andreani.añadirCamion(volvoFH460);
 		andreani.añadirChofer(carlos);
 		andreani.añadirChofer(jose);
+		
+		// Falta poner una naviera aca.
 		
 		// Orden Montevideo
 		CircuitoMaritimo circuitoMV = mock(CircuitoMaritimo.class);
@@ -118,6 +122,16 @@ class TerminalPortuariaTest {
 	
 	@Test
 	public void testFuncionamientoRegistrarEnLaTerminal() {
+		// Setup
+		CircuitoMaritimo circuitoMaritimo = mock(CircuitoMaritimo.class);
+		Cliente cliente = mock(Cliente.class);
+		EmpresaTransportista empresaTransportista = mock(EmpresaTransportista.class);
+		Naviera naviera = mock(Naviera.class);
 		
+		// Exercise
+		terminalGestionada.registrarCircuitoMaritimo(circuitoMaritimo);
+		terminalGestionada.registrarCliente(cliente);
+		terminalGestionada.registrarEmpresaTransportista(empresaTransportista);
+		terminalGestionada.registrarNaviera(naviera);
 	}
 }
