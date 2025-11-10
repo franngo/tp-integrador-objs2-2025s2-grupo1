@@ -98,7 +98,7 @@ public abstract class Orden {
 	}
 	
 	/**
-	 * Valida la creación de servicios a cobrar en la orden.
+	 * Valida si se pueden crear los servicios a cobrar en la orden.
 	 */
 	private void validarCrearServiciosACobrar() {
 		if(!serviciosACobrar.isEmpty()) {

@@ -192,8 +192,8 @@ public class TerminalPortuaria {
 	}
 	
 	/**
-	 * 
-	 * @param servicio
+	 * Describe el precio del servicio dado.
+	 * @param servicio es el servicio a consultar su precio.
 	 */
 	public double precioServicio(PrecioServicioTerminal servicio) {
 		this.validarPrecioServicio(servicio);
@@ -205,17 +205,14 @@ public class TerminalPortuaria {
 	}
 
 	/**
-	 * 
-	 * @param servicio
+	 * Valida si puede devolver el precio del servicio dado.
+	 * @param servicio es el servicio a verificar si existe en los servicios disponibles en la terminal.
 	 */
 	private void validarPrecioServicio(PrecioServicioTerminal servicio) {
 		if (!serviciosDisponibles.contains(servicio)) {
 			throw new RuntimeException("El servicio dado no se encuentra disponible en la terminal.");
 		}
 	}
-	
-	////////////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
 	 * Genera reportes que unicamente tienen cargada la información de las importaciones.
@@ -238,7 +235,7 @@ public class TerminalPortuaria {
  	   tienen las importaciones cargadas, y a estos se les agregará la información de las exportaciones.
    	 * por qué protected y no private?
 	 * @param buque...
-	 * @param Map<String, Reporte> es el map...
+	 * @param Map<String, Reporte>
 	 */
 	protected void finalizarReportesConExportaciones(Buque buque, Map<String, Reporte> reportes) {
 		List<Orden> ordenes = ordenesDeExportacion.stream()
