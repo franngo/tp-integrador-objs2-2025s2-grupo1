@@ -1,6 +1,7 @@
 package ar.edu.unq.po2.circuito_maritimo;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
@@ -17,13 +18,29 @@ public class CircuitoMaritimo {
 	}
 	
 	public Duration tiempoTotal() {
-		//TODO
-		//devuelvo cualquier cosa porque necesito la interfaz definida para poder mockear la clase en los tests
-		return Duration.ofHours(2);
+		Duration d = Duration.ZERO;
+		this.tramos.stream().forEach((t) -> d.plus(t.getTiempoTotal()));
+		return d;
 	}
 	
 	public Duration tiempoHastaTerminal(TerminalPortuaria terminal) {
-		return Duration.ofHours(2);
+		if(this.tramos.stream().noneMatch((t) -> t.getTerminalOrigen().equals(terminal))) {
+			throw new RuntimeException("Dicha terminal no forma parte de este circuito marítimo");
+		}
+		
+		//Primero consigo la lista de tramos hasta la terminal deseada.
+		List<Tramo> ts = new ArrayList<Tramo>();
+		int n = 0;
+		while(this.tramos.get(n).getTerminalDestino() != terminal) {
+			ts.add(this.tramos.get(n));
+			n++;
+		}
+		ts.add(this.tramos.get(n)); //añado también el tramo con la terminal deseada como puerto destino.
+		
+		//Ahora, ya con esa lista, calculo la duración total de este segmento del Viaje.
+		Duration d = Duration.ZERO;
+		ts.stream().forEach((t) -> d.plus(t.getTiempoTotal()));
+		return d;
 	}
 	
 	public double precioTotal() {
