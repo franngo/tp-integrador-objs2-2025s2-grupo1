@@ -89,7 +89,6 @@ public class TerminalPortuaria {
 		this.validarRetirarImportacion(camion, chofer, consignee);
 		Orden orden = this.ordenDeConsignee(consignee);
 		this.actualizarServiciosParaRetirar(orden);
-		
 	}
 	
 	/**
@@ -164,16 +163,14 @@ public class TerminalPortuaria {
 	}
 	
 	/**
-	 * Describe la orden dada después de actualizarle los servicios al momento de ser retirada.
+	 * Describe la orden dada después de actualizarle los servicios al momento de ser retirada (si hace falta).
 	 * @param orden es la orden a actualizarle los servicios.
 	 */
 	private Orden actualizarServiciosParaRetirar(Orden orden) {
-		Orden ordenResultante;
+		Orden ordenResultante = orden;
 		
-		if(this.cumpleHorarioExportacion(orden)) {
-			ordenResultante = orden;
-		} else {
-			ordenResulante
+		if(this.cumplePlazoAlmacenamientoGratuito(orden)) {
+			orden.eliminarServicioExcedente();
 		}
 			
 		return ordenResultante;

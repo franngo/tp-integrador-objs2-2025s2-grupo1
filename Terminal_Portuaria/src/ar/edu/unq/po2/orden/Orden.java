@@ -2,6 +2,7 @@ package ar.edu.unq.po2.orden;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import ar.edu.unq.po2.camion.Camion;
@@ -11,6 +12,7 @@ import ar.edu.unq.po2.container.ConcreteVisitorContainer;
 import ar.edu.unq.po2.container.Container;
 import ar.edu.unq.po2.generadorDeReportes.VisitorReporte;
 import ar.edu.unq.po2.servicio.Servicio;
+import ar.edu.unq.po2.servicio.ServicioExcedente;
 import ar.edu.unq.po2.viaje.Viaje;
 
 public abstract class Orden {
@@ -105,6 +107,22 @@ public abstract class Orden {
 		}
 	}
 	
+	/**
+	 * Elimina el servicio de almacenamiento excedente que tiene la orden (si existe en la misma).
+	 */
+	public void eliminarServicioExcedente() {
+	    Iterator<Servicio> iterador = serviciosACobrar.iterator();
+	    
+	    while(iterador.hasNext()) {
+	        Servicio s = iterador.next();
+	        
+	        if(s instanceof ServicioExcedente) {
+	        	iterador.remove();
+	            break;
+	        }
+	    }
+	}
+
 	/**
 	 * ...
 	 */
