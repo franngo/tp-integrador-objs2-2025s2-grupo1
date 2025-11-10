@@ -126,6 +126,25 @@ class CamionTest {
 	}
 	
 	@Test
+	public void testTransportarExportacionFallido() {
+		// Setup
+        TerminalPortuaria terminal = mock(TerminalPortuaria.class);
+        EmpresaTransportista andreani = new EmpresaTransportista();
+        
+        Cliente consignee = new Consignee("Roberto Paniagua");
+        Chofer chofer = new Chofer("Jose Fernandez", "38.091.105");
+        
+        andreani.añadirCamion(scaniaR580);
+        andreani.añadirChofer(chofer);
+
+        terminal.registrarCliente(consignee);
+        terminal.registrarEmpresaTransportista(andreani);
+        
+        // Exercise
+        assertThrows(RuntimeException.class, () -> scaniaR580.transportarExportacionA(terminal, chofer));
+	}
+	
+	@Test
 	public void testRetirarseDeLaTerminalPortuaria() {
 		/*// Setup
         TerminalPortuaria terminal = mock(TerminalPortuaria.class);
