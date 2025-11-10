@@ -38,6 +38,6 @@ public class Viaje {
 		//devuelvo cualquier cosa porque necesito la interfaz definida para poder mockear la clase en los tests
 		/*Sería agarrar el último puerto del circuito marítimo asociado a este viaje.
 		 */
-		return new TerminalPortuaria(new Coordenada(40, 40)); // Tiene un valor aleatorio para que no tire error, es necesario que una subtarea defina el destino.
+		return circuito.puertoDestino();
 	}
 }

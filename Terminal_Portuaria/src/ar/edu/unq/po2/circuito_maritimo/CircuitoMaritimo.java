@@ -22,8 +22,16 @@ public class CircuitoMaritimo {
 	
 	private void validarTramos(List<Tramo> tramos) {
 		
-		if(tramos.size()>3) { ///¿cómo armar esta validación?...
-			throw new RuntimeException("");
+		/*
+		 * Objetivo: Validar que se de para todos los tramos que el puerto destino sea el puerto orígen en el
+		 * próximo tramo de la secuencia.
+		 * Observación: No uso stream y allMatch porque ahí no puedo referir tanto al elemento procesado actualmente 
+		 * como a su siguiente.
+		 */
+		for(int i = 0; i < this.tramos.size() - 1; i++) {
+			if( ! (this.tramos.get(i).getTerminalDestino() != this.tramos.get(i+1).getTerminalOrigen()) ) {
+				throw new RuntimeException("La secuencia de tramos no está bien formada");
+			}
 		}
 		
 	}
