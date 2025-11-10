@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +19,7 @@ public class ViajeTest {
 	
 	//auxiliares
 	LocalDateTime fecha;
+	TerminalPortuaria terminal5;
 	
 	//DOCs
 	CircuitoMaritimo circuito;
@@ -29,70 +31,47 @@ public class ViajeTest {
 	@BeforeEach
 	public void setUp() {
 		
-		fecha = LocalDateTime.of(2025, 10, 1, 15, 30); //1/10/2025 a las 15:30hs
+		fecha = LocalDateTime.of(2025, 10, 1, 15, 30); //1/10/2025 a las 15:30hs (no la mockeo porque es clase de la API!)
 		circuito = mock(CircuitoMaritimo.class);
 		buque = mock(Buque.class);
 		
-		//terminal5 = mock(TerminalPortuaria.class);
-		
 		viaje = new Viaje(fecha, circuito, buque);
 		
+		terminal5 = mock(TerminalPortuaria.class); //para tests 2 y 3
+		
 	}
-	
-	/*
-	esto no!
 	
 	@Test
-	public void instanciacionDeCircuitoMaritimo() {
+	public void fechaDeSalida() {
 		
-		//caso sin error en la validación validarTramos()
-		
-		when(tramo1.getTerminalOrigen()).thenReturn(terminal1);
-		when(tramo1.getTerminalDestino()).thenReturn(terminal2);
-		
-		when(tramo2.getTerminalOrigen()).thenReturn(terminal2);
-		when(tramo2.getTerminalDestino()).thenReturn(terminal3);
-		
-		when(tramo3.getTerminalOrigen()).thenReturn(terminal3);
-		when(tramo3.getTerminalDestino()).thenReturn(terminal4);
-		
-		when(tramo4.getTerminalOrigen()).thenReturn(terminal4);
-		when(tramo4.getTerminalDestino()).thenReturn(terminal5);
-		
-		assertDoesNotThrow( () -> { circuito = new CircuitoMaritimo(ts); } );
-		
-		//caso con error en la validación validarTramos()
-		
-		when(tramo1.getTerminalOrigen()).thenReturn(terminal1);
-		when(tramo1.getTerminalDestino()).thenReturn(terminal2);
-
-		when(tramo2.getTerminalOrigen()).thenReturn(terminal2);
-		when(tramo2.getTerminalDestino()).thenReturn(terminal3);
-
-		when(tramo3.getTerminalOrigen()).thenReturn(terminal1); //ruptura de la secuencia 
-		when(tramo3.getTerminalDestino()).thenReturn(terminal4);
-
-		when(tramo4.getTerminalOrigen()).thenReturn(terminal4);
-		when(tramo4.getTerminalDestino()).thenReturn(terminal5);
-
-		assertThrows(RuntimeException.class, () -> { circuito = new CircuitoMaritimo(ts); } );
+		assertEquals(fecha, viaje.fechaDeSalida());
 		
 	}
-	
-	*/
 	
 	@Test
 	public void fechaDeLlegada() {
+		
+		when(circuito.tiempoTotal()).thenReturn(Duration.ofDays(2));
+		
+		assertEquals(LocalDateTime.of(2025, 10, 3, 15, 30), viaje.fechaDeLlegada());
 		
 	}
 	
 	@Test
 	public void fechaDeLlegadaATerminal() {
 		
+		when(circuito.tiempoHastaTerminal(terminal5)).thenReturn(Duration.ofHours(8));
+		
+		assertEquals(LocalDateTime.of(2025, 10, 1, 23, 30), viaje.fechaDeLlegadaATerminal(terminal5));
+		
 	}
 	
 	@Test
 	public void puertoDestino() {
+		
+		when(circuito.puertoDestino()).thenReturn(terminal5);
+		
+		assertEquals(terminal5, viaje.puertoDestino());
 		
 	}
 
