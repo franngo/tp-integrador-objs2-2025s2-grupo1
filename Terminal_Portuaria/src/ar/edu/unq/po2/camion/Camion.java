@@ -68,8 +68,7 @@ public class Camion {
 	 */
 	public void transportarExportacionA(TerminalPortuaria terminalPortuaria, Chofer chofer) {
 		this.validarTransportarExportacion();
-		Cliente consignee = ordenActual.getConsignee();
-		terminalPortuaria.registrarExportacion(ordenActual, this, chofer, consignee);
+		terminalPortuaria.registrarExportacion(this.getOrdenActual(), this, chofer, ordenActual.getConsignee());
 	}
 	
 	/**
