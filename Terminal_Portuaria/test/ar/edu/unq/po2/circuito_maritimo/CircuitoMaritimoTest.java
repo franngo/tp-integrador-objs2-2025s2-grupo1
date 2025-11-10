@@ -157,10 +157,30 @@ public class CircuitoMaritimoTest {
 	@Test
 	public void cantidadDeTerminales() {
 		
+		circuito = new CircuitoMaritimo(ts);
+		
+		assertEquals(5, circuito.cantidadDeTerminales());
+		
 	}
 	
 	@Test
 	public void puertoDestino() {
+		
+		when(tramo1.getTerminalOrigen()).thenReturn(terminal1);
+		when(tramo1.getTerminalDestino()).thenReturn(terminal2);
+		
+		when(tramo2.getTerminalOrigen()).thenReturn(terminal2);
+		when(tramo2.getTerminalDestino()).thenReturn(terminal3);
+		
+		when(tramo3.getTerminalOrigen()).thenReturn(terminal3);
+		when(tramo3.getTerminalDestino()).thenReturn(terminal4);
+		
+		when(tramo4.getTerminalOrigen()).thenReturn(terminal4);
+		when(tramo4.getTerminalDestino()).thenReturn(terminal5);
+		
+		circuito = new CircuitoMaritimo(ts);
+		
+		assertEquals(terminal5, circuito.puertoDestino());
 		
 	}
 
