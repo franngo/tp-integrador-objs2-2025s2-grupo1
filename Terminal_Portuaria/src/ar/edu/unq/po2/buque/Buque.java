@@ -27,6 +27,8 @@ public class Buque implements BuqueObservado{
     
     TerminalPortuaria terminalAArribar; // el OBSERVER
   
+    public Coordenada posicionActual() {return posicionActual;}
+    
     public void adscribirObservador(TerminalPortuaria terminalObservadora) {
     	this.terminalAArribar = terminalObservadora;
     }
@@ -55,7 +57,8 @@ public class Buque implements BuqueObservado{
     
     
     public void actualizarEstado(){
-    	estadoBuque.actualizarSiSeRequiere(this);
+    	//nos mandamos a nosotros y a la terminaldonde debemos ir
+    	estadoBuque.actualizarSiSeRequiere();
     }
     
     public void notificarEstado(TerminalPortuaria terminalAArribar) {
@@ -65,7 +68,7 @@ public class Buque implements BuqueObservado{
 
 	public void iniciarViaje(Viaje viajeActual){
         this.viajeActual=viajeActual;
-        estadoBuque = new OutBound();
+        estadoBuque = new OutBound(this);
     }
     
     
@@ -73,8 +76,8 @@ public class Buque implements BuqueObservado{
     public void cargarContainers() {}
 
 	@Override
-	public void establecerEstado() {
-		// TODO Auto-generated method stub
+	public void establecerEstado(EstadoBuque nuevoEstado) {
+		this.estadoBuque = nuevoEstado;
 		
 	}
 

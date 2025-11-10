@@ -6,7 +6,7 @@ import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 public interface BuqueObservado {
 	
 	public EstadoBuque obtenerEstado(); 
-	public void establecerEstado();
+	public void establecerEstado(EstadoBuque nuevoEstado);
 	public void notificarEstado(TerminalPortuaria terminalObservadora);
 	public void adscribirObservador(TerminalPortuaria terminalObservadora);
 }
