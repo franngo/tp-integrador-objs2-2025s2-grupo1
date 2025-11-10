@@ -217,10 +217,9 @@ public class TerminalPortuaria {
 	/**
 	 * Genera reportes que unicamente tienen cargada la información de las importaciones.
 	 * Se debería llamar después de descargar los containers de importaciones del buque.
-	 * @param buque...
-	 * por qué protected y no private?
+	 * @param buque es el buque del que se toma como referencia para las ordenes de importación.
 	 */
-	protected Map<String, Reporte> generarReportesConImportaciones(Buque buque) {
+	private Map<String, Reporte> generarReportesConImportaciones(Buque buque) {
 		List<Orden> ordenes = ordenesDeImportacion.stream()
 												  .filter(o -> buque.getOrdenes().contains(o))
 												  .toList();
@@ -228,16 +227,12 @@ public class TerminalPortuaria {
 	}
 	
 	/**
-	 * Agrega la información de las exportaciones a los Reportes pasados y los guarda en la lista de reportes de la 
-	   terminal gestionada (debido a que ya son considerados Reportes completos).
+	 * Agrega la información de las exportaciones a los Reportes pasados y los guarda en la lista de reportes de la Terminal Portuaria.
 	 * Se debería llamar después de cargar los containers de exportaciones al buque.
-	 * Se le deben pasar por parámetro lo que devuelve el método generarReportesConImportaciones(), que son los reportes que 
- 	   tienen las importaciones cargadas, y a estos se les agregará la información de las exportaciones.
-   	 * por qué protected y no private?
-	 * @param buque...
-	 * @param Map<String, Reporte>
+	 * @param buque es el buque del que se toma como referencia para las ordenes de exportación.
+	 * @param Map<String, Reporte> son los reportes que tienen las importaciones cargadas, los cuales se les agregará la información de las exportaciones.
 	 */
-	protected void finalizarReportesConExportaciones(Buque buque, Map<String, Reporte> reportes) {
+	private void finalizarReportesConExportaciones(Buque buque, Map<String, Reporte> reportes) {
 		List<Orden> ordenes = ordenesDeExportacion.stream()
 												  .filter(o -> buque.getOrdenes().contains(o))
 												  .toList();
