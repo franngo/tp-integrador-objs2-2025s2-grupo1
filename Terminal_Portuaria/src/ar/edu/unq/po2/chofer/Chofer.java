@@ -43,9 +43,10 @@ public class Chofer {
 
 	/**
 	 * Cambia la disponibilidad del chofer a la dada por parámetro. Si es true, está disponible para un trabajo. Si es false, no se encuentra disponible.
+	 * @param disponibilidad es el valor que va a tener el chofer, el cual indica si se encuentra disponible para un trabajo o no.
 	 */
-	public void cambiarEstaDisponiblePor(boolean nuevoValor) {
-		this.estaDisponible = nuevoValor;
+	public void cambiarEstaDisponiblePor(boolean disponibilidad) {
+		this.estaDisponible = disponibilidad;
 	}
 
 	// #################################### MÉTODOS AUXILIARES ################################## \\

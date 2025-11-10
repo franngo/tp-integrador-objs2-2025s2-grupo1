@@ -18,36 +18,34 @@ public enum TipoServicio {
 
     LAVADO {
         @Override
-        public Servicio crearServicio(Orden ordenQueCobra, Container conteiner) {
+        public Servicio crearServicio(Orden ordenQueCobra, Container container) {
             // TODO IMPLEMENTAR!!!!
-            return new ServicioLavado();
+            return new ServicioLavado(container);
         }
     },
 
     ELECTRICIDAD {
         @Override
-        public Servicio crearServicio(Orden ordenQueCobra, Container conteiner) {
+        public Servicio crearServicio(Orden ordenQueCobra, Container container) {
             // TODO IMPLEMENTAR!!!!
-            return new ServicioElectricidad();
+            return new ServicioElectricidad(container);
         }
     },
 
     PESADO {
         @Override
-        public Servicio crearServicio(Orden ordenQueCobra, Container conteiner) {
+        public Servicio crearServicio(Orden ordenQueCobra, Container container) {
             // TODO IMPLEMENTAR!!!!
-            return new ServicioPesaje();
+            return new ServicioPesaje(container);
         }
     },
     EXCEDENTE{
         @Override
-        public Servicio crearServicio(Orden ordenQueCobra, Container conteiner) {
+        public Servicio crearServicio(Orden ordenQueCobra, Container container) {
             // TODO IMPLEMENTAR!!!!
-            return new ServicioExcedente();
+            return new ServicioExcedente(container);
         }
     };
 
-
-
-    public abstract Servicio crearServicio(Orden ordenQueCobra, Container conteiner);
+    public abstract Servicio crearServicio(Orden ordenQueCobra, Container container);
 }

@@ -13,13 +13,9 @@ import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
  * Este servicio es solo para Dry
  * */
 public class ServicioDesconsolidado extends Servicio{
-    
-
 	
 	public ServicioDesconsolidado(Container containerServ) {
 		super(containerServ);
-	
-		
 	}
     /*
      * Se necesita que cuando la terminal cobre el servicio divida 
@@ -28,19 +24,12 @@ public class ServicioDesconsolidado extends Servicio{
 	@Override
 	public double costoServicio(TerminalPortuaria terminalPortuaria) {
 		// TODO Auto-generated method stub
-		return terminalPortuaria.precioServicio(PrecioServicioTerminal.PRECIODESCONSOLIDADO) 
-					;
+		return terminalPortuaria.precioServicio(PrecioServicioTerminal.PRECIODESCONSOLIDADO);
 	}
-
-	
-
-
-
 
 	@Override
 	public String tipoServicio() {
 		// TODO Auto-generated method stub
 		return "Servicio Desconsolidado";
 	}
-
 }

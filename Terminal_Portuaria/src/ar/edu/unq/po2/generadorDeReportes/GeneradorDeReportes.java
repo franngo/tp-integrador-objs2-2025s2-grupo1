@@ -9,7 +9,6 @@ import ar.edu.unq.po2.buque.Buque;
 import ar.edu.unq.po2.orden.Orden;
 
 public class GeneradorDeReportes {
-	
 	private VisitorReporteAduana visitorA;
 	private VisitorReporteBuque visitorB;
 	
@@ -18,7 +17,7 @@ public class GeneradorDeReportes {
 		this.visitorB = new VisitorReporteBuque();
 	}
 		
-	public Map<String,Reporte> generarReportesConImportaciones(Buque buque, List<Orden> ordenes) {
+	public Map<String, Reporte> generarReportesConImportaciones(Buque buque, List<Orden> ordenes) {
 		
 		String nombreBuque = buque.getNombre();
 		String fechaPartida = buque.getViajeActual().fechaDeSalida().toString();
@@ -77,7 +76,6 @@ public class GeneradorDeReportes {
 		rs.put("buque", r3);
 		
 		return rs;
-				
 	}
 	
 	public List<Reporte> finalizarReportesConExportaciones(Map<String,Reporte> reportes, List<Orden> ordenes) {

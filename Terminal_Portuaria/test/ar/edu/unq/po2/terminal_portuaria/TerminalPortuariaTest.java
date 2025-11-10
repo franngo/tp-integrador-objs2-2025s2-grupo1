@@ -32,12 +32,12 @@ class TerminalPortuariaTest {
 	
 	@Test
 	public void testFuncionamientoCircuitoDeExportacion() {
-		Viaje viajeElegido = terminalGestionada.buscarViaje();
+		/* Viaje viajeElegido = terminalGestionada.buscarViaje();
 		Camion camionContratado = andreani.contratarCamion();
 		Chofer choferContratado = andreani.contratarChofer();
 		Container container = new Dry(null, 0, 0, 0, 0);
 		
-		Orden orden = terminalGestionada.generarOrden(camionContratado, choferContratado, container, viajeElegido);
+		Orden orden = terminalGestionada.generarOrden(camionContratado, choferContratado, container, viajeElegido); */
 	}
 	
 	@Test

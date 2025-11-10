@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ar.edu.unq.po2.chofer.Chofer;
+import ar.edu.unq.po2.cliente.Cliente;
 import ar.edu.unq.po2.orden.Orden;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
@@ -88,8 +89,13 @@ class CamionTest {
 	public void testIngresarALaTerminalPortuaria() {
 		// Setup
         TerminalPortuaria terminal = mock(TerminalPortuaria.class);
+        Orden ordenS = mock(Orden.class);
+        Orden ordenV = mock(Orden.class);
         
         // Exercise
+        scaniaR580.cambiarOrdenActualPor(ordenS);
+        volvoFH460.cambiarOrdenActualPor(ordenV);
+        
         scaniaR580.transportarExportacionA(terminal);
         volvoFH460.transportarExportacionA(terminal);
 
@@ -102,13 +108,15 @@ class CamionTest {
 	public void testRetirarseDeLaTerminalPortuaria() {
 		// Setup
         TerminalPortuaria terminal = mock(TerminalPortuaria.class);
+        Chofer chofer = mock(Chofer.class);
+        Cliente consignee = mock(Cliente.class);
 
         // Exercise
-        scaniaR580.retirarImportacionDe(terminal);
-        volvoFH460.retirarImportacionDe(terminal);
+        scaniaR580.retirarImportacionDe(terminal, chofer, consignee);
+        volvoFH460.retirarImportacionDe(terminal, chofer, consignee);
         
         // Verify
-        verify(terminal).retirarImportacion(scaniaR580);
-        verify(terminal).retirarImportacion(volvoFH460);
+        verify(terminal).retirarImportacion(scaniaR580, chofer, consignee);
+        verify(terminal).retirarImportacion(volvoFH460, chofer, consignee);
 	}
 }

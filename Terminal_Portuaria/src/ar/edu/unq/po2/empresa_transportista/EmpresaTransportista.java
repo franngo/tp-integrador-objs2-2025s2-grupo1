@@ -63,7 +63,7 @@ public class EmpresaTransportista {
 	 */
 	private void validarContratarCamion() {
 		if(!this.tieneCamionDisponible()) {
-			new RuntimeException("No hay ningún camión disponible.");
+			new RuntimeException("No hay ningún camión disponible para ser contratado.");
 		}
 	}
 	
@@ -104,7 +104,7 @@ public class EmpresaTransportista {
 	 */
 	private void validarContratarChofer() {
 		if(!this.tieneChoferDisponible()) {
-			new RuntimeException("No hay ningún chofer disponible.");
+			new RuntimeException("No hay ningún chofer disponible para ser contratado.");
 		}
 	}
 	
