@@ -28,9 +28,14 @@ public class CircuitoMaritimo {
 		 * Observación: No uso stream y allMatch porque ahí no puedo referir tanto al elemento procesado actualmente 
 		 * como a su siguiente.
 		 */
-		for(int i = 0; i < this.tramos.size() - 1; i++) {
-			if( ! (this.tramos.get(i).getTerminalDestino() != this.tramos.get(i+1).getTerminalOrigen()) ) {
-				throw new RuntimeException("La secuencia de tramos no está bien formada");
+		
+		if(tramos.isEmpty()) {
+			throw new RuntimeException("La secuencia de tramos no puede ser vacía. Debe tener al menos un tramo.");
+		}
+		
+		for(int i = 0; i < (tramos.size() - 1); i++) {
+			if( tramos.get(i).getTerminalDestino() != tramos.get(i+1).getTerminalOrigen() ) {
+				throw new RuntimeException("La secuencia de tramos no está bien formada.");
 			}
 		}
 		
