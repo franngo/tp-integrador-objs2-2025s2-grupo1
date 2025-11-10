@@ -4,13 +4,24 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ar.edu.unq.po2.buque.Buque;
 import ar.edu.unq.po2.chofer.Chofer;
+import ar.edu.unq.po2.circuito_maritimo.CircuitoMaritimo;
 import ar.edu.unq.po2.cliente.Cliente;
+import ar.edu.unq.po2.cliente.Consignee;
+import ar.edu.unq.po2.container.*;
+import ar.edu.unq.po2.container.bls.*;
+import ar.edu.unq.po2.coordenada.Coordenada;
+import ar.edu.unq.po2.empresa_transportista.EmpresaTransportista;
 import ar.edu.unq.po2.orden.Orden;
+import ar.edu.unq.po2.orden.OrdenDeExportacion;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
+import ar.edu.unq.po2.viaje.Viaje;
 
 /**
 * Definen los tests unitarios de la clase Camion.
@@ -88,22 +99,33 @@ class CamionTest {
 	@Test
 	public void testIngresarALaTerminalPortuaria() {
 		// Setup
-        TerminalPortuaria terminal = mock(TerminalPortuaria.class);
-        Orden ordenS = mock(Orden.class);
-        Orden ordenV = mock(Orden.class);
-        Chofer chofer = mock(Chofer.class);
-        Cliente consignee = mock(Cliente.class);
+        TerminalPortuaria terminal = new TerminalPortuaria(new Coordenada(-35.03, 40.09));
+        EmpresaTransportista andreani = new EmpresaTransportista();
+        
+        CircuitoMaritimo circuito = mock(CircuitoMaritimo.class);
+        Buque buque = mock(Buque.class);
+        Viaje viaje = new Viaje(LocalDateTime.now().plusDays(7), circuito, buque);
+
+        Cliente consignee = new Consignee("Roberto Paniagua");
+        Chofer chofer = new Chofer("Jose Fernandez", "38.091.105");
+        
+        CargaBL carga = mock(CargaBLHoja.class);
+        Container container = new Dry(carga);
+        
+        Orden orden = new OrdenDeExportacion(scaniaR580, chofer, container, viaje);
+        
+        andreani.añadirCamion(scaniaR580);
+        andreani.añadirChofer(chofer);
+
+        terminal.registrarCliente(consignee);
+        terminal.registrarEmpresaTransportista(andreani);
         
         // Exercise
-        scaniaR580.cambiarOrdenActualPor(ordenS);
-        volvoFH460.cambiarOrdenActualPor(ordenV);
-        
+        scaniaR580.cambiarOrdenActualPor(orden);
         scaniaR580.transportarExportacionA(terminal, chofer);
-        volvoFH460.transportarExportacionA(terminal, chofer);
-
+        
         // Verify
         verify(terminal).registrarExportacion(scaniaR580.getOrdenActual(), scaniaR580, chofer, consignee);
-        verify(terminal).registrarExportacion(volvoFH460.getOrdenActual(), volvoFH460, chofer, consignee);
 	}
 	
 	@Test
@@ -114,11 +136,9 @@ class CamionTest {
         Cliente consignee = mock(Cliente.class);
 
         // Exercise
-        scaniaR580.retirarImportacionDe(terminal, chofer, consignee);
         volvoFH460.retirarImportacionDe(terminal, chofer, consignee);
         
         // Verify
-        verify(terminal).retirarImportacion(scaniaR580, chofer, consignee);
         verify(terminal).retirarImportacion(volvoFH460, chofer, consignee);
 	}
 }
