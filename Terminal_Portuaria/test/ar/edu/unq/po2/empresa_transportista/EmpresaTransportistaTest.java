@@ -122,4 +122,39 @@ class EmpresaTransportistaTest {
 		assertFalse(andreani.tieneChoferDisponible());
 		assertFalse(choferDisponibleD.estaDisponible());
 	}
+	
+	@Test
+	public void testFuncionamientoValidaciones() {
+		// Setup
+		Orden orden = mock(Orden.class);
+		
+		Camion camion1 = andreani.contratarCamion();
+		camion1.cambiarOrdenActualPor(orden);
+
+		Camion camion2 = andreani.contratarCamion();
+		camion2.cambiarOrdenActualPor(orden);
+
+		Chofer chofer1 = andreani.contratarChofer();
+		chofer1.cambiarEstaDisponiblePor(false);
+
+		Chofer chofer2 = andreani.contratarChofer();
+		chofer2.cambiarEstaDisponiblePor(false);
+		
+		// Exercise & Verify
+		assertThrows(RuntimeException.class, () -> andreani.contratarCamion());
+		assertThrows(RuntimeException.class, () -> andreani.contratarChofer());
+	}
+	
+	@Test
+	public void testFuncionamientoRegistrados() {
+		// Setup
+		Chofer ricardo = new Chofer("Ricardo Fort", "29.950.112");
+		Camion manTGX560 = new Camion("Man TGX560", "AC093FF");
+		
+		// Exercise & Verify
+		assertTrue(andreani.tieneCamionYChoferRegistrados(scaniaR580, jose));
+		assertFalse(andreani.tieneCamionYChoferRegistrados(volvoFH460, ricardo));
+		assertFalse(andreani.tieneCamionYChoferRegistrados(manTGX560, ricardo));
+		assertFalse(andreani.tieneCamionYChoferRegistrados(manTGX560, jose));
+	}
 }
