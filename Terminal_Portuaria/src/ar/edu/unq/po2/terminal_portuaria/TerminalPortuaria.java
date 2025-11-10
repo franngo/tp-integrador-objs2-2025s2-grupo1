@@ -9,6 +9,7 @@ import java.util.Set;
 
 import ar.edu.unq.po2.buque.Buque;
 import ar.edu.unq.po2.camion.Camion;
+
 import ar.edu.unq.po2.chofer.Chofer;
 import ar.edu.unq.po2.circuito_maritimo.CircuitoMaritimo;
 import ar.edu.unq.po2.cliente.Cliente;
@@ -26,7 +27,8 @@ import ar.edu.unq.po2.viaje.Viaje;
 * @author Benjamin Maldonado & Franco Oreskovic.
 */
 
-public class TerminalPortuaria {
+
+public class TerminalPortuaria implements TerminalObservadora{
 	private Coordenada coordenada;
 	private GeneradorDeReportes generadorReportes;
 	
@@ -77,7 +79,15 @@ public class TerminalPortuaria {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	public TerminalPortuaria() {
+		
+	}
+	Coordenada coordenadasTerminal;
 	
+	public Coordenada coordenadasTerminal() {
+		return coordenadasTerminal;
+	}
 	
 	/**
 	 * Retira la importación la orden del consignee dado que se encuentra en la terminal, en base al camión y chofer dado.
@@ -262,6 +272,7 @@ public class TerminalPortuaria {
 	 * Registra la empresa transportista dada en la Terminal Portuaria.
 	 * @param empresaTransportista es la empresa transportista a registrar en la Terminal Portuaria.
 	 */
+
 	public void registrarEmpresaTransportista(EmpresaTransportista empresaTransportista) {
 		this.empresasTransportistasRegistradas.add(empresaTransportista);
 	}
@@ -305,6 +316,8 @@ public class TerminalPortuaria {
 	 * Describe el precio del servicio dado.
 	 * @param servicio es el servicio a consultar su precio.
 	 */
+	
+	/*
 	public double precioServicio(PrecioServicioTerminal servicio) {
 		this.validarPrecioServicio(servicio);
 		return serviciosDisponibles.stream()
@@ -312,8 +325,46 @@ public class TerminalPortuaria {
 								   .findFirst()
 								   .get()
 								   .getPrecio();
-	}
+	}*/
 
+
+	 public double precioServicio(PrecioServicioTerminal servicio) {
+		 
+		 this.validarServicio(servicio);
+		 return servicio.getPrecio();
+	 }
+
+	 private void validarServicio(PrecioServicioTerminal servicio) {
+		// TODO Auto-generated method stub
+		 if (!serviciosDisponibles.contains(servicio)) {
+			 throw new IllegalArgumentException("Servicio no disponible en esta terminal");
+		 }
+	 }
+
+	 
+	 
+	 
+	 // METODOS PARA LO QUE  ES EL BUQUE, REFACTORIZAR UNA VEZ ESTEN IMPLEMENTADOS
+
+	 public void actualizar(Buque buque) {
+	
+		
+	 }
+
+	 public boolean puedeIniciarWorking(Buque miBuque) {
+		// TODO Auto-generated method stub
+		return false;
+	 }
+
+	 public boolean partidaHabilitada(Buque miBuque) {
+		// TODO Auto-generated method stub
+		return false;
+	 }
+
+	
+
+	 
+	 
 	/**
 	 * Valida si puede devolver el precio del servicio dado.
 	 * @param servicio es el servicio a verificar si existe en los servicios disponibles en la terminal.
@@ -370,4 +421,5 @@ public class TerminalPortuaria {
 	public int hashCode() {
 		return coordenada.hashCode();
 	}
+
 }
