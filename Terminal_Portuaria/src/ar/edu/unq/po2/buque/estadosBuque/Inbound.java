@@ -9,11 +9,7 @@ public class Inbound extends EstadoBuque{
 	public Inbound(Buque nuevoBuque) {
 		this.miBuque=nuevoBuque;
 	}
-	@Override
-	public void notificarAccionesTerminal() {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 	
 	@Override

@@ -1,13 +1,12 @@
 package ar.edu.unq.po2.buque.estadosBuque;
 
-
+import ar.edu.unq.po2.buque.Buque;
 
 public class Departing extends EstadoBuque{
 
-	@Override
-	public void notificarAccionesTerminal() {
-		// TODO Auto-generated method stub
-		
+	Buque miBuque;
+	public Departing(Buque miBuque) {
+		this.miBuque=miBuque;
 	}
 
 	

@@ -12,10 +12,7 @@ public class OutBound extends EstadoBuque {
 		this.miBuque = miBuque;
 	}
 
-	public void notificarAccionesTerminal() {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 	@Override
 	public void modificarEstadoBuque() {
