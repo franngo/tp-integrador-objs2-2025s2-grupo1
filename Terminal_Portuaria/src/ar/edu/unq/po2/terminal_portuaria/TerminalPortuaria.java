@@ -105,8 +105,8 @@ public class TerminalPortuaria {
 	/**
 	 * Registra como exportación en la Terminal Portuaria la orden dada.
 	 * @param orden es la orden a ser registrada como exportación en la Terminal Portuaria.
-	 * @param camion es el camión que transporta la orden.
-	 * @param chofer es el chofer encargado de manejar el camión.
+	 * @param camion es el camion informado por el consignee que va a ingresar la carga.
+	 * @param chofer es el chofer informado por el consignee que va a ingresar la carga.
 	 * @param consignee es el dueño de la carga.
 	 */
 	public void registrarExportacion(Orden orden, Camion camion, Chofer chofer, Cliente consignee) {
@@ -117,9 +117,9 @@ public class TerminalPortuaria {
 	/**
 	 * Valida si la orden dada puede registrarse como exportación.
 	 * @param orden es la orden a ser validada como exportación.
-	 * @param camion
-	 * @param chofer
-	 * @param consignee 
+	 * @param camion es el camion informado por el consignee que va a ingresar la carga.
+	 * @param chofer es el chofer informado por el consignee que va a ingresar la carga.
+	 * @param consignee es el dueño de la carga. 
 	 */
 	private void validarRegistrarExportacion(Orden orden, Camion camion, Chofer chofer, Cliente consignee) {
 		if(!this.cumpleHorarioExportacion(orden) || !this.cumpleElTransporte(orden, camion, chofer, consignee)) {
@@ -141,22 +141,21 @@ public class TerminalPortuaria {
 	/**
 	 * Indica si tiene registrados en la Terminal el camion y chofer que se encuentran en la orden dada.
 	 * @param orden es la orden que se toma de referencia para evaluar si cumple con el transporte asociado a la misma.
-	 * @param camion
-	 * @param chofer
-	 * @param consignee
+	 * @param camion es el camion informado por el consignee que va a ingresar la carga.
+	 * @param chofer es el chofer informado por el consignee que va a ingresar la carga.
+	 * @param consignee es el dueño de la carga.
 	 */
 	private boolean cumpleElTransporte(Orden orden, Camion camion, Chofer chofer, Cliente consignee) {
 		Camion camionOrden = orden.getCamion();
 		Chofer choferOrden = orden.getChofer();
 		Cliente consigneeOrden = orden.getConsignee();
-		
 		return camionOrden.equals(camion) && choferOrden.equals(chofer) && consigneeOrden.equals(consignee) && this.estanRegistrados(camion, chofer);
 	}
 	
 	/**
-	 * Indica si tiene registrados en la Terminal el camion y chofer que se encuentran en la orden dada.
-	 * @param camion
-	 * @param chofer
+	 * Indica si tiene registrados en la terminal el camion y chofer que se encuentran en la orden dada.
+	 * @param camion es el camion a verificar si se encuentra registrado en la terminal.
+	 * @param chofer es el chofer a verificar si se encuentra registrado en la terminal.
 	 */
 	private boolean estanRegistrados(Camion camion, Chofer chofer) {
 		return empresasTransportistasRegistradas.stream()
