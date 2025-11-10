@@ -140,21 +140,40 @@ class CamionTest {
         terminal.registrarCliente(consignee);
         terminal.registrarEmpresaTransportista(andreani);
         
-        // Exercise
+        // Exercise & Verify
         assertThrows(RuntimeException.class, () -> scaniaR580.transportarExportacionA(terminal, chofer));
 	}
 	
 	@Test
-	public void testRetirarseDeLaTerminalPortuaria() {
-		/*// Setup
+	public void testRetirarseImportacionExitoso() {
+		// Setup
         TerminalPortuaria terminal = mock(TerminalPortuaria.class);
-        Chofer chofer = mock(Chofer.class);
-        Cliente consignee = mock(Cliente.class);
+        Chofer chofer = new Chofer("Jose Fernandez", "38.091.105");
+        Cliente consignee = new Consignee("Roberto Paniagua");
 
         // Exercise
         volvoFH460.retirarImportacionDe(terminal, chofer, consignee);
         
         // Verify
-        verify(terminal).retirarImportacion(volvoFH460, chofer, consignee);*/
+        verify(terminal).retirarImportacion(volvoFH460, chofer, consignee);
+	}
+	
+	@Test
+	public void testRetirarseImportacionFallido() {
+		// Setup
+        TerminalPortuaria terminal = mock(TerminalPortuaria.class);
+        
+        Cliente consignee = mock(Cliente.class);
+        Chofer chofer = mock(Chofer.class);
+        
+        Container container = mock(Container.class);
+        Viaje viaje = mock(Viaje.class);
+        Orden orden = new OrdenDeExportacion(volvoFH460, chofer, container, viaje);
+        
+        // Exercise
+        volvoFH460.cambiarOrdenActualPor(orden);
+        
+        // Verify
+        assertThrows(RuntimeException.class, () -> volvoFH460.retirarImportacionDe(terminal, chofer, consignee));
 	}
 }

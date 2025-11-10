@@ -76,7 +76,7 @@ public class Camion {
 	 */
 	private void validarTransportarExportacion() {
 		if(this.estaDisponible()) {
-			new RuntimeException("No puede transportar niguna exportación porque no tiene cargada una orden para ello.");
+			throw new RuntimeException("No puede transportar niguna exportación porque no tiene cargada una orden para ello.");
 		}
 	}
 	
@@ -96,7 +96,7 @@ public class Camion {
 	 */
 	private void validarRetirarImportacion() {
 		if(!this.estaDisponible()) {
-			new RuntimeException("No puede retirar la importación porque ya se encuentra cargado con una orden.");
+			throw new RuntimeException("No puede retirar la importación porque ya se encuentra cargado con una orden.");
 		}
 	}
 	

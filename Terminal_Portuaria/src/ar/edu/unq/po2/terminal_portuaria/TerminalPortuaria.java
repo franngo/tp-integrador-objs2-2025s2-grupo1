@@ -203,7 +203,7 @@ public class TerminalPortuaria {
 	 */
 	private void validarRegistrarExportacion(Orden orden, Camion camion, Chofer chofer, Cliente consignee) {
 		if(!this.cumpleHorarioExportacion(orden) || !this.cumpleIngresoExportacion(orden, camion, chofer, consignee)) {
-			new RuntimeException("No se encuentra en horario de exportación, o bien el camion y/o el chofer no estan registrados en la Terminal.");
+			throw new RuntimeException("No se encuentra en horario de exportación, o bien el camion y/o el chofer no estan registrados en la Terminal.");
 		}
 	}
 	
