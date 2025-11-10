@@ -81,32 +81,38 @@ public class TerminalPortuaria {
 	
 	
 	/**
-	 * 
-	 * @param camion es el camion informado por el consignee que va a ingresar la carga.
-	 * @param chofer es el chofer informado por el consignee que va a ingresar la carga.
+	 * Retira la importación la orden del consignee dado que se encuentra en la terminal, en base al camión y chofer dado.
+	 * @param camion es el camion informado por el consignee que va a retirar la carga.
+	 * @param chofer es el chofer informado por el consignee que va a retirar la carga.
 	 * @param consignee es el dueño de la carga a retirar.
 	 */
 	public void retirarImportacion(Camion camion, Chofer chofer, Cliente consignee) {
 		this.validarRetirarImportacion(camion, chofer, consignee);
 		
-		
 		// Desglose de conceptos.
 	}
 	
 	
-	public void validarRetirarImportacion(Camion camion, Chofer chofer, Cliente consignee) {
-		if(this.tieneOrdenDeImportacionParaRetirar(consignee) && this.) {
-			throw new RuntimeException("");
+	private void validarRetirarImportacion(Camion camion, Chofer chofer, Cliente consignee) {
+		if(this.tieneOrdenDeImportacionParaRetirar(consignee) && this.estanRegistradosParaIngresar(camion, chofer, consignee)) {
+			throw new RuntimeException("No puede retirar ninguna exportación, ya que el consignee no tiene ninguna y/o no se encuentran registrados.");
 		}
-	}	
-	
+	}
 	
 	/**
-	 * Indica si tiene registrados en la terminal el camion y chofer que se encuentran en la orden dada.
-	 * @param orden es la orden que se toma de referencia para evaluar si cumple con el transporte asociado a la misma.
-	 * @param camion es el camion informado por el consignee que va a ingresar la carga.
-	 * @param chofer es el chofer informado por el consignee que va a ingresar la carga.
-	 * @param consignee es el dueño de la carga.
+	 * Indica si el consignee dado tiene una orden de importación registrada en la terminal.
+	 * @param consignee es el consignee a verificar si se tiene una orden de importación registrada en la terminal.
+	 */
+	public boolean tieneOrdenDeImportacionParaRetirar(Cliente consignee) {
+		return ordenesDeImportacion.stream()
+								   .anyMatch(o -> consignee.equals(o.getConsignee()));
+	}
+	
+	/**
+	 * Indica si tiene registrados en la terminal el camion, chofer y el consignee dados.
+	 * @param camion es el camion a verificar si se encuentra registrado en la terminal.
+	 * @param chofer es el chofer a verificar si se encuentra registrado en la terminal.
+	 * @param consignee es el consignee a verificar si se encuentra registrado en la terminal.
 	 */
 	private boolean estanRegistradosParaIngresar(Camion camion, Chofer chofer, Cliente consignee) {
 		return this.estaRegistradoCamionYChofer(camion, chofer) && this.estaRegistradoCliente(consignee);
@@ -124,6 +130,7 @@ public class TerminalPortuaria {
 	
 	/**
 	 * Indica si el cliente dado se encuentra registrado en la terminal.
+	 * @param cliente es el cliente a verificar si se encuentra registrado en la terminal.
 	 */
 	private boolean estaRegistradoCliente(Cliente cliente) {
 		return clientesRegistrados.contains(cliente);
