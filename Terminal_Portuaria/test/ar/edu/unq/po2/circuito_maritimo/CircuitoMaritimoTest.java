@@ -102,6 +102,34 @@ public class CircuitoMaritimoTest {
 	@Test
 	public void tiempoHastaTerminal() {
 		
+		when(tramo1.getTerminalOrigen()).thenReturn(terminal1);
+		when(tramo1.getTerminalDestino()).thenReturn(terminal2);
+		
+		when(tramo2.getTerminalOrigen()).thenReturn(terminal2);
+		when(tramo2.getTerminalDestino()).thenReturn(terminal3);
+		
+		when(tramo3.getTerminalOrigen()).thenReturn(terminal3);
+		when(tramo3.getTerminalDestino()).thenReturn(terminal4);
+		
+		when(tramo4.getTerminalOrigen()).thenReturn(terminal4);
+		when(tramo4.getTerminalDestino()).thenReturn(terminal5);
+		
+		circuito = new CircuitoMaritimo(ts);
+		
+		TerminalPortuaria terminal6 = mock(TerminalPortuaria.class);
+		
+		assertThrows(RuntimeException.class, () -> { circuito.tiempoHastaTerminal(terminal6); } );
+		
+		when(tramo1.getTiempoTotal()).thenReturn(Duration.ofHours(3));
+		when(tramo2.getTiempoTotal()).thenReturn(Duration.ofHours(4));
+		when(tramo3.getTiempoTotal()).thenReturn(Duration.ofHours(4));
+		when(tramo4.getTiempoTotal()).thenReturn(Duration.ofHours(3));
+		
+		assertEquals(Duration.ofHours(3), circuito.tiempoHastaTerminal(terminal2));
+		assertEquals(Duration.ofHours(7), circuito.tiempoHastaTerminal(terminal3));
+		assertEquals(Duration.ofHours(11), circuito.tiempoHastaTerminal(terminal4));
+		assertEquals(Duration.ofHours(14), circuito.tiempoHastaTerminal(terminal5));
+		
 	}
 	
 	@Test
