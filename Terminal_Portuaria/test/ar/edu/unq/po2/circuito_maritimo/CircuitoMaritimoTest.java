@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,9 @@ public class CircuitoMaritimoTest {
 	//SUT
 	CircuitoMaritimo circuito;
 	
+	//auxiliar
+	List<Tramo> ts = new ArrayList<Tramo>();
+	
 	@BeforeEach
 	public void setUp() {
 		
@@ -42,46 +46,56 @@ public class CircuitoMaritimoTest {
 		terminal4 = mock(TerminalPortuaria.class);
 		terminal5 = mock(TerminalPortuaria.class);
 		
+		ts.add(tramo1);
+		ts.add(tramo2);
+		ts.add(tramo3);
+		ts.add(tramo4);
 	}
 	
 	@Test
 	public void instanciacionDeCircuitoMaritimo() {
 		
-		List<Tramo> ts = new ArrayList<Tramo>();
 		when(tramo1.getTerminalOrigen()).thenReturn(terminal1);
 		when(tramo1.getTerminalDestino()).thenReturn(terminal2);
-		ts.add(tramo1);
+		
 		when(tramo2.getTerminalOrigen()).thenReturn(terminal2);
 		when(tramo2.getTerminalDestino()).thenReturn(terminal3);
-		ts.add(tramo2);
+		
 		when(tramo3.getTerminalOrigen()).thenReturn(terminal3);
 		when(tramo3.getTerminalDestino()).thenReturn(terminal4);
-		ts.add(tramo3);
+		
 		when(tramo4.getTerminalOrigen()).thenReturn(terminal4);
 		when(tramo4.getTerminalDestino()).thenReturn(terminal5);
-		ts.add(tramo4);
-		assertDoesNotThrow( () -> { circuito = new CircuitoMaritimo(ts); } );
 		
-		ts.clear();
+		assertDoesNotThrow( () -> { circuito = new CircuitoMaritimo(ts); } );
 		
 		when(tramo1.getTerminalOrigen()).thenReturn(terminal1);
 		when(tramo1.getTerminalDestino()).thenReturn(terminal2);
-		ts.add(tramo1);
+
 		when(tramo2.getTerminalOrigen()).thenReturn(terminal2);
 		when(tramo2.getTerminalDestino()).thenReturn(terminal3);
-		ts.add(tramo2);
+
 		when(tramo3.getTerminalOrigen()).thenReturn(terminal1); //ruptura de la secuencia 
 		when(tramo3.getTerminalDestino()).thenReturn(terminal4);
-		ts.add(tramo3);
+
 		when(tramo4.getTerminalOrigen()).thenReturn(terminal4);
 		when(tramo4.getTerminalDestino()).thenReturn(terminal5);
-		ts.add(tramo4);
+
 		assertThrows(RuntimeException.class, () -> { circuito = new CircuitoMaritimo(ts); } );
 		
 	}
 	
 	@Test
 	public void tiempoTotal() {
+		
+		circuito = new CircuitoMaritimo(ts);
+		
+		when(tramo1.getTiempoTotal()).thenReturn(Duration.ofHours(3));
+		when(tramo2.getTiempoTotal()).thenReturn(Duration.ofHours(4));
+		when(tramo3.getTiempoTotal()).thenReturn(Duration.ofHours(4));
+		when(tramo4.getTiempoTotal()).thenReturn(Duration.ofHours(3));
+		
+		assertEquals(Duration.ofHours(14), circuito.tiempoTotal());
 		
 	}
 	

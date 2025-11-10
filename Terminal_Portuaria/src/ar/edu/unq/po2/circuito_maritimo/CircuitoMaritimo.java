@@ -46,7 +46,9 @@ public class CircuitoMaritimo {
 	public Duration tiempoTotal() {
 		
 		Duration d = Duration.ZERO;
-		this.tramos.stream().forEach((t) -> d.plus(t.getTiempoTotal()));
+		for(Tramo t : this.tramos) {
+			d = d.plus(t.getTiempoTotal());
+		}
 		return d;
 		
 	}
@@ -66,7 +68,9 @@ public class CircuitoMaritimo {
 		
 		//Ahora, ya con esa lista, calculo la duración total de este segmento del Viaje.
 		Duration d = Duration.ZERO;
-		ts.stream().forEach((t) -> d.plus(t.getTiempoTotal()));
+		for(Tramo t : ts) {
+			d = d.plus(t.getTiempoTotal());
+		}
 		return d;
 		
 	}
