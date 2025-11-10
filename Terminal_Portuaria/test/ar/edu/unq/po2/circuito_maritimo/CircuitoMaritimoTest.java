@@ -55,6 +55,8 @@ public class CircuitoMaritimoTest {
 	@Test
 	public void instanciacionDeCircuitoMaritimo() {
 		
+		//caso sin error en la validación validarTramos()
+		
 		when(tramo1.getTerminalOrigen()).thenReturn(terminal1);
 		when(tramo1.getTerminalDestino()).thenReturn(terminal2);
 		
@@ -68,6 +70,8 @@ public class CircuitoMaritimoTest {
 		when(tramo4.getTerminalDestino()).thenReturn(terminal5);
 		
 		assertDoesNotThrow( () -> { circuito = new CircuitoMaritimo(ts); } );
+		
+		//caso con error en la validación validarTramos()
 		
 		when(tramo1.getTerminalOrigen()).thenReturn(terminal1);
 		when(tramo1.getTerminalDestino()).thenReturn(terminal2);
@@ -116,9 +120,13 @@ public class CircuitoMaritimoTest {
 		
 		circuito = new CircuitoMaritimo(ts);
 		
+		//caso con error en la validación validarSiEsDestino()
+		
 		TerminalPortuaria terminal6 = mock(TerminalPortuaria.class);
 		
 		assertThrows(RuntimeException.class, () -> { circuito.tiempoHastaTerminal(terminal6); } );
+		
+		//caso sin error en la validación validarSiEsDestino()
 		
 		when(tramo1.getTiempoTotal()).thenReturn(Duration.ofHours(3));
 		when(tramo2.getTiempoTotal()).thenReturn(Duration.ofHours(4));
@@ -134,6 +142,15 @@ public class CircuitoMaritimoTest {
 	
 	@Test
 	public void precioTotal() {
+		
+		when(tramo1.getPrecioTramo()).thenReturn(70.0);
+		when(tramo2.getPrecioTramo()).thenReturn(30.0);
+		when(tramo3.getPrecioTramo()).thenReturn(50.0);
+		when(tramo4.getPrecioTramo()).thenReturn(10.5);
+		
+		circuito = new CircuitoMaritimo(ts);
+		
+		assertEquals(160.5, circuito.precioTotal());
 		
 	}
 	
