@@ -26,7 +26,11 @@ public class Viaje {
 		//TODO
 		//devuelvo cualquier cosa porque necesito la interfaz definida para poder mockear la clase en los tests
 		//Se calcularía en base a la fecha de salida y a los tramos del circuito marítimo asociado.
-		return LocalDateTime.now();
+		return this.fechaDeSalida.plus(circuito.tiempoTotal());
+	}
+	
+	public LocalDateTime fechaDeLlegadaATerminal(TerminalPortuaria terminal) {
+		return this.fechaDeSalida.plus(circuito.tiempoHastaTerminal(terminal));
 	}
 	
 	public TerminalPortuaria puertoDestino() {

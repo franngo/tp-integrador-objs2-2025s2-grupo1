@@ -1,8 +1,10 @@
 package ar.edu.unq.po2.circuito_maritimo;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
+import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 import ar.edu.unq.po2.tramo.Tramo;
 
 public class CircuitoMaritimo {
@@ -16,6 +18,10 @@ public class CircuitoMaritimo {
 	public Duration tiempoTotal() {
 		//TODO
 		//devuelvo cualquier cosa porque necesito la interfaz definida para poder mockear la clase en los tests
+		return Duration.ofHours(2);
+	}
+	
+	public Duration tiempoHastaTerminal(TerminalPortuaria terminal) {
 		return Duration.ofHours(2);
 	}
 	
