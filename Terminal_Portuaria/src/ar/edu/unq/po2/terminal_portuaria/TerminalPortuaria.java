@@ -73,20 +73,72 @@ public class TerminalPortuaria {
 		return new Coordenada(coordenada.getLatitud(), coordenada.getLongitud());
 	}
 
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
 	/**
-	 * 
-	 * @param camion
-	 * @param chofer
-	 * @param consignee
+	 * Retira la importación la orden del consignee dado que se encuentra en la terminal, en base al camión y chofer dado.
+	 * @param camion es el camion informado por el consignee que va a retirar la carga.
+	 * @param chofer es el chofer informado por el consignee que va a retirar la carga.
+	 * @param consignee es el dueño de la carga a retirar.
 	 */
 	public void retirarImportacion(Camion camion, Chofer chofer, Cliente consignee) {
-		// this.validarRetirarImportacion(camion, chofer, consignee);
-		
-		
-		// Desglose de conceptos.
+		this.validarRetirarImportacion(camion, chofer, consignee);
+		Orden orden = this.ordenDeConsignee(consignee);
+		this.actualizarServiciosParaRetirar(orden);
 	}
 	
+	/**
+	 * Valida si el consignee dado puede retirar una importación registrada a su nombre en la terminal, en base al camión y chofer dados.
+	 * @param camion es el camion informado por el consignee que va a retirar la carga.
+	 * @param chofer es el chofer informado por el consignee que va a retirar la carga.
+	 * @param consignee es el dueño de la carga a retirar.
+	 */
+	private void validarRetirarImportacion(Camion camion, Chofer chofer, Cliente consignee) {
+		if(this.tieneOrdenDeImportacionParaRetirar(consignee) && this.estanRegistradosParaIngresar(camion, chofer, consignee)) {
+			throw new RuntimeException("No puede retirar ninguna exportación, ya que el consignee no tiene ninguna y/o no se encuentran registrados.");
+		}
+	}
 	
+	/**
+	 * Indica si el consignee dado tiene una orden de importación registrada en la terminal.
+	 * @param consignee es el consignee a verificar si se tiene una orden de importación registrada en la terminal.
+	 */
+	private boolean tieneOrdenDeImportacionParaRetirar(Cliente consignee) {
+		return ordenesDeImportacion.stream()
+								   .anyMatch(o -> consignee.equals(o.getConsignee()));
+	}
+	
+	/**
+	 * Indica si tiene registrados en la terminal el camion, chofer y el consignee dados.
+	 * @param camion es el camion a verificar si se encuentra registrado en la terminal.
+	 * @param chofer es el chofer a verificar si se encuentra registrado en la terminal.
+	 * @param consignee es el consignee a verificar si se encuentra registrado en la terminal.
+	 */
+	private boolean estanRegistradosParaIngresar(Camion camion, Chofer chofer, Cliente consignee) {
+		return this.estaRegistradoCamionYChofer(camion, chofer) && this.estaRegistradoCliente(consignee);
+	}
+	
+	/**
+	 * Indica si tiene registrados en la terminal el camion y chofer que se encuentran en la orden dada.
+	 * @param camion es el camion a verificar si se encuentra registrado en la terminal.
+	 * @param chofer es el chofer a verificar si se encuentra registrado en la terminal.
+	 */
+	private boolean estaRegistradoCamionYChofer(Camion camion, Chofer chofer) {
+		return empresasTransportistasRegistradas.stream()
+												.anyMatch(e -> e.tieneCamionYChoferRegistrados(camion, chofer));
+	}
+	
+	/**
+	 * Indica si el cliente dado se encuentra registrado en la terminal.
+	 * @param cliente es el cliente a verificar si se encuentra registrado en la terminal.
+	 */
+	private boolean estaRegistradoCliente(Cliente cliente) {
+		return clientesRegistrados.contains(cliente);
+	}
 	
 	/**
 	 * Indica si la orden dada cumple con el plazo de almacenamiento que ofrece la Terminal Portuaria, el cual es de 24 horas almacenado en la misma.
@@ -99,24 +151,58 @@ public class TerminalPortuaria {
 		return fechaActual.isAfter(fechaLlegada) && fechaActual.isBefore(fechaMaxima);
 	}
 	
+	/**
+	 * Describe la orden de importacion del consignee dado que se encuentra registrada en la terminal.
+	 * @param consignee es el dueño de la carga.
+	 */
+	private Orden ordenDeConsignee(Cliente consignee) {
+		return ordenesDeImportacion.stream()
+								   .filter(o -> consignee.equals(o.getConsignee()))
+								   .findFirst()
+								   .get();
+	}
 	
+	/**
+	 * Describe la orden dada después de actualizarle los servicios al momento de ser retirada (si hace falta).
+	 * @param orden es la orden a actualizarle los servicios.
+	 */
+	private Orden actualizarServiciosParaRetirar(Orden orden) {
+		Orden ordenResultante = orden;
+		
+		if(this.cumplePlazoAlmacenamientoGratuito(orden)) {
+			orden.eliminarServicioExcedente();
+		}
+			
+		return ordenResultante;
+	}
+	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	
 	/**
 	 * Registra como exportación en la Terminal Portuaria la orden dada.
 	 * @param orden es la orden a ser registrada como exportación en la Terminal Portuaria.
+	 * @param camion es el camion informado por el consignee que va a ingresar la carga.
+	 * @param chofer es el chofer informado por el consignee que va a ingresar la carga.
+	 * @param consignee es el dueño de la carga.
 	 */
-	public void registrarExportacion(Orden orden) {
-		this.validarRegistrarExportacion(orden);
+	public void registrarExportacion(Orden orden, Camion camion, Chofer chofer, Cliente consignee) {
+		this.validarRegistrarExportacion(orden, camion, chofer, consignee);
 		this.ordenesDeExportacion.add(orden);
 	}
 
 	/**
 	 * Valida si la orden dada puede registrarse como exportación.
 	 * @param orden es la orden a ser validada como exportación.
+	 * @param camion es el camion informado por el consignee que va a ingresar la carga.
+	 * @param chofer es el chofer informado por el consignee que va a ingresar la carga.
+	 * @param consignee es el dueño de la carga. 
 	 */
-	private void validarRegistrarExportacion(Orden orden) {
-		if(!this.cumpleHorarioExportacion(orden) || !this.cumpleElTransporte(orden)) {
+	private void validarRegistrarExportacion(Orden orden, Camion camion, Chofer chofer, Cliente consignee) {
+		if(!this.cumpleHorarioExportacion(orden) || !this.cumpleIngresoExportacion(orden, camion, chofer, consignee)) {
 			new RuntimeException("No se encuentra en horario de exportación, o bien el camion y/o el chofer no estan registrados en la Terminal.");
 		}
 	}
@@ -135,19 +221,31 @@ public class TerminalPortuaria {
 	/**
 	 * Indica si tiene registrados en la Terminal el camion y chofer que se encuentran en la orden dada.
 	 * @param orden es la orden que se toma de referencia para evaluar si cumple con el transporte asociado a la misma.
+	 * @param camion es el camion informado por el consignee que va a ingresar la carga.
+	 * @param chofer es el chofer informado por el consignee que va a ingresar la carga.
+	 * @param consignee es el dueño de la carga.
 	 */
-	private boolean cumpleElTransporte(Orden orden) {
-		Camion camion = orden.getCamion();
-		Chofer chofer = orden.getChofer();
-		return empresasTransportistasRegistradas.stream()
-												.anyMatch(e -> e.tieneCamionYChoferRegistrados(camion, chofer));
+	private boolean cumpleIngresoExportacion(Orden orden, Camion camion, Chofer chofer, Cliente consignee) {
+		return this.sonLosInformadosPorElConsignee(orden, camion, chofer, consignee) && 
+			   this.estanRegistradosParaIngresar(camion, chofer, consignee);
+	}
+	
+	/**
+	 * Indica si el cliente dado se encuentra registrado en la terminal.
+	 */
+	private boolean sonLosInformadosPorElConsignee(Orden orden, Camion camion, Chofer chofer, Cliente consignee) {
+		Camion camionOrden = orden.getCamion();
+		Chofer choferOrden = orden.getChofer();
+		Cliente consigneeOrden = orden.getConsignee();
+		return camionOrden.equals(camion) && choferOrden.equals(chofer) && consigneeOrden.equals(consignee);
 	}
 	
 	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	
-	
-
 	/**
 	 * Registra la empresa transportista dada en la Terminal Portuaria.
 	 * @param empresaTransportista es la empresa transportista a registrar en la Terminal Portuaria.
@@ -217,10 +315,9 @@ public class TerminalPortuaria {
 	/**
 	 * Genera reportes que unicamente tienen cargada la información de las importaciones.
 	 * Se debería llamar después de descargar los containers de importaciones del buque.
-	 * @param buque...
-	 * por qué protected y no private?
+	 * @param buque es el buque del que se toma como referencia para las ordenes de importación.
 	 */
-	protected Map<String, Reporte> generarReportesConImportaciones(Buque buque) {
+	private Map<String, Reporte> generarReportesConImportaciones(Buque buque) {
 		List<Orden> ordenes = ordenesDeImportacion.stream()
 												  .filter(o -> buque.getOrdenes().contains(o))
 												  .toList();
@@ -228,16 +325,12 @@ public class TerminalPortuaria {
 	}
 	
 	/**
-	 * Agrega la información de las exportaciones a los Reportes pasados y los guarda en la lista de reportes de la 
-	   terminal gestionada (debido a que ya son considerados Reportes completos).
+	 * Agrega la información de las exportaciones a los Reportes pasados y los guarda en la lista de reportes de la Terminal Portuaria.
 	 * Se debería llamar después de cargar los containers de exportaciones al buque.
-	 * Se le deben pasar por parámetro lo que devuelve el método generarReportesConImportaciones(), que son los reportes que 
- 	   tienen las importaciones cargadas, y a estos se les agregará la información de las exportaciones.
-   	 * por qué protected y no private?
-	 * @param buque...
-	 * @param Map<String, Reporte>
+	 * @param buque es el buque del que se toma como referencia para las ordenes de exportación.
+	 * @param Map<String, Reporte> son los reportes que tienen las importaciones cargadas, los cuales se les agregará la información de las exportaciones.
 	 */
-	protected void finalizarReportesConExportaciones(Buque buque, Map<String, Reporte> reportes) {
+	private void finalizarReportesConExportaciones(Buque buque, Map<String, Reporte> reportes) {
 		List<Orden> ordenes = ordenesDeExportacion.stream()
 												  .filter(o -> buque.getOrdenes().contains(o))
 												  .toList();

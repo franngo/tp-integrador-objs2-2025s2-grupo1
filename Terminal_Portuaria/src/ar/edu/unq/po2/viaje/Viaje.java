@@ -1,6 +1,5 @@
 package ar.edu.unq.po2.viaje;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import ar.edu.unq.po2.buque.Buque;

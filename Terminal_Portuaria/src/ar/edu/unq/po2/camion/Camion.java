@@ -64,10 +64,12 @@ public class Camion {
 	/**
 	 * Transporta la carga actual del camión hacia la terminal portuaria dada para ser registrada como exportación.
 	 * @param terminalPortuaria es la terminal portuaria a la que ingresa el camión, dejando su carga en el lugar para ser registrada como exportación.
+	 * @param chofer es el chofer encargado de manejar el camion hacia la terminal portuaria dada.
 	 */
-	public void transportarExportacionA(TerminalPortuaria terminalPortuaria) {
+	public void transportarExportacionA(TerminalPortuaria terminalPortuaria, Chofer chofer) {
 		this.validarTransportarExportacion();
-		terminalPortuaria.registrarExportacion(ordenActual);
+		Cliente consignee = ordenActual.getConsignee();
+		terminalPortuaria.registrarExportacion(ordenActual, this, chofer, consignee);
 	}
 	
 	/**

@@ -7,10 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import ar.edu.unq.po2.camion.Camion;
 import ar.edu.unq.po2.chofer.Chofer;
-import ar.edu.unq.po2.container.*;
 import ar.edu.unq.po2.empresa_transportista.EmpresaTransportista;
-import ar.edu.unq.po2.orden.*;
-import ar.edu.unq.po2.viaje.Viaje;
 
 /**
 * Definen los tests unitarios de la clase TerminalPortuaria.
