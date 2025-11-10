@@ -18,80 +18,87 @@ public abstract class Orden {
 	private ConcreteVisitorContainer visitanteContainer;
 	private Camion camion;
 	private Chofer chofer;
-	private Container container;
+	private Container carga;
 	private Viaje viaje;
 	private boolean estaEnViaje;
 	private List<Servicio> serviciosACobrar;	
 	
+	
+	/**
+	 * @param camion es el camion que tiene la orden.
+	 * @param chofer es el chofer que tiene la orden.
+	 * @param container es la carga que tiene la orden.
+	 * @param viaje es el viaje que tiene la orden.
+	 */	
 	public Orden(Camion camion, Chofer chofer, Container container, Viaje viaje) {
 		this.camion = camion;
 		this.chofer = chofer;
-		this.container = container;
-		this.viaje = viaje;
+		this.carga  = container;
+		this.viaje  = viaje;
 		this.estaEnViaje = false;
 		this.serviciosACobrar = new ArrayList<Servicio>();
 	}
 
 	/**
-	 * 
+	 * Describe la fecha de salida del viaje que tiene la orden.
 	 */	
 	public LocalDateTime fechaDeSalida() {
 		return viaje.fechaDeSalida();
 	}
 	
 	/**
-	 * 
+	 * Describe la fecha de llegada del viaje que tiene la orden.
 	 */	
 	public LocalDateTime fechaDeLlegada() {
 		return viaje.fechaDeLlegada();
 	}
 
 	/**
-	 * 
+	 * Describe el camion que tiene la orden.
 	 */	
 	public Camion getCamion() {
 		return camion;
 	}
 
 	/**
-	 * 
+	 * Describe el chofer que tiene la orden.
 	 */	
 	public Chofer getChofer() {
 		return chofer;
 	}
 	
 	/**
-	 * 
+	 * Describe el container que tiene la orden.
 	 */
 	public Container getCarga() {
-		return this.container;
+		return this.carga;
 	}
 
 	/**
-	 * 
+	 * Describe el consignee (el dueño de la carga) que tiene la orden.
 	 */	
 	public Cliente getConsignee() {
-		return container.getDuenioConsignee();
+		return carga.getDuenioConsignee();
 	}
 	
 	/**
-	 * 
+	 * Describe los servicios que tiene la orden.
 	 */
     public List<Servicio> getServiciosOrden(){
     	return new ArrayList<Servicio>(serviciosACobrar);
     }
 	
 	/**
-	 * 
+	 * Crea los servicios a cobrar en la orden en base a la carga que tiene.
 	 */
 	public void crearServiciosACobrar() {
 		this.validarCrearServiciosACobrar();
-      	List<Servicio> serviciosACobrar = container.acceptVisitor(visitanteContainer);
+      	List<Servicio> serviciosACobrar = carga.acceptVisitor(visitanteContainer);
 		serviciosACobrar.addAll(serviciosACobrar);
 	}
 	
 	/**
-	 * 
+	 * Valida la creación de servicios a cobrar en la orden.
 	 */
 	private void validarCrearServiciosACobrar() {
 		if(!serviciosACobrar.isEmpty()) {
@@ -99,5 +106,8 @@ public abstract class Orden {
 		}
 	}
 	
+	/**
+	 * ...
+	 */
     abstract public String accept(VisitorReporte visitor);
 }

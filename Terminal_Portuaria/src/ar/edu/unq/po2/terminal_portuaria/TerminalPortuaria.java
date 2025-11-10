@@ -75,6 +75,9 @@ public class TerminalPortuaria {
 
 	/**
 	 * 
+	 * @param camion
+	 * @param chofer
+	 * @param consignee
 	 */
 	public void retirarImportacion(Camion camion, Chofer chofer, Cliente consignee) {
 		// this.validarRetirarImportacion(camion, chofer, consignee);
