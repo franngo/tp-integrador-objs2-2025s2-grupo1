@@ -11,22 +11,36 @@ public class CircuitoMaritimo {
 	
 	private List<Tramo> tramos;
 	
-	//recordar realizar chequeo sobre la lista de Tramos recibida (deben tener sentido)
-	//puede ser con método privado que se llama al principio del constructor en el que se analiza la lista de Tramos.
+	//////////////////////////////////////////////CONSTRUCTOR///////////////////////////////////////////////////
+	
 	public CircuitoMaritimo(List<Tramo> tramos) {
+		
+		this.validarTramos(tramos);
 		this.tramos = tramos;
+		
 	}
 	
+	private void validarTramos(List<Tramo> tramos) {
+		
+		if(tramos.size()>3) { ///¿cómo armar esta validación?...
+			throw new RuntimeException("");
+		}
+		
+	}
+	
+	//////////////////////////////////////////////CONSTRUCTOR///////////////////////////////////////////////////
+	
 	public Duration tiempoTotal() {
+		
 		Duration d = Duration.ZERO;
 		this.tramos.stream().forEach((t) -> d.plus(t.getTiempoTotal()));
 		return d;
+		
 	}
 	
 	public Duration tiempoHastaTerminal(TerminalPortuaria terminal) {
-		if(this.tramos.stream().noneMatch((t) -> t.getTerminalDestino().equals(terminal))) {
-			throw new RuntimeException("Dicha terminal no es un destino de este circuito marítimo");
-		}
+		
+		this.validarSiEsDestino(terminal);
 		
 		//Primero consigo la lista de tramos hasta la terminal deseada.
 		List<Tramo> ts = new ArrayList<Tramo>();
@@ -41,10 +55,21 @@ public class CircuitoMaritimo {
 		Duration d = Duration.ZERO;
 		ts.stream().forEach((t) -> d.plus(t.getTiempoTotal()));
 		return d;
+		
+	}
+	
+	private void validarSiEsDestino(TerminalPortuaria terminal) {
+		
+		if(this.tramos.stream().noneMatch((t) -> t.getTerminalDestino().equals(terminal))) {
+			throw new RuntimeException("Dicha terminal no es un destino de este circuito marítimo");
+		}
+		
 	}
 	
 	public double precioTotal() {
+		
 		return this.tramos.stream().map((t) -> t.getPrecioTramo()).mapToDouble(Double::doubleValue).sum();
+		
 	}
 	
 	/*
@@ -54,11 +79,15 @@ public class CircuitoMaritimo {
 	 * diferentes del circuito es de 3.
 	 */
 	public int cantidadDeTerminales() {
+		
 		return this.tramos.size()+1;
+		
 	}
 	
 	public TerminalPortuaria puertoDestino() {
+		
 		return this.tramos.getLast().getTerminalDestino();
+		
 	}
 	
 }	
