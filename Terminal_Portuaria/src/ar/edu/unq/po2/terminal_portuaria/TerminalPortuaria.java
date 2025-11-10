@@ -88,11 +88,18 @@ public class TerminalPortuaria {
 	 */
 	public void retirarImportacion(Camion camion, Chofer chofer, Cliente consignee) {
 		this.validarRetirarImportacion(camion, chofer, consignee);
+		Orden orden = this.ordenDeConsignee(consignee);
+		this.actualizarServiciosRetiroDeImportacion(orden);
 		
-		// Desglose de conceptos.
+		
 	}
 	
-	
+	/**
+	 * Valida si el consignee dado puede retirar una importación registrada a su nombre en la terminal, en base al camión y chofer dados.
+	 * @param camion es el camion informado por el consignee que va a retirar la carga.
+	 * @param chofer es el chofer informado por el consignee que va a retirar la carga.
+	 * @param consignee es el dueño de la carga a retirar.
+	 */
 	private void validarRetirarImportacion(Camion camion, Chofer chofer, Cliente consignee) {
 		if(this.tieneOrdenDeImportacionParaRetirar(consignee) && this.estanRegistradosParaIngresar(camion, chofer, consignee)) {
 			throw new RuntimeException("No puede retirar ninguna exportación, ya que el consignee no tiene ninguna y/o no se encuentran registrados.");
@@ -103,7 +110,7 @@ public class TerminalPortuaria {
 	 * Indica si el consignee dado tiene una orden de importación registrada en la terminal.
 	 * @param consignee es el consignee a verificar si se tiene una orden de importación registrada en la terminal.
 	 */
-	public boolean tieneOrdenDeImportacionParaRetirar(Cliente consignee) {
+	private boolean tieneOrdenDeImportacionParaRetirar(Cliente consignee) {
 		return ordenesDeImportacion.stream()
 								   .anyMatch(o -> consignee.equals(o.getConsignee()));
 	}
@@ -147,12 +154,37 @@ public class TerminalPortuaria {
 		return fechaActual.isAfter(fechaLlegada) && fechaActual.isBefore(fechaMaxima);
 	}
 	
+	/**
+	 * Describe la orden de importacion del consignee dado que se encuentra registrada en la terminal.
+	 * @param consignee es el dueño de la carga.
+	 */
+	private Orden ordenDeConsignee(Cliente consignee) {
+		return ordenesDeImportacion.stream()
+								   .filter(o -> consignee.equals(o.getConsignee()))
+								   .findFirst()
+								   .get();
+	}
+	
+	/**
+	 * Describe la orden dada después de actualizarle los servicios al momento de ser retirada.
+	 * @param orden es la orden a actualizarle los servicios.
+	 */
+	private Orden actualizarServiciosRetiroDeImportacion(Orden orden) {
+		Orden ordenResultante;
+		
+		if(this.cumpleHorarioExportacion(orden)) {
+			ordenResultante = orden;
+		} else {
+			ordenResulante
+		}
+			
+		return ordenResultante;
+	}
 	
 	
-	
-	
-	
-	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	
 	/**
