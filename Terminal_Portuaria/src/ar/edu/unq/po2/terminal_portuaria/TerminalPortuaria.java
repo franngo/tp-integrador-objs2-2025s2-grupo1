@@ -105,18 +105,24 @@ public class TerminalPortuaria {
 	/**
 	 * Registra como exportación en la Terminal Portuaria la orden dada.
 	 * @param orden es la orden a ser registrada como exportación en la Terminal Portuaria.
+	 * @param camion es el camión que transporta la orden.
+	 * @param chofer es el chofer encargado de manejar el camión.
+	 * @param consignee es el dueño de la carga.
 	 */
-	public void registrarExportacion(Orden orden) {
-		this.validarRegistrarExportacion(orden);
+	public void registrarExportacion(Orden orden, Camion camion, Chofer chofer, Cliente consignee) {
+		this.validarRegistrarExportacion(orden, camion, chofer, consignee);
 		this.ordenesDeExportacion.add(orden);
 	}
 
 	/**
 	 * Valida si la orden dada puede registrarse como exportación.
 	 * @param orden es la orden a ser validada como exportación.
+	 * @param camion
+	 * @param chofer
+	 * @param consignee 
 	 */
-	private void validarRegistrarExportacion(Orden orden) {
-		if(!this.cumpleHorarioExportacion(orden) || !this.cumpleElTransporte(orden)) {
+	private void validarRegistrarExportacion(Orden orden, Camion camion, Chofer chofer, Cliente consignee) {
+		if(!this.cumpleHorarioExportacion(orden) || !this.cumpleElTransporte(orden, camion, chofer, consignee)) {
 			new RuntimeException("No se encuentra en horario de exportación, o bien el camion y/o el chofer no estan registrados en la Terminal.");
 		}
 	}
@@ -135,19 +141,28 @@ public class TerminalPortuaria {
 	/**
 	 * Indica si tiene registrados en la Terminal el camion y chofer que se encuentran en la orden dada.
 	 * @param orden es la orden que se toma de referencia para evaluar si cumple con el transporte asociado a la misma.
+	 * @param camion
+	 * @param chofer
+	 * @param consignee
 	 */
-	private boolean cumpleElTransporte(Orden orden) {
-		Camion camion = orden.getCamion();
-		Chofer chofer = orden.getChofer();
+	private boolean cumpleElTransporte(Orden orden, Camion camion, Chofer chofer, Cliente consignee) {
+		Camion camionOrden = orden.getCamion();
+		Chofer choferOrden = orden.getChofer();
+		Cliente consigneeOrden = orden.getConsignee();
+		
+		return camionOrden.equals(camion) && choferOrden.equals(chofer) && consigneeOrden.equals(consignee) && this.estanRegistrados(camion, chofer);
+	}
+	
+	/**
+	 * Indica si tiene registrados en la Terminal el camion y chofer que se encuentran en la orden dada.
+	 * @param camion
+	 * @param chofer
+	 */
+	private boolean estanRegistrados(Camion camion, Chofer chofer) {
 		return empresasTransportistasRegistradas.stream()
 												.anyMatch(e -> e.tieneCamionYChoferRegistrados(camion, chofer));
 	}
 	
-	
-	
-	
-	
-
 	/**
 	 * Registra la empresa transportista dada en la Terminal Portuaria.
 	 * @param empresaTransportista es la empresa transportista a registrar en la Terminal Portuaria.
