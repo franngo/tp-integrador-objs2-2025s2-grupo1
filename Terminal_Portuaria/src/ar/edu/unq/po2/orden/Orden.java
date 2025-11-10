@@ -15,6 +15,11 @@ import ar.edu.unq.po2.servicio.Servicio;
 import ar.edu.unq.po2.servicio.ServicioExcedente;
 import ar.edu.unq.po2.viaje.Viaje;
 
+/**
+* Describe una orden.
+* @author Benjamin Maldonado & Matias Sanchez.
+*/
+
 public abstract class Orden {
 	private ConcreteVisitorContainer visitanteContainer;
 	private Camion camion;
