@@ -91,17 +91,19 @@ class CamionTest {
         TerminalPortuaria terminal = mock(TerminalPortuaria.class);
         Orden ordenS = mock(Orden.class);
         Orden ordenV = mock(Orden.class);
+        Chofer chofer = mock(Chofer.class);
+        Cliente consignee = mock(Cliente.class);
         
         // Exercise
         scaniaR580.cambiarOrdenActualPor(ordenS);
         volvoFH460.cambiarOrdenActualPor(ordenV);
         
-        scaniaR580.transportarExportacionA(terminal);
-        volvoFH460.transportarExportacionA(terminal);
+        scaniaR580.transportarExportacionA(terminal, chofer);
+        volvoFH460.transportarExportacionA(terminal, chofer);
 
         // Verify
-        verify(terminal).registrarExportacion(scaniaR580.getOrdenActual());
-        verify(terminal).registrarExportacion(volvoFH460.getOrdenActual());
+        verify(terminal).registrarExportacion(scaniaR580.getOrdenActual(), scaniaR580, chofer, consignee);
+        verify(terminal).registrarExportacion(volvoFH460.getOrdenActual(), volvoFH460, chofer, consignee);
 	}
 	
 	@Test
