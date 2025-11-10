@@ -4,12 +4,23 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ar.edu.unq.po2.buque.Buque;
 import ar.edu.unq.po2.chofer.Chofer;
+import ar.edu.unq.po2.circuito_maritimo.CircuitoMaritimo;
+import ar.edu.unq.po2.cliente.Cliente;
+import ar.edu.unq.po2.cliente.Consignee;
+import ar.edu.unq.po2.container.*;
+import ar.edu.unq.po2.coordenada.Coordenada;
+import ar.edu.unq.po2.empresa_transportista.EmpresaTransportista;
 import ar.edu.unq.po2.orden.Orden;
+import ar.edu.unq.po2.orden.OrdenDeExportacion;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
+import ar.edu.unq.po2.viaje.Viaje;
 
 /**
 * Definen los tests unitarios de la clase Camion.
@@ -85,30 +96,84 @@ class CamionTest {
 	}
 
 	@Test
-	public void testIngresarALaTerminalPortuaria() {
+	public void testTransportarExportacionExitoso() {
 		// Setup
         TerminalPortuaria terminal = mock(TerminalPortuaria.class);
+        EmpresaTransportista andreani = new EmpresaTransportista();
+        
+        CircuitoMaritimo circuito = mock(CircuitoMaritimo.class);
+        Buque buque = mock(Buque.class);
+        Viaje viaje = new Viaje(LocalDateTime.now().plusHours(2), circuito, buque);
+
+        Cliente consignee = new Consignee("Roberto Paniagua");
+        Chofer chofer = new Chofer("Jose Fernandez", "38.091.105");
+        Container container = new Reefer(consignee, 1100, 4500, 3050, 25000, 15);
+        
+        Orden orden = new OrdenDeExportacion(scaniaR580, chofer, container, viaje);
+        
+        andreani.añadirCamion(scaniaR580);
+        andreani.añadirChofer(chofer);
+
+        terminal.registrarCliente(consignee);
+        terminal.registrarEmpresaTransportista(andreani);
         
         // Exercise
-        scaniaR580.ingresarA(terminal);
-        volvoFH460.ingresarA(terminal);
-
+        scaniaR580.cambiarOrdenActualPor(orden);
+        scaniaR580.transportarExportacionA(terminal, chofer);
+        
         // Verify
-        verify(terminal).ingresarCamion(scaniaR580);
-        verify(terminal).ingresarCamion(volvoFH460);
+        verify(terminal).registrarExportacion(scaniaR580.getOrdenActual(), scaniaR580, chofer, consignee);
 	}
 	
 	@Test
-	public void testRetirarseDeLaTerminalPortuaria() {
+	public void testTransportarExportacionFallido() {
 		// Setup
         TerminalPortuaria terminal = mock(TerminalPortuaria.class);
+        EmpresaTransportista andreani = new EmpresaTransportista();
+        
+        Cliente consignee = new Consignee("Roberto Paniagua");
+        Chofer chofer = new Chofer("Jose Fernandez", "38.091.105");
+        
+        andreani.añadirCamion(scaniaR580);
+        andreani.añadirChofer(chofer);
+
+        terminal.registrarCliente(consignee);
+        terminal.registrarEmpresaTransportista(andreani);
+        
+        // Exercise & Verify
+        assertThrows(RuntimeException.class, () -> scaniaR580.transportarExportacionA(terminal, chofer));
+	}
+	
+	@Test
+	public void testRetirarseImportacionExitoso() {
+		// Setup
+        TerminalPortuaria terminal = mock(TerminalPortuaria.class);
+        Chofer chofer = new Chofer("Jose Fernandez", "38.091.105");
+        Cliente consignee = new Consignee("Roberto Paniagua");
 
         // Exercise
-        scaniaR580.retirarseDe(terminal);
-        volvoFH460.retirarseDe(terminal);
+        volvoFH460.retirarImportacionDe(terminal, chofer, consignee);
         
         // Verify
-        verify(terminal).retirarCamion(scaniaR580);
-        verify(terminal).retirarCamion(volvoFH460);
+        verify(terminal).retirarImportacion(volvoFH460, chofer, consignee);
+	}
+	
+	@Test
+	public void testRetirarseImportacionFallido() {
+		// Setup
+        TerminalPortuaria terminal = mock(TerminalPortuaria.class);
+        
+        Cliente consignee = mock(Cliente.class);
+        Chofer chofer = mock(Chofer.class);
+        
+        Container container = mock(Container.class);
+        Viaje viaje = mock(Viaje.class);
+        Orden orden = new OrdenDeExportacion(volvoFH460, chofer, container, viaje);
+        
+        // Exercise
+        volvoFH460.cambiarOrdenActualPor(orden);
+        
+        // Verify
+        assertThrows(RuntimeException.class, () -> volvoFH460.retirarImportacionDe(terminal, chofer, consignee));
 	}
 }

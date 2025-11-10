@@ -11,7 +11,7 @@ import ar.edu.unq.po2.servicio.Servicio;
 public class Dry extends Container {
 	
     CargaBL cargaBL;
-	public Dry( CargaBL cargaBL) {
+	public Dry(CargaBL cargaBL) {
 		super(null, 0, 0, 0, 0);
 		this.cargaBL=cargaBL; 
 		this.idContainer=this.generarIdConteiner(duenioConsignee);

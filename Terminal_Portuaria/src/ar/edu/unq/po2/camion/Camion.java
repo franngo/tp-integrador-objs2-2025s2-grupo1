@@ -1,10 +1,12 @@
 package ar.edu.unq.po2.camion;
 
+import ar.edu.unq.po2.chofer.Chofer;
+import ar.edu.unq.po2.cliente.Cliente;
 import ar.edu.unq.po2.orden.Orden;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 /**
-* Describe a un camión con marca y modelo, su patente y la orden de lo que transporta (si transporta algo).
+* Describe un camión, el cual posee marca y modelo, patente y la orden de lo que transporta (si es que se encuentra transportando algo).
 * @author Benjamin Maldonado.
 */
 
@@ -24,21 +26,21 @@ public class Camion {
 	}
 	
 	/**
-	 * Describe la marca y modelo del camión.
+	 * Describe la marca y modelo del camión representado en un String.
 	 */
 	public String getMarcaYModelo() {
 		return this.marcaYModelo;
 	}
 
 	/**
-	 * Describe la combinación de letras y números de la placa de identificación del camión.
+	 * Describe la combinación de letras y números de la placa de identificación del camión representado en un String.
 	 */
 	public String getPatente() {
 		return this.patente;
 	}
 	
 	/**
-	 * Describe la orden actual de lo que transporta el camion actualmente (puede no transportar nada).
+	 * Describe la orden actual de lo que transporta el camion actualmente. Null si no transporta nada.
 	 */
 	public Orden getOrdenActual() {
 		return this.ordenActual;
@@ -53,26 +55,52 @@ public class Camion {
 
 	/**
 	 * Cambia la orden actual del camión por la orden dada por parámetro.
+	 * @param orden es la orden que el camión va a tener almacenada.
 	 */
-	public void cambiarOrdenActualPor(Orden nuevaOrden) {
-		this.ordenActual = nuevaOrden;
+	public void cambiarOrdenActualPor(Orden orden) {
+		this.ordenActual = orden;
 	}
 	
 	/**
-	 * Ingresa el camión de la terminal portuaria dada.
-	 * @param terminalPortuaria es la terminal portuaria a la que ingresa el camión.
+	 * Transporta la carga actual del camión hacia la terminal portuaria dada para ser registrada como exportación.
+	 * @param terminalPortuaria es la terminal portuaria a la que ingresa el camión, dejando su carga en el lugar para ser registrada como exportación.
+	 * @param chofer es el chofer encargado de manejar el camion hacia la terminal portuaria dada.
 	 */
-	public void ingresarA(TerminalPortuaria terminalPortuaria) {
-		terminalPortuaria.ingresarCamion(this);
+	public void transportarExportacionA(TerminalPortuaria terminalPortuaria, Chofer chofer) {
+		this.validarTransportarExportacion();
+		terminalPortuaria.registrarExportacion(this.getOrdenActual(), this, chofer, ordenActual.getConsignee());
 	}
 	
 	/**
-	 * Retira el camión de la terminal portuaria dada.
-	 * @param terminalPortuaria es la terminal portuaria de la que se retira el camión.
+	 * Valida que el camión puede transportar una exportación. Solo puede hacerlo si tiene un trabajo asignado.
 	 */
-	public void retirarseDe(TerminalPortuaria terminalPortuaria) {
-		terminalPortuaria.retirarCamion(this);
+	private void validarTransportarExportacion() {
+		if(this.estaDisponible()) {
+			throw new RuntimeException("No puede transportar niguna exportación porque no tiene cargada una orden para ello.");
+		}
 	}
+	
+	/**
+	 * Retira la carga que tiene que ir a buscar el camión de la terminal portuaria dada.
+	 * @param terminalPortuaria es la terminal portuaria de la que se retira el camión, cargando en el lugar lo que debe transportar.
+	 * @param chofer es el chofer encargado de manejar el camion hacia la terminal portuaria dada.
+	 * @param consignee es el cliente dueño de la orden que va a retirar el camión a la terminal portuaria dada.
+	 */
+	public void retirarImportacionDe(TerminalPortuaria terminalPortuaria, Chofer chofer, Cliente consignee) {
+		this.validarRetirarImportacion();
+		terminalPortuaria.retirarImportacion(this, chofer, consignee);
+	}
+	
+	/**
+	 * Valida que el camión puede retirar una importación. Solo puede hacerlo si está disponible.
+	 */
+	private void validarRetirarImportacion() {
+		if(!this.estaDisponible()) {
+			throw new RuntimeException("No puede retirar la importación porque ya se encuentra cargado con una orden.");
+		}
+	}
+	
+	// #################################### MÉTODOS AUXILIARES ################################## \\
 	
 	@Override
 	public boolean equals(Object object) {

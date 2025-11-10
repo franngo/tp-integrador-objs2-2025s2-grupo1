@@ -1,10 +1,12 @@
 package ar.edu.unq.po2.buque;
 
 import java.util.List;
+import java.util.Set;
 
 import ar.edu.unq.po2.buque.estadosBuque.EstadoBuque;
 import ar.edu.unq.po2.buque.estadosBuque.OutBound;
 import ar.edu.unq.po2.coordenada.Coordenada;
+import ar.edu.unq.po2.empresa_transportista.EmpresaTransportista;
 import ar.edu.unq.po2.orden.Orden;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 import ar.edu.unq.po2.viaje.Viaje;
@@ -15,6 +17,7 @@ import ar.edu.unq.po2.viaje.Viaje;
  *
  *
  * */
+
 public class Buque implements BuqueObservado{
 	
 	
@@ -23,6 +26,7 @@ public class Buque implements BuqueObservado{
     
     
     Viaje viajeActual = null;
+
     Coordenada posicionActual;
     
     TerminalPortuaria terminalAArribar; // el OBSERVER
@@ -85,6 +89,23 @@ public class Buque implements BuqueObservado{
 	
 	public TerminalPortuaria terminalAArribar() {
 		return terminalAArribar;
+	}
+    
+	
+	//Lo implementa Benja
+	public Set<EmpresaTransportista> getOrdenes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getNombre() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Orden getViajeActual() {
+		// TODO Auto-generated method stub
+		return null;
 	}
     
 

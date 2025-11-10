@@ -5,6 +5,8 @@ package ar.edu.unq.po2.coordenada;
  *Se ira agregando comportamiento a medida que se lo precise
  */
 
+import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
+
 public class Coordenada {
 
     private double latitud;
@@ -62,7 +64,24 @@ public class Coordenada {
     
 
 
-
-    }
-
-
+	// #################################### MÉTODOS AUXILIARES ################################## \\
+	
+	@Override
+	public boolean equals(Object object) {
+		return (this == object) || (this.esCoordenada(object) && (this.esElMismoQue(object)));
+	}
+	
+	private boolean esCoordenada(Object object) {
+		return object instanceof Coordenada;
+	}
+	
+	private boolean esElMismoQue(Object object) {
+		Coordenada coordenadaAComparar = (Coordenada) object;
+		return (this.getLatitud() == coordenadaAComparar.getLatitud()) && (this.getLongitud() == coordenadaAComparar.getLongitud());
+	}
+	
+	@Override
+	public int hashCode() {
+		return java.util.Objects.hash(getLatitud(), getLongitud());
+	}
+}
