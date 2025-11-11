@@ -74,13 +74,13 @@ public class GeneradorDeReportesTest {
 		when(ordenImp1.accept(visitorA)).thenReturn
 		("    			<li><p> Tipo: Tanque, ID: MARC9378524</p></li>\n");
 		when(ordenImp1.accept(visitorB)).thenReturn
-		("			<item>MARC9378524</item>");
+		("			<item>MARC9378524</item>\n");
 		
 		ordenImp2 = mock(OrdenDeImportacion.class);
 		when(ordenImp2.accept(visitorA)).thenReturn
 		("    			<li><p> Tipo: Refeer, ID: LUIS9378524</p></li>\n");
 		when(ordenImp2.accept(visitorB)).thenReturn
-		("			<item>LUIS9378524</item>");
+		("			<item>LUIS9378524</item>\n");
 		
 		
 		///////
@@ -89,13 +89,13 @@ public class GeneradorDeReportesTest {
 		when(ordenExp1.accept(visitorA)).thenReturn
 		("    			<li><p> Tipo: Tanque, ID: JULI9378524</p></li>\n");
 		when(ordenExp1.accept(visitorB)).thenReturn
-		("			<item>JULI9378524</item>");
+		("			<item>JULI9378524</item>\n");
 		
 		ordenExp2 = mock(OrdenDeExportacion.class);
 		when(ordenExp2.accept(visitorA)).thenReturn
 		("    			<li><p> Tipo: Refeer, ID: LAUR9378524</p></li>\n");
 		when(ordenExp2.accept(visitorB)).thenReturn
-		("			<item>LAUR9378524</item>");
+		("			<item>LAUR9378524</item>\n");
 		
 		///////
 		
@@ -110,6 +110,49 @@ public class GeneradorDeReportesTest {
 		//assertEquals("			<item>MARC9378524</item>", visitor.visitOrdenDeImportacion(ordenImp));
 		
 		Map<String, Reporte> rs = generador.generarReportesConImportaciones(buque, imps);
+		
+		///////
+		
+		assertEquals(3, rs.size());
+		
+		Reporte m1 = rs.get("muelle");
+		
+		assertEquals("Nombre del buque: " + "Buque argentino" +"\n"
+				+"Fecha de partida: " + "2007-12-03T10:15:30" + "\n"
+				+"Fecha de arribo: " + "2007-12-06T10:15:30" + "\n"
+				+"Contenedores descargados: " + "2" + "\n", m1.getTexto());
+		
+		///////
+		
+		Reporte m2 = rs.get("aduana");
+		
+		assertEquals("<html lang=\"en\">\n"
+				+ "    <head>\n"
+				+ "        <meta charset=\"utf-8\">\n"
+				+ "        <title>Reporte aduana</title>\n"
+				+ "    </head>\n"
+				+ "    <body>"
+				+ "	   		<h2>Nombre del buque: " + "Buque argentino" +"</h2>\n"
+				+ "    		<h1>Fecha de partida: " + "2007-12-03T10:15:30" + "</h1>\n"
+				+ "    		<h1>Fecha de arribo: " + "2007-12-06T10:15:30" + "</h1>\n"
+				+ "	   		<h2>Lista de contenedores (con su tipo y ID): </h2>\n"
+				+ "    		<ul>\n"
+				+ "    			<li><p> Tipo: Tanque, ID: MARC9378524</p></li>\n"
+				+ "    			<li><p> Tipo: Refeer, ID: LUIS9378524</p></li>\n", 
+				m2.getTexto());
+		
+		///////
+		
+		Reporte m3 = rs.get("buque");
+		
+		assertEquals("<report>\n"
+				+	  "		<import>\n"
+				+ "			<item>MARC9378524</item>\n"
+				+ "			<item>LUIS9378524</item>\n"
+				+	"		</import>\n",
+				m3.getTexto());
+		
+		///////
 		
 		List<Reporte> rs2 = generador.finalizarReportesConExportaciones(rs, exps);
 
