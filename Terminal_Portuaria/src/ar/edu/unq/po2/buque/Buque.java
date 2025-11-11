@@ -55,19 +55,19 @@ public class Buque implements BuqueObservado{
 
     public void avanzarHacia(double latitud, double longitud){
         posicionActual.nuevaPosicion(latitud,longitud);
-        this.actualizarEstado();
-        estadoBuque.notificarEstado(this.terminalAArribar());
+        this.notificarEstado();
+    	estadoBuque.actualizarSiSeRequiere();
+    
     }
     
-    
+    /*
     public void actualizarEstado(){
     	//nos mandamos a nosotros y a la terminaldonde debemos ir
-    	estadoBuque.actualizarSiSeRequiere();
-    }
     
-    public void notificarEstado(TerminalPortuaria terminalAArribar) {
-		terminalAArribar.actualizar(this);
-		
+    }*/
+    
+    public void notificarEstado() {
+        estadoBuque.notificarEstado(this.terminalAArribar());
 	}
 
 	public void iniciarViaje(Viaje viajeActual){
@@ -107,6 +107,8 @@ public class Buque implements BuqueObservado{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
     
 
    

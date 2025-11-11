@@ -19,7 +19,7 @@ public class Working extends EstadoBuque{
 
 	@Override
 	public void modificarEstadoBuque() {
-		// TODO Auto-generated method stub
+		miBuque.establecerEstado(new Departing(miBuque));
 		
 	}
 	@Override
