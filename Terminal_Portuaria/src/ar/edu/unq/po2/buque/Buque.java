@@ -92,7 +92,7 @@ public class Buque implements BuqueObservado{
 	}
     
 	
-	//Lo implementa Benja
+	//Lo implementan Benja y Franco
 	public Set<EmpresaTransportista> getOrdenes() {
 		// TODO Auto-generated method stub
 		return null;
