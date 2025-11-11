@@ -87,6 +87,10 @@ public abstract class Orden {
 		return carga.getDuenioConsignee();
 	}
 	
+	public Viaje getViaje() {
+		return this.viaje;
+	}
+	
 	/**
 	 * Describe los servicios que tiene la orden.
 	 */
