@@ -85,27 +85,27 @@ public class Buque implements BuqueObservado{
 		
 	}
 
-	
-	
 	public TerminalPortuaria terminalAArribar() {
 		return terminalAArribar;
 	}
     
+	public List<Orden> getOrdenesExportacion() {
+		return this.ordenesExportacion;
+	}
 	
-	//Lo implementa Benja
-	public Set<EmpresaTransportista> getOrdenes() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Orden> getOrdenesImportacion() {
+		return this.ordenesImportacion;
 	}
 
+	public Viaje getViajeActual() {
+		return this.viajeActual;
+	}
+	
+	//falta implementar
+	
 	public String getNombre() {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Orden getViajeActual() {
-		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}
     
 
