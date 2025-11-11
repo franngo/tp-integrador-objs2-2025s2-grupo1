@@ -13,6 +13,7 @@ import ar.edu.unq.po2.container.Container;
 import ar.edu.unq.po2.generadorDeReportes.VisitorReporte;
 import ar.edu.unq.po2.servicio.Servicio;
 import ar.edu.unq.po2.servicio.ServicioExcedente;
+import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 import ar.edu.unq.po2.viaje.Viaje;
 
 /**
@@ -46,20 +47,6 @@ public abstract class Orden {
 	}
 
 	/**
-	 * Describe la fecha de salida del viaje que tiene la orden.
-	 */	
-	public LocalDateTime fechaDeSalida() {
-		return viaje.fechaDeSalida();
-	}
-	
-	/**
-	 * Describe la fecha de llegada del viaje que tiene la orden.
-	 */	
-	public LocalDateTime fechaDeLlegada() {
-		return viaje.fechaDeLlegada();
-	}
-
-	/**
 	 * Describe el camion que tiene la orden.
 	 */	
 	public Camion getCamion() {
@@ -86,12 +73,41 @@ public abstract class Orden {
 	public Cliente getConsignee() {
 		return carga.getDuenioConsignee();
 	}
+
+	/**
+	 * Indica si la orden se encuentra en viaje o no.
+	 */	
+	public boolean getEstaEnViae() {
+		return estaEnViaje;
+	}
+	
+	/**
+	 * Modifica si la orden se encuentra en viaje o no mediante el valor booleano dado.
+	 */	
+	public void setEstaEnViaje(boolean valor) {
+		this.estaEnViaje = valor;
+	}
 	
 	/**
 	 * Describe los servicios que tiene la orden.
 	 */
     public List<Servicio> getServiciosOrden(){
     	return new ArrayList<Servicio>(serviciosACobrar);
+    }
+    
+    /**
+     * Describe la fecha de salida del viaje que tiene la orden.
+     */	
+    public LocalDateTime fechaDeSalida() {
+    	return viaje.fechaDeSalida();
+    }
+    
+    /**
+     * Describe la fecha de llegada del viaje que tiene la orden.
+     * @param terminalPortuaria es la terminal portuaria que se toma como fecha de llegada.
+     */	
+    public LocalDateTime fechaDeLlegadaA(TerminalPortuaria terminalPortuaria) {
+    	return viaje.fechaDeLlegadaATerminal(terminalPortuaria);
     }
 	
 	/**

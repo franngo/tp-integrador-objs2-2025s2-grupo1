@@ -1,5 +1,6 @@
 package ar.edu.unq.po2.terminal_portuaria;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -8,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ar.edu.unq.po2.buque.Buque;
+import ar.edu.unq.po2.buscador_de_viaje.Condicion;
 import ar.edu.unq.po2.camion.Camion;
 import ar.edu.unq.po2.chofer.Chofer;
 import ar.edu.unq.po2.circuito_maritimo.CircuitoMaritimo;
@@ -72,12 +74,6 @@ public class TerminalPortuaria {
 	public Coordenada getCoordenada() {
 		return new Coordenada(coordenada.getLatitud(), coordenada.getLongitud());
 	}
-
-	
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
 	
 	/**
 	 * Retira la importación la orden del consignee dado que se encuentra en la terminal, en base al camión y chofer dado.
@@ -87,8 +83,13 @@ public class TerminalPortuaria {
 	 */
 	public void retirarImportacion(Camion camion, Chofer chofer, Cliente consignee) {
 		this.validarRetirarImportacion(camion, chofer, consignee);
+		
 		Orden orden = this.ordenDeConsignee(consignee);
-		this.actualizarServiciosParaRetirar(orden);
+		this.actualizarServiciosParaRetirarSiHaceFalta(orden);
+		
+		
+		
+		ordenesDeImportacion.remove(orden);
 	}
 	
 	/**
@@ -116,10 +117,10 @@ public class TerminalPortuaria {
 	 * Indica si tiene registrados en la terminal el camion, chofer y el consignee dados.
 	 * @param camion es el camion a verificar si se encuentra registrado en la terminal.
 	 * @param chofer es el chofer a verificar si se encuentra registrado en la terminal.
-	 * @param consignee es el consignee a verificar si se encuentra registrado en la terminal.
+	 * @param cliente es el cliente a verificar si se encuentra registrado en la terminal.
 	 */
-	private boolean estanRegistradosParaIngresar(Camion camion, Chofer chofer, Cliente consignee) {
-		return this.estaRegistradoCamionYChofer(camion, chofer) && this.estaRegistradoCliente(consignee);
+	private boolean estanRegistradosParaIngresar(Camion camion, Chofer chofer, Cliente cliente) {
+		return this.estaRegistradoCamionYChofer(camion, chofer) && this.estaRegistradoCliente(cliente);
 	}
 	
 	/**
@@ -141,17 +142,6 @@ public class TerminalPortuaria {
 	}
 	
 	/**
-	 * Indica si la orden dada cumple con el plazo de almacenamiento que ofrece la Terminal Portuaria, el cual es de 24 horas almacenado en la misma.
-	 * @param orden es la orden a verificar si cumple con el plazo de almacenamiento gratuito.
-	 */
-	private boolean cumplePlazoAlmacenamientoGratuito(Orden orden) {
-		LocalDateTime fechaActual  = LocalDateTime.now(); 
-		LocalDateTime fechaLlegada = orden.fechaDeLlegada();
-		LocalDateTime fechaMaxima  = fechaLlegada.plusDays(1);
-		return fechaActual.isAfter(fechaLlegada) && fechaActual.isBefore(fechaMaxima);
-	}
-	
-	/**
 	 * Describe la orden de importacion del consignee dado que se encuentra registrada en la terminal.
 	 * @param consignee es el dueño de la carga.
 	 */
@@ -161,22 +151,30 @@ public class TerminalPortuaria {
 								   .findFirst()
 								   .get();
 	}
-	
+
 	/**
-	 * Describe la orden dada después de actualizarle los servicios al momento de ser retirada (si hace falta).
+	 * Describe la orden dada después de actualizarle los servicios al momento de ser retirada si hace falta.
 	 * @param orden es la orden a actualizarle los servicios.
 	 */
-	private Orden actualizarServiciosParaRetirar(Orden orden) {
-		Orden ordenResultante = orden;
-		
+	private Orden actualizarServiciosParaRetirarSiHaceFalta(Orden orden) {
 		if(this.cumplePlazoAlmacenamientoGratuito(orden)) {
 			orden.eliminarServicioExcedente();
 		}
-			
-		return ordenResultante;
+		return orden;
 	}
-	
 
+	/**
+	 * Indica si la orden dada cumple con el plazo de almacenamiento que ofrece la Terminal Portuaria, el cual es de 24 horas almacenado en la misma.
+	 * @param orden es la orden a verificar si cumple con el plazo de almacenamiento gratuito.
+	 */
+	private boolean cumplePlazoAlmacenamientoGratuito(Orden orden) {
+		LocalDateTime fechaActual  = LocalDateTime.now(); 
+		LocalDateTime fechaLlegada = orden.fechaDeLlegadaA(this);
+		LocalDateTime fechaMaxima  = fechaLlegada.plusDays(1);
+		return fechaActual.isAfter(fechaLlegada) && fechaActual.isBefore(fechaMaxima);
+	}
+
+	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -185,59 +183,62 @@ public class TerminalPortuaria {
 	/**
 	 * Registra como exportación en la Terminal Portuaria la orden dada.
 	 * @param orden es la orden a ser registrada como exportación en la Terminal Portuaria.
-	 * @param camion es el camion informado por el consignee que va a ingresar la carga.
-	 * @param chofer es el chofer informado por el consignee que va a ingresar la carga.
-	 * @param consignee es el dueño de la carga.
+	 * @param camion es el camion informado por el shipper que va a ingresar la carga.
+	 * @param chofer es el chofer informado por el shipper que va a ingresar la carga.
+	 * @param shipper es el que realiza la exportación.
 	 */
-	public void registrarExportacion(Orden orden, Camion camion, Chofer chofer, Cliente consignee) {
-		this.validarRegistrarExportacion(orden, camion, chofer, consignee);
+	public void registrarExportacion(Orden orden, Camion camion, Chofer chofer, Cliente shipper) {
+		this.validarRegistrarExportacion(orden, camion, chofer, shipper);
 		this.ordenesDeExportacion.add(orden);
 	}
 
 	/**
 	 * Valida si la orden dada puede registrarse como exportación.
 	 * @param orden es la orden a ser validada como exportación.
-	 * @param camion es el camion informado por el consignee que va a ingresar la carga.
-	 * @param chofer es el chofer informado por el consignee que va a ingresar la carga.
-	 * @param consignee es el dueño de la carga. 
+	 * @param camion es el camion informado por el shipper que va a ingresar la carga.
+	 * @param chofer es el chofer informado por el shipper que va a ingresar la carga.
+	 * @param shipper es el que realiza la exportación. 
 	 */
-	private void validarRegistrarExportacion(Orden orden, Camion camion, Chofer chofer, Cliente consignee) {
-		if(!this.cumpleHorarioExportacion(orden) || !this.cumpleIngresoExportacion(orden, camion, chofer, consignee)) {
-			throw new RuntimeException("No se encuentra en horario de exportación, o bien el camion y/o el chofer no estan registrados en la Terminal.");
+	private void validarRegistrarExportacion(Orden orden, Camion camion, Chofer chofer, Cliente shipper) {
+		if(!this.cumpleHorarioExportacion(orden) || !this.cumpleIngresoExportacion(orden, camion, chofer, shipper)) {
+			throw new RuntimeException("No se encuentra en horario de exportación, o no se ha informado correctamente quienes deberan ingresar a la terminal.");
 		}
 	}
 	
 	/**
 	 * Indica si la orden dada cumple el horario de exportación. Es decir, si se encuentra 3 horas antes de la hora de salida en el momento de consulta.
+	 * La fecha de salida de la orden siempre es respecto a esta terminal.
 	 * @param orden es la orden que se toma de referencia para evaluar si cumple con el horario de exportación.
 	 */
 	private boolean cumpleHorarioExportacion(Orden orden) {
-		LocalDateTime fechaActual  = LocalDateTime.now();
+		LocalDateTime fechaActual = LocalDateTime.now();
 		LocalDateTime fechaSalida = orden.fechaDeSalida();
 		LocalDateTime fechaMinimaPermitida = fechaSalida.minusHours(3);
 		return fechaActual.isAfter(fechaMinimaPermitida) && fechaActual.isBefore(fechaSalida);
 	}
 	
 	/**
-	 * Indica si tiene registrados en la Terminal el camion y chofer que se encuentran en la orden dada.
+	 * Indica si tiene registrados en la terminal el camion y chofer que se encuentran en la orden dada.
 	 * @param orden es la orden que se toma de referencia para evaluar si cumple con el transporte asociado a la misma.
-	 * @param camion es el camion informado por el consignee que va a ingresar la carga.
-	 * @param chofer es el chofer informado por el consignee que va a ingresar la carga.
-	 * @param consignee es el dueño de la carga.
+	 * @param camion es el camion informado por el shipper que va a ingresar la carga.
+	 * @param chofer es el chofer informado por el shipper que va a ingresar la carga.
+	 * @param shipper es el que realiza la exportación.
 	 */
-	private boolean cumpleIngresoExportacion(Orden orden, Camion camion, Chofer chofer, Cliente consignee) {
-		return this.sonLosInformadosPorElConsignee(orden, camion, chofer, consignee) && 
-			   this.estanRegistradosParaIngresar(camion, chofer, consignee);
+	private boolean cumpleIngresoExportacion(Orden orden, Camion camion, Chofer chofer, Cliente shipper) {
+		return this.estanRegistradosParaIngresar(camion, chofer, shipper) && 
+			   this.sonLosInformadosPorElShipper(orden, camion, chofer);
 	}
 	
 	/**
-	 * Indica si el cliente dado se encuentra registrado en la terminal.
+	 * Indica si el camion y el chofer dados son los informados en la orden dada.
+	 * @param orden es la orden a verificar en la que se encuentran los datos dados.
+	 * @param camion es el camion a verificar que se encuentra en la orden.
+	 * @param chofer es el chofer a verificar que se encuentra en la orden.
 	 */
-	private boolean sonLosInformadosPorElConsignee(Orden orden, Camion camion, Chofer chofer, Cliente consignee) {
+	private boolean sonLosInformadosPorElShipper(Orden orden, Camion camion, Chofer chofer) {
 		Camion camionOrden = orden.getCamion();
 		Chofer choferOrden = orden.getChofer();
-		Cliente consigneeOrden = orden.getConsignee();
-		return camionOrden.equals(camion) && choferOrden.equals(chofer) && consigneeOrden.equals(consignee);
+		return camionOrden.equals(camion) && choferOrden.equals(chofer);
 	}
 	
 	
@@ -245,13 +246,19 @@ public class TerminalPortuaria {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
+	
 	public void cargarContainers(Buque buque) {
+		// Cargar containers
 		
+		// Enviar mails?
 	}
 	
 	public void descargarContainers(Buque buque) {
+		// Descargar containers
 		
+		// Enviar mails?
 	}
+	
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -307,11 +314,7 @@ public class TerminalPortuaria {
 	 */
 	public double precioServicio(PrecioServicioTerminal servicio) {
 		this.validarPrecioServicio(servicio);
-		return serviciosDisponibles.stream()
-								   .filter(s -> s.equals(servicio))
-								   .findFirst()
-								   .get()
-								   .getPrecio();
+		return servicio.getPrecio();
 	}
 
 	/**
@@ -350,6 +353,38 @@ public class TerminalPortuaria {
 		reportesGenerados.addAll(reportesPorAgregar);
 	}
 	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	
+	public void setBuscadorDeCircuito(CircuitoMaritimo circuitoMaritimo) {
+		
+		
+	}
+	
+	public CircuitoMaritimo buscarCircuito(TerminalPortuaria terminalPortuaria) {
+		return null;
+		
+	}
+	
+	public List<Viaje> buscarViaje(Condicion condicion) {
+		return null;
+		
+	}
+	
+	public Duration tiempoEntre(TerminalPortuaria terminalPortuaria, Naviera naviera) {
+		return null;
+		
+	}
+	
+	public LocalDateTime proximaFechaHacia(TerminalPortuaria terminalPortuaria, Buque buque) {
+		return null;
+		
+	}
+	
+
 	// #################################### MÉTODOS AUXILIARES ################################## \\
 	
 	@Override
