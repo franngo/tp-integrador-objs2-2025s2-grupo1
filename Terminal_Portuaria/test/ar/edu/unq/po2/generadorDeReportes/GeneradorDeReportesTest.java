@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import ar.edu.unq.po2.container.Container;
 import ar.edu.unq.po2.orden.Orden;
 import ar.edu.unq.po2.orden.OrdenDeExportacion;
 import ar.edu.unq.po2.orden.OrdenDeImportacion;
+import ar.edu.unq.po2.viaje.Viaje;
 
 public class GeneradorDeReportesTest {
 	
@@ -29,6 +31,9 @@ public class GeneradorDeReportesTest {
 	OrdenDeExportacion ordenExp2;
 	
 	Buque buque;
+	Viaje viaje;
+	LocalDateTime t1;
+	LocalDateTime t2;
 	
 	Container container1;
 	Container container2;
@@ -47,20 +52,21 @@ public class GeneradorDeReportesTest {
 		VisitorReporteAduana visitorA = generador.getVisitorAduana();
 		VisitorReporteBuque visitorB = generador.getVisitorBuque();
 		
-		imps = new ArrayList<Orden>();
-		imps.add(ordenImp1);
-		imps.add(ordenImp2);
-		
-		exps = new ArrayList<Orden>();
-		exps.add(ordenExp1);
-		exps.add(ordenExp2);
-		
 		///////
 		
 		buque = mock(Buque.class);
+		viaje = mock(Viaje.class);
+		t1 = mock(LocalDateTime.class);
+		t2 = mock(LocalDateTime.class);
+		
 		when(buque.getNombre()).thenReturn("Buque argentino");
-		when(buque.getViajeActual().fechaDeSalida().toString()).thenReturn("2007-12-03T10:15:30");
-		when(buque.getViajeActual().fechaDeLlegada().toString()).thenReturn("2007-12-06T10:15:30");
+		
+		when(buque.getViajeActual()).thenReturn(viaje);
+		when(viaje.fechaDeSalida()).thenReturn(t1);
+		when(t1.toString()).thenReturn("2007-12-03T10:15:30");
+		
+		when(viaje.fechaDeLlegada()).thenReturn(t2);
+		when(t2.toString()).thenReturn("2007-12-06T10:15:30");
 
 		///////
 		
@@ -91,9 +97,21 @@ public class GeneradorDeReportesTest {
 		when(ordenExp2.accept(visitorB)).thenReturn
 		("			<item>LAUR9378524</item>");
 		
+		///////
+		
+		imps = new ArrayList<Orden>();
+		imps.add(ordenImp1);
+		imps.add(ordenImp2);
+		
+		exps = new ArrayList<Orden>();
+		exps.add(ordenExp1);
+		exps.add(ordenExp2);
+		
 		//assertEquals("			<item>MARC9378524</item>", visitor.visitOrdenDeImportacion(ordenImp));
 		
 		Map<String, Reporte> rs = generador.generarReportesConImportaciones(buque, imps);
+		
+		List<Reporte> rs2 = generador.finalizarReportesConExportaciones(rs, exps);
 
 	}
 
