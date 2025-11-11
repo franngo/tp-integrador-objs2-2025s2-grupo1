@@ -115,16 +115,17 @@ public class GeneradorDeReportesTest {
 		
 		assertEquals(3, rs.size());
 		
-		Reporte m1 = rs.get("muelle");
+		Reporte mue1 = rs.get("muelle");
 		
 		assertEquals("Nombre del buque: " + "Buque argentino" +"\n"
 				+"Fecha de partida: " + "2007-12-03T10:15:30" + "\n"
 				+"Fecha de arribo: " + "2007-12-06T10:15:30" + "\n"
-				+"Contenedores descargados: " + "2" + "\n", m1.getTexto());
+				+"Contenedores descargados: " + "2" + "\n", 
+				mue1.getTexto());
 		
 		///////
 		
-		Reporte m2 = rs.get("aduana");
+		Reporte adu1 = rs.get("aduana");
 		
 		assertEquals("<html lang=\"en\">\n"
 				+ "    <head>\n"
@@ -139,23 +140,76 @@ public class GeneradorDeReportesTest {
 				+ "    		<ul>\n"
 				+ "    			<li><p> Tipo: Tanque, ID: MARC9378524</p></li>\n"
 				+ "    			<li><p> Tipo: Refeer, ID: LUIS9378524</p></li>\n", 
-				m2.getTexto());
+				adu1.getTexto());
 		
 		///////
 		
-		Reporte m3 = rs.get("buque");
+		Reporte buq1 = rs.get("buque");
 		
 		assertEquals("<report>\n"
 				+	  "		<import>\n"
 				+ "			<item>MARC9378524</item>\n"
 				+ "			<item>LUIS9378524</item>\n"
 				+	"		</import>\n",
-				m3.getTexto());
+				buq1.getTexto());
 		
 		///////
 		
 		List<Reporte> rs2 = generador.finalizarReportesConExportaciones(rs, exps);
 
+		Reporte mueDef = rs2.get(0);
+		Reporte aduDef = rs2.get(1);
+		Reporte buqDef = rs2.get(2);
+		
+		///////
+
+		assertEquals(3, rs2.size());
+		
+		assertEquals("Nombre del buque: " + "Buque argentino" +"\n"
+				+"Fecha de partida: " + "2007-12-03T10:15:30" + "\n"
+				+"Fecha de arribo: " + "2007-12-06T10:15:30" + "\n"
+				+"Contenedores descargados: " + "2" + "\n"
+				+"Contenedores cargados: 2", 
+				mueDef.getTexto());
+		
+	
+		
+		///////
+		
+		assertEquals("<html lang=\"en\">\n"
+				+ "    <head>\n"
+				+ "        <meta charset=\"utf-8\">\n"
+				+ "        <title>Reporte aduana</title>\n"
+				+ "    </head>\n"
+				+ "    <body>"
+				+ "	   		<h2>Nombre del buque: " + "Buque argentino" +"</h2>\n"
+				+ "    		<h1>Fecha de partida: " + "2007-12-03T10:15:30" + "</h1>\n"
+				+ "    		<h1>Fecha de arribo: " + "2007-12-06T10:15:30" + "</h1>\n"
+				+ "	   		<h2>Lista de contenedores (con su tipo y ID): </h2>\n"
+				+ "    		<ul>\n"
+				+ "    			<li><p> Tipo: Tanque, ID: MARC9378524</p></li>\n"
+				+ "    			<li><p> Tipo: Refeer, ID: LUIS9378524</p></li>\n"
+				+ "    			<li><p> Tipo: Tanque, ID: JULI9378524</p></li>\n"
+				+ "    			<li><p> Tipo: Refeer, ID: LAUR9378524</p></li>\n"
+				+ "    		</ul>\n"
+				+ "    </body>\n"	
+				+ "</html>", 
+				aduDef.getTexto());
+		
+		///////
+
+		assertEquals("<report>\n"
+				+	  "		<import>\n"
+				+ "			<item>MARC9378524</item>\n"
+				+ "			<item>LUIS9378524</item>\n"
+				+	"		</import>\n"
+				+ "		<export>\n"
+				+ "			<item>JULI9378524</item>\n"
+				+ "			<item>LAUR9378524</item>\n"
+				+ "		</export>\n"
+				+ "/report", 
+				buqDef.getTexto());
+		
 	}
 
 }

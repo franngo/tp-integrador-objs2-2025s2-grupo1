@@ -37,7 +37,7 @@ public class VisitorReporteBuqueTest {
 		ordenImp = mock(OrdenDeImportacion.class);
 		when(ordenImp.getCarga()).thenReturn(container);
 		
-		assertEquals("			<item>MARC9378524</item>", visitor.visitOrdenDeImportacion(ordenImp));
+		assertEquals("			<item>MARC9378524</item>\n", visitor.visitOrdenDeImportacion(ordenImp));
 
 	}
 	
@@ -47,7 +47,7 @@ public class VisitorReporteBuqueTest {
 		ordenExp = mock(OrdenDeExportacion.class);
 		when(ordenExp.getCarga()).thenReturn(container);
 		
-		assertEquals("			<item>MARC9378524</item>", visitor.visitOrdenDeExportacion(ordenExp));
+		assertEquals("			<item>MARC9378524</item>\n", visitor.visitOrdenDeExportacion(ordenExp));
 
 	}
 
