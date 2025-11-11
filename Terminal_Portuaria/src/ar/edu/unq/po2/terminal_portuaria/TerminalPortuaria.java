@@ -382,8 +382,8 @@ public class TerminalPortuaria implements TerminalObservadora{
 	 * @param buque es el buque del que se toma como referencia para las ordenes de importación.
 	 */
 	private Map<String, Reporte> generarReportesConImportaciones(Buque buque) {
-		List<Orden> ordenes = this.ordenesDelViaje(ordenesDeImportacion, buque);
-		return generadorReportes.generarReportesConImportaciones(buque, ordenes);
+		List<Orden> ordenesImp = this.ordenesDelViaje(ordenesDeImportacion, buque);
+		return generadorReportes.generarReportesConImportaciones(buque, ordenesImp);
 	}
 	
 	/**
@@ -396,8 +396,8 @@ public class TerminalPortuaria implements TerminalObservadora{
 	 *  la información de las exportaciones.
 	 */
 	private void finalizarReportesConExportaciones(Buque buque, Map<String, Reporte> reportes) {
-		List<Orden> ordenes = this.ordenesDelViaje(ordenesDeExportacion, buque);
-		List<Reporte> reportesPorAgregar = generadorReportes.finalizarReportesConExportaciones(reportes, ordenes);
+		List<Orden> ordenesExp = this.ordenesDelViaje(ordenesDeExportacion, buque);
+		List<Reporte> reportesPorAgregar = generadorReportes.finalizarReportesConExportaciones(reportes, ordenesExp);
 		reportesGenerados.addAll(reportesPorAgregar);
 	}
 	
