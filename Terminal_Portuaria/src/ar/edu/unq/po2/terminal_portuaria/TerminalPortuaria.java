@@ -61,7 +61,7 @@ public class TerminalPortuaria {
 		
 		serviciosDisponibles.add(PrecioServicioTerminal.DIAEXCEDENTE);
 		serviciosDisponibles.add(PrecioServicioTerminal.KILOWATTCONSUMIDO);
-		serviciosDisponibles.add(PrecioServicioTerminal.LAVADOCOMUN);
+			serviciosDisponibles.add(PrecioServicioTerminal.LAVADOCOMUN);
 		serviciosDisponibles.add(PrecioServicioTerminal.LAVADOPESADO);
 		serviciosDisponibles.add(PrecioServicioTerminal.PESAJE);
 		serviciosDisponibles.add(PrecioServicioTerminal.PRECIODESCONSOLIDADO);
@@ -248,17 +248,40 @@ public class TerminalPortuaria {
 	
 	
 	public void cargarContainers(Buque buque) {
+		this.validarPosicionDelBuque(buque);
+		
 		// Cargar containers
 		
 		// Enviar mails?
 	}
 	
+
+	
+	private void validarPosicionDelBuque(Buque buque) {
+		if(!coordenada.equals(buque.posicionActual())) {
+			throw new RuntimeException("El buque no se encuentra en la terminal para realizar la carga o descarga");
+		}
+	}
+	
 	public void descargarContainers(Buque buque) {
+		this.validarDescarga(buque);
+		
 		// Descargar containers
 		
 		// Enviar mails?
 	}
 	
+	private void validarDescarga(Buque buque) {
+		this.validarPosicionDelBuque(buque);
+		this.validarDescargaBuque(buque);
+		
+	}
+	
+	private validarDescargaBuque(Buque buque) {
+		if(!buque.puedeDescargar()) { // Deberia verificar si puede descargar en base al estado que tiene el buque.
+			throw new RuntimeException("El buque dado no puede descargar en este momento.");
+		}
+	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
