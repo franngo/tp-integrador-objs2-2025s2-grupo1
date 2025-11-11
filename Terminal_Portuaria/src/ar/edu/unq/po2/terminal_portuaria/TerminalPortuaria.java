@@ -377,28 +377,35 @@ public class TerminalPortuaria implements TerminalObservadora{
 	
 	/**
 	 * Genera reportes que unicamente tienen cargada la información de las importaciones.
-	 * Se debería llamar después de descargar los containers de importaciones del buque.
+	 * Se debería llamar junto al proceso de descarga de los containers de importación del buque, ANTES
+	 * de ser borradas esas órdenes de importación de la terminal.
 	 * @param buque es el buque del que se toma como referencia para las ordenes de importación.
 	 */
 	private Map<String, Reporte> generarReportesConImportaciones(Buque buque) {
-		List<Orden> ordenes = ordenesDeImportacion.stream()
-												  .filter(o -> buque.getOrdenes().contains(o))
-												  .toList();
+		List<Orden> ordenes = this.ordenesDelViaje(ordenesDeImportacion, buque);
 		return generadorReportes.generarReportesConImportaciones(buque, ordenes);
 	}
 	
 	/**
-	 * Agrega la información de las exportaciones a los Reportes pasados y los guarda en la lista de reportes de la Terminal Portuaria.
-	 * Se debería llamar después de cargar los containers de exportaciones al buque.
+	 * Agrega la información de las exportaciones a los Reportes pasados y los guarda en la lista de reportes de la 
+	 * TerminalPortuaria.
+	 * Se debería llamar junto al proceso de carga de los containers de exportación al buque, ANTES
+	 * de ser borradas esas órdenes de exportación de la terminal.
 	 * @param buque es el buque del que se toma como referencia para las ordenes de exportación.
-	 * @param Map<String, Reporte> son los reportes que tienen las importaciones cargadas, los cuales se les agregará la información de las exportaciones.
+	 * @param Map<String, Reporte> son los reportes que tienen las importaciones cargadas, los cuales se les agregará
+	 *  la información de las exportaciones.
 	 */
 	private void finalizarReportesConExportaciones(Buque buque, Map<String, Reporte> reportes) {
-		List<Orden> ordenes = ordenesDeExportacion.stream()
-												  .filter(o -> buque.getOrdenes().contains(o))
-												  .toList();
+		List<Orden> ordenes = this.ordenesDelViaje(ordenesDeExportacion, buque);
 		List<Reporte> reportesPorAgregar = generadorReportes.finalizarReportesConExportaciones(reportes, ordenes);
 		reportesGenerados.addAll(reportesPorAgregar);
+	}
+	
+	private List<Orden> ordenesDelViaje(Set<Orden> ordenes, Buque buque) {
+		List<Orden> aDevolver = ordenes.stream()
+										.filter(o -> o.getViaje().equals(buque.getViajeActual()))
+										.toList();
+		return aDevolver;
 	}
 	
 	// #################################### MÉTODOS AUXILIARES ################################## \\

@@ -1,12 +1,10 @@
 package ar.edu.unq.po2.buque;
 
 import java.util.List;
-import java.util.Set;
 
 import ar.edu.unq.po2.buque.estadosBuque.EstadoBuque;
 import ar.edu.unq.po2.buque.estadosBuque.OutBound;
 import ar.edu.unq.po2.coordenada.Coordenada;
-import ar.edu.unq.po2.empresa_transportista.EmpresaTransportista;
 import ar.edu.unq.po2.orden.Orden;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 import ar.edu.unq.po2.viaje.Viaje;
@@ -24,6 +22,7 @@ public class Buque implements BuqueObservado{
     List<Orden> ordenesExportacion;
     List<Orden> ordenesImportacion;
     
+    String nombre;
     
     Viaje viajeActual = null;
 
@@ -44,11 +43,13 @@ public class Buque implements BuqueObservado{
 
     public Buque(Coordenada coordenadas,
     		List<Orden> ordenesImportacion, 
-    		List<Orden> ordenesExportacion){
+    		List<Orden> ordenesExportacion,
+    		String nombre){
     	
     	this.posicionActual=coordenadas;
     	this.ordenesExportacion=ordenesExportacion;
     	this.ordenesImportacion=ordenesImportacion;
+    	this.nombre = nombre;
     }
     
     
@@ -80,27 +81,30 @@ public class Buque implements BuqueObservado{
 		
 	}
 
-	
-	
 	public TerminalPortuaria terminalAArribar() {
 		return terminalAArribar;
 	}
     
-	
+	public List<Orden> getOrdenesExportacion() {
+		return this.ordenesExportacion;
+	}
+	/*
 	//Lo implementan Benja y Franco
 	public Set<EmpresaTransportista> getOrdenes() {
 		// TODO Auto-generated method stub
 		return null;
+  */
+	public List<Orden> getOrdenesImportacion() {
+		return this.ordenesImportacion;
+
 	}
 
+	public Viaje getViajeActual() {
+		return this.viajeActual;
+	}
+	
 	public String getNombre() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Orden getViajeActual() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.nombre;
 	}
 
 
