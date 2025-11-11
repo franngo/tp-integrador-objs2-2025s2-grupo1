@@ -16,6 +16,14 @@ public class GeneradorDeReportes {
 		this.visitorA = new VisitorReporteAduana();
 		this.visitorB = new VisitorReporteBuque();
 	}
+	
+	public VisitorReporteAduana getVisitorAduana() {
+		return this.visitorA;
+	}
+	
+	public VisitorReporteBuque getVisitorBuque() {
+		return this.visitorB;
+	}
 		
 	public Map<String, Reporte> generarReportesConImportaciones(Buque buque, List<Orden> ordenes) {
 		

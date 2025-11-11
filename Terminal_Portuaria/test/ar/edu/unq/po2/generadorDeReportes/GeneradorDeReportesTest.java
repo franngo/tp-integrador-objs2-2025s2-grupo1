@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
@@ -43,46 +44,56 @@ public class GeneradorDeReportesTest {
 	public void generarReportesConImportacionesYfinalizarReportesConExportaciones() {
 		
 		generador = new GeneradorDeReportes();
+		VisitorReporteAduana visitorA = generador.getVisitorAduana();
+		VisitorReporteBuque visitorB = generador.getVisitorBuque();
 		
 		imps = new ArrayList<Orden>();
+		imps.add(ordenImp1);
+		imps.add(ordenImp2);
+		
 		exps = new ArrayList<Orden>();
-		
-		buque = mock(Buque.class);
-		
-		container1 = mock(Container.class);
-		when(container1.tipoCarga()).thenReturn("Tanque");
-		when(container1.getIdConnteiner()).thenReturn("MARC9378524");
-		
-		container2 = mock(Container.class);
-		when(container2.tipoCarga()).thenReturn("Tanque");
-		when(container2.getIdConnteiner()).thenReturn("MARC9378524");
-		
-		container3 = mock(Container.class);
-		when(container3.tipoCarga()).thenReturn("Tanque");
-		when(container3.getIdConnteiner()).thenReturn("MARC9378524");
-		
-		container4 = mock(Container.class);
-		when(container4.tipoCarga()).thenReturn("Tanque");
-		when(container4.getIdConnteiner()).thenReturn("MARC9378524");
+		exps.add(ordenExp1);
+		exps.add(ordenExp2);
 		
 		///////
 		
+		buque = mock(Buque.class);
+		when(buque.getNombre()).thenReturn("Buque argentino");
+		when(buque.getViajeActual().fechaDeSalida().toString()).thenReturn("2007-12-03T10:15:30");
+		when(buque.getViajeActual().fechaDeLlegada().toString()).thenReturn("2007-12-06T10:15:30");
+
+		///////
+		
 		ordenImp1 = mock(OrdenDeImportacion.class);
-		when(ordenImp1.getCarga()).thenReturn(container);
+		when(ordenImp1.accept(visitorA)).thenReturn
+		("    			<li><p> Tipo: Tanque, ID: MARC9378524</p></li>\n");
+		when(ordenImp1.accept(visitorB)).thenReturn
+		("			<item>MARC9378524</item>");
 		
 		ordenImp2 = mock(OrdenDeImportacion.class);
-		when(ordenImp2.getCarga()).thenReturn(container);
+		when(ordenImp2.accept(visitorA)).thenReturn
+		("    			<li><p> Tipo: Refeer, ID: LUIS9378524</p></li>\n");
+		when(ordenImp2.accept(visitorB)).thenReturn
+		("			<item>LUIS9378524</item>");
+		
 		
 		///////
 		
 		ordenExp1 = mock(OrdenDeExportacion.class);
-		when(ordenExp1.getCarga()).thenReturn(container);
+		when(ordenExp1.accept(visitorA)).thenReturn
+		("    			<li><p> Tipo: Tanque, ID: JULI9378524</p></li>\n");
+		when(ordenExp1.accept(visitorB)).thenReturn
+		("			<item>JULI9378524</item>");
 		
 		ordenExp2 = mock(OrdenDeExportacion.class);
-		when(ordenExp2.getCarga()).thenReturn(container);
-		
+		when(ordenExp2.accept(visitorA)).thenReturn
+		("    			<li><p> Tipo: Refeer, ID: LAUR9378524</p></li>\n");
+		when(ordenExp2.accept(visitorB)).thenReturn
+		("			<item>LAUR9378524</item>");
 		
 		//assertEquals("			<item>MARC9378524</item>", visitor.visitOrdenDeImportacion(ordenImp));
+		
+		Map<String, Reporte> rs = generador.generarReportesConImportaciones(buque, imps);
 
 	}
 
