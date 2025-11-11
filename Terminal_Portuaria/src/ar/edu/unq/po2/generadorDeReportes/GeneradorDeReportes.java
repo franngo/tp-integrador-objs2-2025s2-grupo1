@@ -110,8 +110,8 @@ public class GeneradorDeReportes {
 	public List<Reporte> finalizarReportesConExportaciones(Map<String,Reporte> reportes, List<Orden> ordenes) {
 		
 		///////////////////////Reporte muelle/////////////////////////
-		///
-		String muelle = "Contenedores cargados: " + ordenes.size();
+		
+		String muelle = this.reporteMuelleExportaciones(ordenes);
 		
 		Reporte r1 = reportes.get("muelle"); //el reporte muelle con únicamente la información de importaciones
 		r1.setTexto(r1.getTexto() + muelle); //el reporte muelle listo, con la información de importaciones y exportaciones
@@ -120,16 +120,7 @@ public class GeneradorDeReportes {
 		
 		///////////////////////Reporte aduana/////////////////////////
 		
-		String aduana = "";
-		
-		for(Orden orden : ordenes) {
-			aduana = aduana + orden.accept(visitorA);
-		}
-
-		aduana = aduana
-				+ "    		</ul>\n"
-				+ "    </body>\n"	
-				+ "</html>";
+		String aduana = this.reporteAduanaExportaciones(ordenes);
 
 		Reporte r2 = reportes.get("aduana"); //el reporte aduana con únicamente la información de importaciones
 		r2.setTexto(r2.getTexto() + aduana); //el reporte aduana listo, con la información de importaciones y exportaciones
@@ -138,14 +129,7 @@ public class GeneradorDeReportes {
 			
 		///////////////////////Reporte buque/////////////////////////
 		
-		String repBuque = "		<export>\n";
-		
-		for(Orden orden : ordenes) {
-			repBuque = repBuque + orden.accept(visitorB);
-		}
-		
-		repBuque = repBuque +	"		</export>\n"
-							+ "/report";
+		String repBuque = this.reporteBuqueExportaciones(ordenes);
 		
 		Reporte r3 = reportes.get("buque"); //el reporte buque con únicamente la información de importaciones
 		r3.setTexto(r3.getTexto() + repBuque); //el reporte buque listo, con la información de importaciones y exportaciones
@@ -158,6 +142,45 @@ public class GeneradorDeReportes {
 		rs.add(r3);
 		
 		return rs;
+		
+	}
+	
+	private String reporteMuelleExportaciones(List<Orden> ordenes) {
+		
+		String muelle = "Contenedores cargados: " + ordenes.size();
+		return muelle;
+		
+	}
+	
+	private String reporteAduanaExportaciones(List<Orden> ordenes) {
+		
+		String aduana = "";
+		
+		for(Orden orden : ordenes) {
+			aduana = aduana + orden.accept(visitorA);
+		}
+
+		aduana = aduana
+				+ "    		</ul>\n"
+				+ "    </body>\n"	
+				+ "</html>";
+		
+		return aduana;
+		
+	}
+	
+	private String reporteBuqueExportaciones(List<Orden> ordenes) {
+		
+		String repBuque = "		<export>\n";
+		
+		for(Orden orden : ordenes) {
+			repBuque = repBuque + orden.accept(visitorB);
+		}
+		
+		repBuque = repBuque +	"		</export>\n"
+							+ "/report";
+		
+		return repBuque;
 		
 	}
 
