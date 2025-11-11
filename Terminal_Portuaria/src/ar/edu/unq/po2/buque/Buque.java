@@ -60,11 +60,6 @@ public class Buque implements BuqueObservado{
     
     }
     
-    /*
-    public void actualizarEstado(){
-    	//nos mandamos a nosotros y a la terminaldonde debemos ir
-    
-    }*/
     
     public void notificarEstado() {
         estadoBuque.notificarEstado(this.terminalAArribar());
@@ -76,8 +71,8 @@ public class Buque implements BuqueObservado{
     }
     
     
-    public void descargarContainers() {}
-    public void cargarContainers() {}
+    public void descargarContainers() {} // depende de los estados
+    public void cargarContainers() {} // depende de los estados
 
 	@Override
 	public void establecerEstado(EstadoBuque nuevoEstado) {
