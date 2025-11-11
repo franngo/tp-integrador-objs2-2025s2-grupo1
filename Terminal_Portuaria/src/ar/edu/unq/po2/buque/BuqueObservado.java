@@ -7,6 +7,6 @@ public interface BuqueObservado {
 	
 	public EstadoBuque obtenerEstado(); 
 	public void establecerEstado(EstadoBuque nuevoEstado);
-	public void notificarEstado(TerminalPortuaria terminalObservadora);
+	public void notificarEstado();
 	public void adscribirObservador(TerminalPortuaria terminalObservadora);
 }

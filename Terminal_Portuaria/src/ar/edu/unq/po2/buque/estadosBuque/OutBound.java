@@ -32,7 +32,7 @@ public class OutBound extends EstadoBuque {
 
 	@Override
 	public void notificarEstado(TerminalPortuaria terminal) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

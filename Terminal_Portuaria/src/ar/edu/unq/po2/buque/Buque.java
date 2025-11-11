@@ -56,19 +56,14 @@ public class Buque implements BuqueObservado{
 
     public void avanzarHacia(double latitud, double longitud){
         posicionActual.nuevaPosicion(latitud,longitud);
-        this.actualizarEstado();
-        estadoBuque.notificarEstado(this.terminalAArribar());
-    }
-    
-    
-    public void actualizarEstado(){
-    	//nos mandamos a nosotros y a la terminaldonde debemos ir
+        this.notificarEstado();
     	estadoBuque.actualizarSiSeRequiere();
+    
     }
     
-    public void notificarEstado(TerminalPortuaria terminalAArribar) {
-		terminalAArribar.actualizar(this);
-		
+    
+    public void notificarEstado() {
+        estadoBuque.notificarEstado(this.terminalAArribar());
 	}
 
 	public void iniciarViaje(Viaje viajeActual){
@@ -77,8 +72,8 @@ public class Buque implements BuqueObservado{
     }
     
     
-    public void descargarContainers() {}
-    public void cargarContainers() {}
+    public void descargarContainers() {} // depende de los estados
+    public void cargarContainers() {} // depende de los estados
 
 	@Override
 	public void establecerEstado(EstadoBuque nuevoEstado) {
@@ -93,9 +88,15 @@ public class Buque implements BuqueObservado{
 	public List<Orden> getOrdenesExportacion() {
 		return this.ordenesExportacion;
 	}
-	
+	/*
+	//Lo implementan Benja y Franco
+	public Set<EmpresaTransportista> getOrdenes() {
+		// TODO Auto-generated method stub
+		return null;
+  */
 	public List<Orden> getOrdenesImportacion() {
 		return this.ordenesImportacion;
+
 	}
 
 	public Viaje getViajeActual() {
@@ -105,6 +106,8 @@ public class Buque implements BuqueObservado{
 	public String getNombre() {
 		return this.nombre;
 	}
+
+
     
 
    

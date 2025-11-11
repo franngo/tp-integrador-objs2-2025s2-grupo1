@@ -7,9 +7,6 @@ import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 public class Departing extends EstadoBuque{
 
 	
-
-	
-
 	public Departing(Buque miBuque) {
 		super(miBuque);
 		// TODO Auto-generated constructor stub
@@ -36,7 +33,7 @@ public class Departing extends EstadoBuque{
 
 	@Override
 	public void notificarEstado(TerminalPortuaria terminal) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
