@@ -25,15 +25,46 @@ public class GeneradorDeReportes {
 		
 		///////////////////////Reporte muelle/////////////////////////
 		
-		String muelle = "Nombre del buque: " + nombreBuque +"\n"
-					+"Fecha de partida: " + fechaPartida + "\n"
-					+"Fecha de arribo: " + fechaArribo + "\n"
-					+"Contenedores descargados: " + ordenes.size() + "\n";
+		String muelle = this.reporteMuelleImportaciones(nombreBuque, fechaPartida, fechaArribo, ordenes);
 		Reporte r1 = new Reporte(muelle);
 		
 		///////////////////////Reporte muelle/////////////////////////
 		
 		///////////////////////Reporte aduana/////////////////////////
+		
+		String aduana = this.reporteAduanaImportaciones(nombreBuque, fechaPartida, fechaArribo, ordenes);
+		Reporte r2 = new Reporte(aduana);
+		
+		///////////////////////Reporte aduana/////////////////////////
+			
+		///////////////////////Reporte buque/////////////////////////
+		
+		String repBuque = this.reporteBuqueImportaciones(ordenes);
+		Reporte r3 = new Reporte(repBuque);
+		
+		///////////////////////Reporte buque/////////////////////////
+		
+		Map<String,Reporte> rs = new HashMap<String,Reporte>();
+		rs.put("muelle", r1);
+		rs.put("aduana", r2);
+		rs.put("buque", r3);
+		
+		return rs;
+	}
+	
+	private String reporteMuelleImportaciones(String nombreBuque, String fechaPartida, String fechaArribo,
+			List<Orden> ordenes) {
+		
+		String muelle = "Nombre del buque: " + nombreBuque +"\n"
+				+"Fecha de partida: " + fechaPartida + "\n"
+				+"Fecha de arribo: " + fechaArribo + "\n"
+				+"Contenedores descargados: " + ordenes.size() + "\n";
+		return muelle;
+		
+	}
+	
+	private String reporteAduanaImportaciones(String nombreBuque, String fechaPartida, String fechaArribo,
+			List<Orden> ordenes) {
 		
 		String aduana = "<html lang=\"en\">\n"
 				+ "    <head>\n"
@@ -51,14 +82,14 @@ public class GeneradorDeReportes {
 			aduana = aduana + orden.accept(visitorA);
 		}
 		
-		Reporte r2 = new Reporte(aduana);
+		return aduana;
 		
-		///////////////////////Reporte aduana/////////////////////////
-			
-		///////////////////////Reporte buque/////////////////////////
+	}
+	
+	private String reporteBuqueImportaciones(List<Orden> ordenes) {
 		
 		String repBuque = "<report>\n"
-					+	  "		<import>\n";
+				+	  "		<import>\n";
 		
 		for(Orden orden : ordenes) {
 			repBuque = repBuque + orden.accept(visitorB);
@@ -66,17 +97,15 @@ public class GeneradorDeReportes {
 		
 		repBuque = repBuque +	"		</import>\n";
 		
-		Reporte r3 = new Reporte(repBuque);
+		return repBuque;
 		
-		///////////////////////Reporte buque/////////////////////////
-		
-		Map<String,Reporte> rs = new HashMap<String,Reporte>();
-		rs.put("muelle", r1);
-		rs.put("aduana", r2);
-		rs.put("buque", r3);
-		
-		return rs;
 	}
+	
+	
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
 	
 	public List<Reporte> finalizarReportesConExportaciones(Map<String,Reporte> reportes, List<Orden> ordenes) {
 		
