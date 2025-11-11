@@ -247,41 +247,35 @@ public class TerminalPortuaria {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	
-	public void cargarContainers(Buque buque) {
-		this.validarPosicionDelBuque(buque);
-		
+	public void iniciarTrabajosEnBuque(Buque buque) {
+		this.validarTrabajosEnBuque(buque);
+		buque.iniciarTrabajos(); // Esto debería pasar el buque a estado Working.
+		this.descargarContainers(buque);
+		this.cargarContainers(buque);
+		buque.finalizarTrabajos(); // Esto debería pasar el buque a estado Departing.
+
+	}
+	
+	private void validarTrabajosEnBuque(Buque buque) {
+		if(!coordenada.equals(buque.posicionActual())) { // Esto debería verificar si está en estado Arrived.
+			throw new RuntimeException("El buque no se encuentra en la terminal para realizar la carga o descarga");
+		}
+	}
+	
+	private void cargarContainers(Buque buque) {
 		// Cargar containers
 		
 		// Enviar mails?
 	}
 	
-
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	private void validarPosicionDelBuque(Buque buque) {
-		if(!coordenada.equals(buque.posicionActual())) {
-			throw new RuntimeException("El buque no se encuentra en la terminal para realizar la carga o descarga");
-		}
-	}
-	
-	public void descargarContainers(Buque buque) {
-		this.validarDescarga(buque);
-		
+	private void descargarContainers(Buque buque) {
 		// Descargar containers
 		
 		// Enviar mails?
 	}
-	
-	private void validarDescarga(Buque buque) {
-		this.validarPosicionDelBuque(buque);
-		this.validarDescargaBuque(buque);
-		
-	}
-	
-	private validarDescargaBuque(Buque buque) {
-		if(!buque.puedeDescargar()) { // Deberia verificar si puede descargar en base al estado que tiene el buque.
-			throw new RuntimeException("El buque dado no puede descargar en este momento.");
-		}
-	}
+
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -27,6 +27,7 @@ public abstract class Orden {
 	private Chofer chofer;
 	private Container carga;
 	private Viaje viaje;
+	private Cliente shipper;
 	private boolean estaEnViaje;
 	private List<Servicio> serviciosACobrar;	
 	
@@ -37,11 +38,12 @@ public abstract class Orden {
 	 * @param container es la carga que tiene la orden.
 	 * @param viaje es el viaje que tiene la orden.
 	 */	
-	public Orden(Camion camion, Chofer chofer, Container container, Viaje viaje) {
+	public Orden(Camion camion, Chofer chofer, Container container, Viaje viaje, Cliente shipper) {
 		this.camion = camion;
 		this.chofer = chofer;
 		this.carga  = container;
 		this.viaje  = viaje;
+		this.shipper = shipper;
 		this.estaEnViaje = false;
 		this.serviciosACobrar = new ArrayList<Servicio>();
 	}
