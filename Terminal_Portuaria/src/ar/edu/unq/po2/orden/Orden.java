@@ -43,7 +43,7 @@ public abstract class Orden {
 		this.chofer = chofer;
 		this.carga  = container;
 		this.viaje  = viaje;
-		this.shipper = shipper;
+		this.shipper = shipper; // Esto debería existir? Justificar.
 		this.estaEnViaje = false;
 		this.serviciosACobrar = new ArrayList<Servicio>();
 	}
