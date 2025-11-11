@@ -13,11 +13,6 @@ import ar.edu.unq.po2.orden.OrdenDeImportacion;
 
 public class VisitorReporteAduanaTest {
 	
-	/*
-	 * * Proposito: crea un nuevo id para el conteiner, conformado por las primeras 4 letras en mayusculas del cliente
-     * seguido de 7 numero
-	 */
-	
 	//SUT
 	VisitorReporteAduana visitor;
 	
