@@ -1,18 +1,20 @@
 package ar.edu.unq.po2.servicio;
 
 
+import java.time.LocalDateTime;
+
 import ar.edu.unq.po2.container.Container;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 public class ServicioRevisionDiaria extends Servicio{
 
-	public ServicioRevisionDiaria(Container containerServ) {
-		super(containerServ);
+	public ServicioRevisionDiaria(Container containerServ, LocalDateTime horaInicioServicio) {
+		super(containerServ,horaInicioServicio);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public double costoServicio(TerminalPortuaria terminalPortuaria) {
+	public double costoServicio(TerminalPortuaria terminalPortuaria,LocalDateTime horaCobro) {
 		// TODO Auto-generated method stub
 		return terminalPortuaria.precioServicio(PrecioServicioTerminal.REVISIONDIARIA);
 	}
