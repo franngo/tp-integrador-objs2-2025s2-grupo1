@@ -2,6 +2,7 @@ package ar.edu.unq.po2.terminal_portuaria;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 
@@ -127,6 +128,8 @@ class TerminalPortuariaTest {
 		Cliente cliente = mock(Cliente.class);
 		EmpresaTransportista empresaTransportista = mock(EmpresaTransportista.class);
 		Naviera naviera = mock(Naviera.class);
+		
+		when(circuitoMaritimo.incluyeA(terminalGestionada)).thenReturn(true);
 		
 		// Exercise
 		terminalGestionada.registrarCircuitoMaritimo(circuitoMaritimo);

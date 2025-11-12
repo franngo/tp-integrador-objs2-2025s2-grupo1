@@ -294,11 +294,18 @@ public class TerminalPortuaria implements TerminalObservadora{
 	}
 	
 	/**
-	 * Registra el circuito marítimo dado en la Terminal Portuaria.
-	 * @param circuitoMaritimo es el circuito marítimo a registrar en la Terminal Portuaria.
+	 * Registra el circuito marítimo dado en la Terminal Portuaria. Este debe incluir a la terminal.
+	 * @param circuitoMaritimo es el circuito marítimo a registrar en la Terminal Portuaria. Debe incluir a la terminal.
 	 */
 	public void registrarCircuitoMaritimo(CircuitoMaritimo circuitoMaritimo) {
+		this.validarQueIncluyaTerminal(circuitoMaritimo);
 		this.circuitosMaritimosRegistrados.add(circuitoMaritimo);
+	}
+	
+	private void validarQueIncluyaTerminal(CircuitoMaritimo circuitoMaritimo) {
+		if(!circuitoMaritimo.incluyeA(this)) {
+			throw new RuntimeException("El circuito marítimo debe incluir a la terminal para poder ser registrado.");
+		}
 	}
 	
 	/**

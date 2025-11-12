@@ -50,12 +50,6 @@ public class CircuitoMaritimoTest {
 		ts.add(tramo2);
 		ts.add(tramo3);
 		ts.add(tramo4);
-	}
-	
-	@Test
-	public void instanciacionDeCircuitoMaritimo() {
-		
-		//caso sin error en la validación validarTramos()
 		
 		when(tramo1.getTerminalOrigen()).thenReturn(terminal1);
 		when(tramo1.getTerminalDestino()).thenReturn(terminal2);
@@ -68,10 +62,16 @@ public class CircuitoMaritimoTest {
 		
 		when(tramo4.getTerminalOrigen()).thenReturn(terminal4);
 		when(tramo4.getTerminalDestino()).thenReturn(terminal5);
+	}
+	
+	@Test
+	public void instanciacionDeCircuitoMaritimo() {
 		
+		//caso sin error en la validación validarTramos() (se inicia con los when del setUp())		
+
 		assertDoesNotThrow( () -> { circuito = new CircuitoMaritimo(ts); } );
 		
-		//caso con error en la validación validarTramos()
+		//caso con error en la validación validarTramos() (se sobrescriben los when del setUp())
 		
 		when(tramo1.getTerminalOrigen()).thenReturn(terminal1);
 		when(tramo1.getTerminalDestino()).thenReturn(terminal2);
@@ -111,18 +111,6 @@ public class CircuitoMaritimoTest {
 	
 	@Test
 	public void tiempoHastaTerminal() {
-		
-		when(tramo1.getTerminalOrigen()).thenReturn(terminal1);
-		when(tramo1.getTerminalDestino()).thenReturn(terminal2);
-		
-		when(tramo2.getTerminalOrigen()).thenReturn(terminal2);
-		when(tramo2.getTerminalDestino()).thenReturn(terminal3);
-		
-		when(tramo3.getTerminalOrigen()).thenReturn(terminal3);
-		when(tramo3.getTerminalDestino()).thenReturn(terminal4);
-		
-		when(tramo4.getTerminalOrigen()).thenReturn(terminal4);
-		when(tramo4.getTerminalDestino()).thenReturn(terminal5);
 		
 		circuito = new CircuitoMaritimo(ts);
 		
@@ -172,18 +160,6 @@ public class CircuitoMaritimoTest {
 	@Test
 	public void puertoDestino() {
 		
-		when(tramo1.getTerminalOrigen()).thenReturn(terminal1);
-		when(tramo1.getTerminalDestino()).thenReturn(terminal2);
-		
-		when(tramo2.getTerminalOrigen()).thenReturn(terminal2);
-		when(tramo2.getTerminalDestino()).thenReturn(terminal3);
-		
-		when(tramo3.getTerminalOrigen()).thenReturn(terminal3);
-		when(tramo3.getTerminalDestino()).thenReturn(terminal4);
-		
-		when(tramo4.getTerminalOrigen()).thenReturn(terminal4);
-		when(tramo4.getTerminalDestino()).thenReturn(terminal5);
-		
 		circuito = new CircuitoMaritimo(ts);
 		
 		assertEquals(terminal5, circuito.puertoDestino());
@@ -192,18 +168,6 @@ public class CircuitoMaritimoTest {
 	
 	@Test
 	public void esCircuitoQueUneA() {
-		
-		when(tramo1.getTerminalOrigen()).thenReturn(terminal1);
-		when(tramo1.getTerminalDestino()).thenReturn(terminal2);
-		
-		when(tramo2.getTerminalOrigen()).thenReturn(terminal2);
-		when(tramo2.getTerminalDestino()).thenReturn(terminal3);
-		
-		when(tramo3.getTerminalOrigen()).thenReturn(terminal3);
-		when(tramo3.getTerminalDestino()).thenReturn(terminal4);
-		
-		when(tramo4.getTerminalOrigen()).thenReturn(terminal4);
-		when(tramo4.getTerminalDestino()).thenReturn(terminal5);
 		
 		circuito = new CircuitoMaritimo(ts);
 		
@@ -218,18 +182,6 @@ public class CircuitoMaritimoTest {
 	
 	@Test
 	public void tramosDesdeHasta() {
-		
-		when(tramo1.getTerminalOrigen()).thenReturn(terminal1);
-		when(tramo1.getTerminalDestino()).thenReturn(terminal2);
-		
-		when(tramo2.getTerminalOrigen()).thenReturn(terminal2);
-		when(tramo2.getTerminalDestino()).thenReturn(terminal3);
-		
-		when(tramo3.getTerminalOrigen()).thenReturn(terminal3);
-		when(tramo3.getTerminalDestino()).thenReturn(terminal4);
-		
-		when(tramo4.getTerminalOrigen()).thenReturn(terminal4);
-		when(tramo4.getTerminalDestino()).thenReturn(terminal5);
 		
 		circuito = new CircuitoMaritimo(ts);
 		
@@ -246,6 +198,59 @@ public class CircuitoMaritimoTest {
 		
 		assertEquals(terminal3, t2.getTerminalOrigen());
 		assertEquals(terminal4, t2.getTerminalDestino());
+		
+	}
+	
+	@Test
+	public void incluyeA() {
+		
+		circuito = new CircuitoMaritimo(ts);
+		
+		assertTrue(circuito.incluyeA(terminal1)); //se cumple this.tieneOrigen(terminal1)
+		assertTrue(circuito.incluyeA(terminal5)); //se cumple this.tieneDestino(terminal5)
+		
+		TerminalPortuaria terminal6 = mock(TerminalPortuaria.class);
+		
+		assertFalse(circuito.incluyeA(terminal6)); //no se cumple this.tieneOrigen(terminal6) ni this.tieneDestino(terminal6)
+		
+	}
+	
+	//nuevos tests
+	
+	@Test
+	public void tiempoEnTramosDesdeHasta() {
+		
+		circuito = new CircuitoMaritimo(ts);
+		
+		when(tramo1.getTiempoTotal()).thenReturn(Duration.ofHours(3));
+		when(tramo2.getTiempoTotal()).thenReturn(Duration.ofHours(4));
+		when(tramo3.getTiempoTotal()).thenReturn(Duration.ofHours(4));
+		when(tramo4.getTiempoTotal()).thenReturn(Duration.ofHours(3));
+		
+		assertEquals(Duration.ofHours(8), circuito.tiempoEnTramosDesdeHasta(terminal2, terminal4));
+		
+	}
+	
+	@Test
+	public void precioEnTramosDesdeHasta() {
+		
+		when(tramo1.getPrecioTramo()).thenReturn(70.0);
+		when(tramo2.getPrecioTramo()).thenReturn(30.0);
+		when(tramo3.getPrecioTramo()).thenReturn(50.0);
+		when(tramo4.getPrecioTramo()).thenReturn(10.5);
+		
+		circuito = new CircuitoMaritimo(ts);
+		
+		assertEquals(80.0, circuito.precioEnTramosDesdeHasta(terminal2, terminal4));
+		
+	}
+	
+	@Test
+	public void cantTerminalesEnTramosDesdeHasta() {
+		
+		circuito = new CircuitoMaritimo(ts);
+		
+		assertEquals(3, circuito.cantTerminalesEnTramosDesdeHasta(terminal2, terminal4));
 		
 	}
 
