@@ -87,6 +87,12 @@ public class CircuitoMaritimoTest {
 
 		assertThrows(RuntimeException.class, () -> { circuito = new CircuitoMaritimo(ts); } );
 		
+		//caso con error por lista de tramos vacía
+		
+		List<Tramo> tsVacia = new ArrayList<Tramo>();
+		
+		assertThrows(RuntimeException.class, () -> { circuito = new CircuitoMaritimo(tsVacia); } );
+		
 	}
 	
 	@Test
@@ -181,6 +187,65 @@ public class CircuitoMaritimoTest {
 		circuito = new CircuitoMaritimo(ts);
 		
 		assertEquals(terminal5, circuito.puertoDestino());
+		
+	}
+	
+	@Test
+	public void esCircuitoQueUneA() {
+		
+		when(tramo1.getTerminalOrigen()).thenReturn(terminal1);
+		when(tramo1.getTerminalDestino()).thenReturn(terminal2);
+		
+		when(tramo2.getTerminalOrigen()).thenReturn(terminal2);
+		when(tramo2.getTerminalDestino()).thenReturn(terminal3);
+		
+		when(tramo3.getTerminalOrigen()).thenReturn(terminal3);
+		when(tramo3.getTerminalDestino()).thenReturn(terminal4);
+		
+		when(tramo4.getTerminalOrigen()).thenReturn(terminal4);
+		when(tramo4.getTerminalDestino()).thenReturn(terminal5);
+		
+		circuito = new CircuitoMaritimo(ts);
+		
+		TerminalPortuaria terminal6 = mock(TerminalPortuaria.class);
+		
+		assertFalse(circuito.esCircuitoQueUneA(terminal6, terminal2));
+		assertFalse(circuito.esCircuitoQueUneA(terminal2, terminal6));
+		assertFalse(circuito.esCircuitoQueUneA(terminal4, terminal2));
+		assertTrue(circuito.esCircuitoQueUneA(terminal2, terminal4));
+		
+	}
+	
+	@Test
+	public void tramosDesdeHasta() {
+		
+		when(tramo1.getTerminalOrigen()).thenReturn(terminal1);
+		when(tramo1.getTerminalDestino()).thenReturn(terminal2);
+		
+		when(tramo2.getTerminalOrigen()).thenReturn(terminal2);
+		when(tramo2.getTerminalDestino()).thenReturn(terminal3);
+		
+		when(tramo3.getTerminalOrigen()).thenReturn(terminal3);
+		when(tramo3.getTerminalDestino()).thenReturn(terminal4);
+		
+		when(tramo4.getTerminalOrigen()).thenReturn(terminal4);
+		when(tramo4.getTerminalDestino()).thenReturn(terminal5);
+		
+		circuito = new CircuitoMaritimo(ts);
+		
+		List<Tramo> tsEntre = circuito.tramosDesdeHasta(terminal2, terminal4);
+		
+		assertEquals(2, tsEntre.size());
+		
+		Tramo t1 = tsEntre.get(0);
+		
+		assertEquals(terminal2, t1.getTerminalOrigen());
+		assertEquals(terminal3, t1.getTerminalDestino());
+		
+		Tramo t2 = tsEntre.get(1);
+		
+		assertEquals(terminal3, t2.getTerminalOrigen());
+		assertEquals(terminal4, t2.getTerminalDestino());
 		
 	}
 

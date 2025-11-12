@@ -13,6 +13,9 @@ public class CircuitoMaritimo {
 	
 	//////////////////////////////////////////////CONSTRUCTOR///////////////////////////////////////////////////
 	
+	/*
+	 * PRECONDICIÓN: La lista de tramos no puede ser vacía.
+	 */
 	public CircuitoMaritimo(List<Tramo> tramos) {
 		
 		this.validarTramos(tramos);
