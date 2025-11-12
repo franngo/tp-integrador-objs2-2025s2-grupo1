@@ -1,11 +1,21 @@
 package ar.edu.unq.po2.buque;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ar.edu.unq.po2.buque.estadosBuque.EstadoBuque;
+import ar.edu.unq.po2.buque.estadosBuque.OutBound;
+import ar.edu.unq.po2.coordenada.Coordenada;
+import ar.edu.unq.po2.orden.Orden;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
+import ar.edu.unq.po2.viaje.Viaje;
 
 class BuqueTestCase {
 
@@ -13,13 +23,54 @@ class BuqueTestCase {
 	Buque miBuque;
 	TerminalPortuaria terminalDumb;
 	EstadoBuque estadoBuque;
+	Coordenada coordenadasBuque;
+	Coordenada coordenadasTerminal;
+	List<Orden> ordenesImportacion;
+	List<Orden> ordenesExportacion;
+	Viaje viajeDumb;
 	@BeforeEach
-	void setUp() throws Exception {
+	void setUp()  {
+		
+		terminalDumb= mock(TerminalPortuaria.class);
+		coordenadasTerminal = new Coordenada(0d,0d);
+		when(terminalDumb.coordenadasTerminal()).thenReturn(coordenadasTerminal);
+		
+		ordenesImportacion=List.of();
+		ordenesExportacion = List.of();
+		
+		coordenadasBuque = new Coordenada(30d,20d);
+		viajeDumb = mock(Viaje.class);
+		when(viajeDumb.puertoDestino()).thenReturn(terminalDumb);
+		
+		miBuque = new Buque(coordenadasBuque,ordenesImportacion,ordenesExportacion,"El Perla Negra");
+		
 	}
 
+	
 	@Test
-	void test() {
-		fail("Not yet implemented");
+	void elBarcoNoPuedeIniciarViaje() {
+		miBuque.enViaje();
+		 assertThrows(Exception.class, () -> {
+		        miBuque.iniciarViaje(viajeDumb);
+		    });
+	}
+	@Test
+	void elBarcoIniciaElViaje() throws Exception {
+		
+		miBuque.iniciarViaje(viajeDumb);
+		assertEquals(viajeDumb,miBuque.getViajeActual());
+		assertTrue(miBuque.obtenerEstado() instanceof OutBound);
+		
+	}
+	@Test
+	void elBarcoSeMuevePorSuEstado() throws Exception {
+		
+		miBuque.iniciarViaje(viajeDumb);
+		miBuque.avanzarHacia(30d, 40d);
+		
+		assertEquals(30d,miBuque.posicionActual().getLatitud());
+		assertEquals(40d,miBuque.posicionActual().getLongitud());
+		
 	}
 
 }
