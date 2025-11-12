@@ -1,11 +1,11 @@
 package ar.edu.unq.po2.buque.estadosBuque;
 
 import ar.edu.unq.po2.buque.Buque;
-import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
+
 
 public class Working extends EstadoBuque{
     
-	
+	boolean puedePartir = false;
 	public Working(Buque miBuque) {
 		super(miBuque);
 		// TODO Auto-generated constructor stub
@@ -14,7 +14,11 @@ public class Working extends EstadoBuque{
 	@Override
 	public boolean debeCambiarDeFase() {
 		// TODO Auto-generated method stub
-		return miBuque.terminalAArribar().partidaHabilitada(miBuque);
+		return puedePartir;
+	}
+	
+	public void puedePartir() {
+		this.puedePartir=true;
 	}
 
 	@Override
@@ -23,9 +27,14 @@ public class Working extends EstadoBuque{
 		
 	}
 	@Override
-	public void notificarEstado(TerminalPortuaria terminal) {
-		// TODO Auto-generated method stub
+	public void notificarEstado() {
+		// no notifica nada a la terminal
 		
+	}
+
+	@Override
+	public void avanzar(double latitud, double longitud) {
+		//No puede moverse tampoco en estado Working
 	}
 
 }

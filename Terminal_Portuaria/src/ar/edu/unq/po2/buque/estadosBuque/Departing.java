@@ -2,7 +2,7 @@ package ar.edu.unq.po2.buque.estadosBuque;
 
 import ar.edu.unq.po2.buque.Buque;
 
-import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
+
 
 public class Departing extends EstadoBuque{
 
@@ -25,15 +25,24 @@ public class Departing extends EstadoBuque{
 	
 	@Override
 	public void modificarEstadoBuque() {
-		miBuque.establecerEstado(new OutBound(miBuque));
+		terminalAArribar.notificarSalidaTerminal(miBuque);
+		miBuque.arriboConExito();
+		miBuque.establecerEstado(new OutboundFinal(miBuque));
 		
 	}
 
 
 
 	@Override
-	public void notificarEstado(TerminalPortuaria terminal) {
+	public void notificarEstado() {
 		
+		
+	}
+
+	@Override
+	public void avanzar(double latitud, double longitud) {
+		//elBuqueAhoraPuedeMoverse
+		miBuque.nuevaPosicion(latitud, longitud);
 		
 	}
 

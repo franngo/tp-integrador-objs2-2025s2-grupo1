@@ -2,8 +2,11 @@ package ar.edu.unq.po2.buque;
 
 import java.util.List;
 
+import ar.edu.unq.po2.buque.estadosBuque.Arrived;
+
 import ar.edu.unq.po2.buque.estadosBuque.EstadoBuque;
 import ar.edu.unq.po2.buque.estadosBuque.OutBound;
+import ar.edu.unq.po2.buque.estadosBuque.Working;
 import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.orden.Orden;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
@@ -20,7 +23,10 @@ public class Buque implements BuqueObservado{
 	
 	
     List<Orden> ordenesExportacion;
-    List<Orden> ordenesImportacion;
+   List<Orden> ordenesImportacion;
+    
+    
+    
     
     String nombre;
     
@@ -31,6 +37,10 @@ public class Buque implements BuqueObservado{
     TerminalPortuaria terminalAArribar; // el OBSERVER
   
     public Coordenada posicionActual() {return posicionActual;}
+    
+    public void nuevaPosicion(double latitud, double longitud) {
+    	this.posicionActual.nuevaPosicion(latitud, longitud);
+    }
     
     public void adscribirObservador(TerminalPortuaria terminalObservadora) {
     	this.terminalAArribar = terminalObservadora;
@@ -55,16 +65,16 @@ public class Buque implements BuqueObservado{
     
 
     public void avanzarHacia(double latitud, double longitud){
-        posicionActual.nuevaPosicion(latitud,longitud);
-        this.notificarEstado();
-    	estadoBuque.actualizarSiSeRequiere();
+        estadoBuque.avanzar(latitud,longitud);
+        estadoBuque.actualizarSiSeRequiere();
+        estadoBuque.notificarEstado();
+     }
     
-    }
     
     
-    public void notificarEstado() {
-        estadoBuque.notificarEstado(this.terminalAArribar());
-	}
+    
+   
+	
 
 	public void iniciarViaje(Viaje viajeActual){
         this.viajeActual=viajeActual;
@@ -72,7 +82,8 @@ public class Buque implements BuqueObservado{
     }
     
     
-    public void descargarContainers() {} // depende de los estados
+    public void descargarContainers() {} // depende de los estados//NECESITA UN CONDICIONAL
+    // PARA QUE LA INSTANCIA DE DWORKING DIGA QUE PUEDE 
     public void cargarContainers() {} // depende de los estados
 
 	@Override
@@ -106,6 +117,42 @@ public class Buque implements BuqueObservado{
 	public String getNombre() {
 		return this.nombre;
 	}
+
+	@Override
+	public void notificarEstado() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void iniciarTrabajos() throws Exception {
+		if(this.obtenerEstado() instanceof Arrived){
+			this.obtenerEstado().puedeIniciarWorking();
+		    this.obtenerEstado().modificarEstadoBuque();
+		}
+		else {
+			throw new Exception("El buque no se encuentra en la terminal");
+		}
+	} 
+   
+     public void finalizarTrabajos()  throws Exception{
+    	 if(this.obtenerEstado() instanceof Working) {
+    		 this.obtenerEstado().puedePartir();
+    		 this.obtenerEstado().modificarEstadoBuque();
+    	 }
+    	 else {
+    		 throw new Exception("El buque aun no se encuentra en condiciones de partir");
+    	 }
+     }
+     
+     
+     //Cuando termina todo el proceso, el barco deberia cambiar su destino
+	 public void arriboConExito() {
+		 //provisorio
+		 this.terminalAArribar = null;
+		// TODO Auto-generated method stub
+		 // this.terminalAArribar = this.viaje().proximoDestino()
+		
+	 } 
 
 
     

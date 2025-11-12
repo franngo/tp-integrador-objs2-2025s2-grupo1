@@ -55,7 +55,7 @@ public class Dry extends Container {
 	    public double getPeso() {
 	        return cargaBL.getPeso();
 	    }
-	 
+    
 	    public String getDueños() {
 	    	return cargaBL.dueños();
 	    }

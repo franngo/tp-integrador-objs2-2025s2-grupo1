@@ -13,7 +13,7 @@ public abstract class EstadoBuque {
 		this.terminalAArribar=miBuque.terminalAArribar();
 	}
     
-	public abstract void notificarEstado(TerminalPortuaria terminal);
+	public abstract void notificarEstado();
 
      // TEMPLATE METHOD 	
 	public void actualizarSiSeRequiere() {
@@ -28,6 +28,21 @@ public abstract class EstadoBuque {
 	
 	protected Buque miBuque() {return miBuque;}
 	protected TerminalPortuaria terminalAArribar() {return terminalAArribar;}
+
+	public abstract void avanzar(double latitud, double longitud);
+		// TODO Auto-generated method stub
+
+	public void puedeIniciarWorking() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void puedePartir() {
+		// TODO Auto-generated method stub
+		
+	}
+		
+	
 	
 
 	
