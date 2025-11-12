@@ -416,7 +416,7 @@ public class TerminalPortuaria implements TerminalObservadora{
 
 // METODOS PARA LO QUE  ES EL BUQUE, REFACTORIZAR UNA VEZ ESTEN IMPLEMENTADOS
 //A PARTIR DE AQUI ES TODO LO QUE HACE LA TERMINAL CUANDO EL BUQUE ESTA LLEGANDO
-
+/*
 public void actualizar(Buque buque) {
 	
 	
@@ -431,7 +431,7 @@ public boolean partidaHabilitada(Buque miBuque) {
 	// TODO Auto-generated method stub
 	return false;
 }
-
+*/
 @Override
 public void adscribirObservado(Buque buque) {
 	// TODO Auto-generated method stub
@@ -444,7 +444,13 @@ public void notificarConsignee(Viaje viajeActual) {
 
 public void notificarArribo(Buque miBuque) {
 	// TODO Auto-generated method stub
-	System.out.println("algo");
+	System.out.println("AVISA A LOS CONSIGNEE QUE LA CARGA ESTA POR LLEGAR");
+}
+
+public void notificarSalidaTerminal(Buque miBuque) {
+	// TODO Auto-generated method stu
+	System.out.println("MANDA LOS MAILS A LOS SHIPPERS");
+	
 }
 
 

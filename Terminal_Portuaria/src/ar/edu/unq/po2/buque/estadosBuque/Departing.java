@@ -25,7 +25,8 @@ public class Departing extends EstadoBuque{
 	
 	@Override
 	public void modificarEstadoBuque() {
-		miBuque.establecerEstado(new OutBound(miBuque));
+		terminalAArribar.notificarSalidaTerminal(miBuque);
+		miBuque.establecerEstado(new OutboundFinal(miBuque));
 		
 	}
 
@@ -39,7 +40,8 @@ public class Departing extends EstadoBuque{
 
 	@Override
 	public void avanzar(double latitud, double longitud) {
-		// TODO Auto-generated method stub
+		//elBuqueAhoraPuedeMoverse
+		miBuque.nuevaPosicion(latitud, longitud);
 		
 	}
 
