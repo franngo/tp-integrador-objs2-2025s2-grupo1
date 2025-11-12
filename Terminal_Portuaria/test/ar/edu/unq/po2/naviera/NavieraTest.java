@@ -1,10 +1,13 @@
 package ar.edu.unq.po2.naviera;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +33,7 @@ public class NavieraTest {
 	//SUT
 	Naviera naviera;
 	
-	//auxiliar
+	//DOCs (que no son test doubles)
 	List<CircuitoMaritimo> cs;
 	List<Buque> bs;
 	
@@ -69,6 +72,22 @@ public class NavieraTest {
 	
 	@Test
 	public void publicarViaje() {
+		
+		//caso con error donde no se puede publicar el viaje
+		
+		CircuitoMaritimo circuito4 = mock(CircuitoMaritimo.class);
+		
+		assertThrows(RuntimeException.class, () -> { naviera.publicarViaje(LocalDateTime.now(), circuito4, buque1); } );
+		
+		Buque buque4 = mock(Buque.class);
+		
+		assertThrows(RuntimeException.class, () -> { naviera.publicarViaje(LocalDateTime.now(), circuito1, buque4); } );
+		
+		assertThrows(RuntimeException.class, () -> { naviera.publicarViaje(LocalDateTime.now(), circuito4, buque4); } );
+		
+		//caso sin error
+		
+		naviera.publicarViaje(LocalDateTime.now(), circuito2, buque3);
 		
 		/*
 		

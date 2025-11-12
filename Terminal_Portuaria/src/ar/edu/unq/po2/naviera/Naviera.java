@@ -1,6 +1,7 @@
 package ar.edu.unq.po2.naviera;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.unq.po2.buque.Buque;
@@ -17,6 +18,7 @@ public class Naviera {
 	public Naviera(List<CircuitoMaritimo> circuitos, List<Buque> buques) {
 		this.circuitos = circuitos;
 		this.buques = buques;
+		this.viajes = new ArrayList<Viaje>();
 	}
 	
 	public List<Viaje> cronograma() {
@@ -33,7 +35,7 @@ public class Naviera {
 	
 	private void validarElemsValidos(CircuitoMaritimo circuito, Buque buque) {
 		
-		if(( !this.circuitos.contains(circuito) ) || ( !this.buques.contains(buque) )) {
+		if( ( !(this.circuitos.contains(circuito)) ) || ( !(this.buques.contains(buque)) ) ) {
 			throw new RuntimeException("No se puede publicar un viaje para esta naviera con estos elementos.");
 		}
 		
