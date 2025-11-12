@@ -181,4 +181,19 @@ public class CircuitoMaritimo {
 		
 	}
 	
+	//TODO
+	public double precioEnTramosDesdeHasta(TerminalPortuaria origen, TerminalPortuaria destino) {
+		return 1.0;
+	}
+	
+	//TODO
+	public Duration tiempoEnTramosDesdeHasta(TerminalPortuaria origen, TerminalPortuaria destino) {
+		return Duration.ofHours(0);
+	}
+	
+	//TODO
+	public int cantTerminalesEnTramosDesdeHasta(TerminalPortuaria origen, TerminalPortuaria destino) {
+		return 1;
+	}
+	
 }	
