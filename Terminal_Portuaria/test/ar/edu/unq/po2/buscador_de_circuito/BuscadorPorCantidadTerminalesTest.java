@@ -23,7 +23,7 @@ public class BuscadorPorCantidadTerminalesTest {
 	List<CircuitoMaritimo> circuitos = new ArrayList<CircuitoMaritimo>();
 	
 	@Test
-	public void buscarCircuito() {
+	public void buscarMejorCircuito() {
 		
 		when(circuito1.cantidadDeTerminales()).thenReturn(6);
 		when(circuito2.cantidadDeTerminales()).thenReturn(7);

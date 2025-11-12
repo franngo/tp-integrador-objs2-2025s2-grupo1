@@ -112,6 +112,8 @@ public class CircuitoMaritimo {
 			n++;
 		}
 		ts.add(this.tramos.get(n));
+		//añadimos tramos a la lista de tramos hasta encontrarnos con t2 como terminal destino. Por caso borde, también
+		//añadimos el tramo del índice que nos queda.
 		
 		return ts;
 		
