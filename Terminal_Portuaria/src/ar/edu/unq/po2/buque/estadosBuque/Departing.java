@@ -32,7 +32,7 @@ public class Departing extends EstadoBuque{
 
 
 	@Override
-	public void notificarEstado(TerminalPortuaria terminal) {
+	public void notificarEstado() {
 		
 		
 	}

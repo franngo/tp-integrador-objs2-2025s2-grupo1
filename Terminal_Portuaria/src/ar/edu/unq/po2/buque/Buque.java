@@ -2,8 +2,10 @@ package ar.edu.unq.po2.buque;
 
 import java.util.List;
 
+import ar.edu.unq.po2.buque.estadosBuque.Departing;
 import ar.edu.unq.po2.buque.estadosBuque.EstadoBuque;
 import ar.edu.unq.po2.buque.estadosBuque.OutBound;
+import ar.edu.unq.po2.buque.estadosBuque.Working;
 import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.orden.Orden;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
@@ -60,10 +62,10 @@ public class Buque implements BuqueObservado{
     public void avanzarHacia(double latitud, double longitud){
         estadoBuque.avanzar(latitud,longitud);
         estadoBuque.actualizarSiSeRequiere();
-        estadoBuque.notificarEstado(this.terminalAArribar());
-       
+        estadoBuque.notificarEstado();
+     }
     
-    }
+    
     
     
    
@@ -116,6 +118,14 @@ public class Buque implements BuqueObservado{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void iniciarTrabajos() {
+		this.establecerEstado(new Working(this));
+	} // Esto debería pasar el buque a estado Working.
+   
+     public void finalizarTrabajos() {
+    	 this.establecerEstado(new Departing(this));
+     } // Esto debería pasar el buque a estado Departing.
 
 
     

@@ -31,14 +31,14 @@ public class OutBound extends EstadoBuque {
 
 
 	@Override
-	public void notificarEstado(TerminalPortuaria terminal) {
+	public void notificarEstado() {
 		
 		
 	}
 
 	@Override
 	public void avanzar(double latitud, double longitud) {
-		// TODO Auto-generated method stub
+		miBuque.posicionActual().nuevaPosicion(latitud, longitud);
 		
 	}
 

@@ -13,7 +13,7 @@ public abstract class EstadoBuque {
 		this.terminalAArribar=miBuque.terminalAArribar();
 	}
     
-	public abstract void notificarEstado(TerminalPortuaria terminal);
+	public abstract void notificarEstado();
 
      // TEMPLATE METHOD 	
 	public void actualizarSiSeRequiere() {
