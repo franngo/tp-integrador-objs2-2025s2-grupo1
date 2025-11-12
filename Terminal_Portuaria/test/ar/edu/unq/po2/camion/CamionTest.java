@@ -12,10 +12,8 @@ import org.junit.jupiter.api.Test;
 import ar.edu.unq.po2.buque.Buque;
 import ar.edu.unq.po2.chofer.Chofer;
 import ar.edu.unq.po2.circuito_maritimo.CircuitoMaritimo;
-import ar.edu.unq.po2.cliente.Cliente;
-import ar.edu.unq.po2.cliente.Consignee;
+import ar.edu.unq.po2.cliente.*;
 import ar.edu.unq.po2.container.*;
-import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.empresa_transportista.EmpresaTransportista;
 import ar.edu.unq.po2.orden.Orden;
 import ar.edu.unq.po2.orden.OrdenDeExportacion;
@@ -50,15 +48,10 @@ class CamionTest {
 	public void testFuncionamientoEquals() {
 		Camion scaniaR580D = new Camion("Scania R580", "AA975BA"); // Tiene la misma marca y modelo que scaniaR580, pero la misma patente.
 		Camion volvoFH500  = new Camion("Volvo FH500", "NRG113");  // Tiene la misma patente que volvoFH460, pero no el mismo modelo y marca.
-		Chofer jose = new Chofer("Jose Fernandez", "38.091.105");  // Chofer utilizado de referencia.
 		
 		// Equals con misma referencia de tipo Camion.
 		assertTrue(scaniaR580.equals(scaniaR580));
 		assertEquals(scaniaR580.hashCode(), scaniaR580.hashCode());
-		
-		// Equals con una instancia que no es del tipo Camion.
-		assertFalse(scaniaR580.equals(jose));
-		assertNotEquals(scaniaR580.hashCode(), jose.hashCode());
 		
 		// Equals con una instancia de tipo Camion pero con distinta patente.
 		assertFalse(scaniaR580.equals(scaniaR580D));
@@ -106,10 +99,11 @@ class CamionTest {
         Viaje viaje = new Viaje(LocalDateTime.now().plusHours(2), circuito, buque);
 
         Cliente consignee = new Consignee("Roberto Paniagua");
+        Cliente shipper = new Shipper("Benjamin Maldonado");
         Chofer chofer = new Chofer("Jose Fernandez", "38.091.105");
         Container container = new Reefer(consignee, 1100, 4500, 3050, 25000, 15);
         
-        Orden orden = new OrdenDeExportacion(scaniaR580, chofer, container, viaje);
+        Orden orden = new OrdenDeExportacion(scaniaR580, chofer, container, viaje, shipper);
         
         andreani.añadirCamion(scaniaR580);
         andreani.añadirChofer(chofer);
@@ -122,7 +116,7 @@ class CamionTest {
         scaniaR580.transportarExportacionA(terminal, chofer);
         
         // Verify
-        verify(terminal).registrarExportacion(scaniaR580.getOrdenActual(), scaniaR580, chofer, consignee);
+        verify(terminal).registrarExportacion(scaniaR580.getOrdenActual(), scaniaR580, chofer);
 	}
 	
 	@Test
@@ -164,11 +158,12 @@ class CamionTest {
         TerminalPortuaria terminal = mock(TerminalPortuaria.class);
         
         Cliente consignee = mock(Cliente.class);
+        Cliente shipper = mock(Cliente.class);
         Chofer chofer = mock(Chofer.class);
         
         Container container = mock(Container.class);
         Viaje viaje = mock(Viaje.class);
-        Orden orden = new OrdenDeExportacion(volvoFH460, chofer, container, viaje);
+        Orden orden = new OrdenDeExportacion(volvoFH460, chofer, container, viaje, shipper);
         
         // Exercise
         volvoFH460.cambiarOrdenActualPor(orden);

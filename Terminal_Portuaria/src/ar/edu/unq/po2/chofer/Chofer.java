@@ -53,14 +53,6 @@ public class Chofer {
 	
 	@Override
 	public boolean equals(Object object) {
-		return (this == object) || (this.esChofer(object) && (this.esElMismoQue(object)));
-	}
-	
-	private boolean esChofer(Object object) {
-		return object instanceof Chofer;
-	}
-	
-	private boolean esElMismoQue(Object object) {
 		Chofer choferAComparar = (Chofer) object;
 		return dni.equals(choferAComparar.getDni());
 	}

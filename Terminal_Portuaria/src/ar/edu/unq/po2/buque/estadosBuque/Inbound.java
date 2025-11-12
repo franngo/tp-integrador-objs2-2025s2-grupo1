@@ -14,7 +14,7 @@ public class Inbound extends EstadoBuque{
 	public boolean debeCambiarDeFase() {
 		// TODO Auto-generated method stub
 					
-		return miBuque.posicionActual().enMismaPosicionCon(terminalAArribar.coordenadasTerminal());
+		return miBuque.posicionActual().enMismaPosicionCon(terminalAArribar.getCoordenada());
 	}
 	@Override
 	public void modificarEstadoBuque() {

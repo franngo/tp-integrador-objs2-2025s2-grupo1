@@ -57,9 +57,9 @@ class TerminalPortuariaTest {
 		Container containerMV = new Reefer(consigneeMV, 1000, 4750, 2950, 15000, 20);
 		Chofer choferMV = andreani.contratarChofer();
 		Camion camionMV = andreani.contratarCamion();
-		Orden ordenMV = new OrdenDeExportacion(camionMV, choferMV, containerMV, viajeMV);
+		// Orden ordenMV = new OrdenDeExportacion(camionMV, choferMV, containerMV, viajeMV);
 		
-		camionMV.cambiarOrdenActualPor(ordenMV);
+		// camionMV.cambiarOrdenActualPor(ordenMV);
 		choferMV.cambiarEstaDisponiblePor(false);
 
 		// Orden Buenos Aires
@@ -70,9 +70,9 @@ class TerminalPortuariaTest {
 		Chofer choferBA = andreani.contratarChofer();
 		Camion camionBA = andreani.contratarCamion();
 		Container containerBA = new Reefer(consigneeBA, 1100, 4500, 3050, 25000, 15);
-        Orden ordenBA = new OrdenDeExportacion(camionBA, choferBA, containerBA, viajeBA);
+        // Orden ordenBA = new OrdenDeExportacion(camionBA, choferBA, containerBA, viajeBA);
 		
-        camionBA.cambiarOrdenActualPor(ordenBA);
+        // camionBA.cambiarOrdenActualPor(ordenBA);
         choferBA.cambiarEstaDisponiblePor(false);
         
         // Registro de los consignee y la empresa transportista

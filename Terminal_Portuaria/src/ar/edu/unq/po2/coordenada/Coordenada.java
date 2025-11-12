@@ -63,21 +63,25 @@ public class Coordenada {
     }
     
 
+    public double distanciaA(Coordenada otraCoordenada) {
+   	 double dx = this.latitud - otraCoordenada.getLatitud();
+        double dy = this.longitud - otraCoordenada.getLongitud();
+        return Math.sqrt(dx * dx + dy * dy);
+   	
+    }
+   
+    public boolean enMismaPosicionCon(Coordenada otraCoordenada) {
+    	boolean mismaLongitud = this.longitud == otraCoordenada.getLongitud();
+    	boolean mismLatitud = this.latitud == otraCoordenada.getLatitud();
+    	return mismLatitud && mismaLongitud;
+    }
 
 	// #################################### MÉTODOS AUXILIARES ################################## \\
 	
 	@Override
 	public boolean equals(Object object) {
-		return (this == object) || (this.esCoordenada(object) && (this.esElMismoQue(object)));
-	}
-	
-	private boolean esCoordenada(Object object) {
-		return object instanceof Coordenada;
-	}
-	
-	private boolean esElMismoQue(Object object) {
 		Coordenada coordenadaAComparar = (Coordenada) object;
-		return (this.getLatitud() == coordenadaAComparar.getLatitud()) && (this.getLongitud() == coordenadaAComparar.getLongitud());
+		return this.enMismaPosicionCon(coordenadaAComparar);
 	}
 	
 	@Override

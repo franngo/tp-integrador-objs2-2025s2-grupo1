@@ -1,5 +1,6 @@
 package ar.edu.unq.po2.terminal_portuaria;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -8,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ar.edu.unq.po2.buque.Buque;
+import ar.edu.unq.po2.buscador_de_viaje.Condicion;
 import ar.edu.unq.po2.camion.Camion;
 
 import ar.edu.unq.po2.chofer.Chofer;
@@ -38,8 +40,8 @@ public class TerminalPortuaria implements TerminalObservadora{
 	private Set<CircuitoMaritimo> circuitosMaritimosRegistrados;
 
 	private Set<PrecioServicioTerminal> serviciosDisponibles;
-	private Set<Orden> ordenesDeImportacion;
-	private Set<Orden> ordenesDeExportacion;
+	private List<Orden> ordenesDeImportacion;
+	private List<Orden> ordenesDeExportacion;
 	private List<Reporte> reportesGenerados;
   	
 	/**
@@ -55,8 +57,8 @@ public class TerminalPortuaria implements TerminalObservadora{
 		this.circuitosMaritimosRegistrados = new HashSet<CircuitoMaritimo>();
 		
 		this.serviciosDisponibles = new HashSet<PrecioServicioTerminal>();
-		this.ordenesDeImportacion = new HashSet<Orden>();
-		this.ordenesDeExportacion = new HashSet<Orden>();
+		this.ordenesDeImportacion = new ArrayList<Orden>();
+		this.ordenesDeExportacion = new ArrayList<Orden>();
 		this.reportesGenerados = new ArrayList<Reporte>();
 		
 		serviciosDisponibles.add(PrecioServicioTerminal.DIAEXCEDENTE);
@@ -74,7 +76,76 @@ public class TerminalPortuaria implements TerminalObservadora{
 	public Coordenada getCoordenada() {
 		return new Coordenada(coordenada.getLatitud(), coordenada.getLongitud());
 	}
+	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	/**
+	 * Registra como exportación en la terminal la orden dada.
+	 * @param orden es la orden a ser registrada como exportación en la terminal.
+	 * @param camion es el camion informado por el shipper que va a ingresar la carga a la terminal.
+	 * @param chofer es el chofer informado por el shipper que va a ingresar la carga a la terminal.
+	 */
+	public void registrarExportacion(Orden orden, Camion camion, Chofer chofer) {
+		this.validarRegistrarExportacion(orden, camion, chofer, orden.getShipper());
+		orden.crearServiciosACobrar();
+		this.ordenesDeExportacion.add(orden);
+	}
 
+	/**
+	 * Valida si la orden dada puede registrarse como exportación.
+	 * @param orden es la orden a ser validada como exportación.
+	 * @param camion es el camion informado por el shipper que va a ingresar la carga.
+	 * @param chofer es el chofer informado por el shipper que va a ingresar la carga.
+	 * @param shipper es el que realiza la exportación. 
+	 */
+	private void validarRegistrarExportacion(Orden orden, Camion camion, Chofer chofer, Cliente shipper) {
+		if(!this.cumpleHorarioExportacion(orden) || !this.cumpleIngresoExportacion(orden, camion, chofer, shipper)) {
+			throw new RuntimeException("No se encuentra en horario de exportación, o no se ha informado correctamente quienes deberan ingresar a la terminal.");
+		}
+	}
+	
+	/**
+	 * Indica si la orden dada cumple el horario de exportación. Es decir, si se encuentra 3 horas antes de la hora de salida en el momento de consulta.
+	 * La fecha de salida de la orden siempre es respecto a esta terminal.
+	 * @param orden es la orden que se toma de referencia para evaluar si cumple con el horario de exportación.
+	 */
+	private boolean cumpleHorarioExportacion(Orden orden) {
+		LocalDateTime fechaActual = LocalDateTime.now();
+		LocalDateTime fechaSalida = orden.fechaDeSalida();
+		LocalDateTime fechaMinimaPermitida = fechaSalida.minusHours(3);
+		return fechaActual.isAfter(fechaMinimaPermitida) && fechaActual.isBefore(fechaSalida);
+	}
+	
+	/**
+	 * Indica si tiene registrados en la terminal el camion y chofer que se encuentran en la orden dada.
+	 * @param orden es la orden que se toma de referencia para evaluar si cumple con el transporte asociado a la misma.
+	 * @param camion es el camion informado por el shipper que va a ingresar la carga.
+	 * @param chofer es el chofer informado por el shipper que va a ingresar la carga.
+	 * @param shipper es el que realiza la exportación.
+	 */
+	private boolean cumpleIngresoExportacion(Orden orden, Camion camion, Chofer chofer, Cliente shipper) {
+		return this.estanRegistradosParaIngresar(camion, chofer, shipper) && 
+			   this.sonLosInformadosPorElShipper(orden, camion, chofer, shipper);
+	}
+	
+	/**
+	 * Indica si el camion, el chofer y el shipper dado son los informados en la orden dada.
+	 * @param orden es la orden a verificar en la que se encuentran los datos dados.
+	 * @param camion es el camion a verificar que se encuentra en la orden.
+	 * @param chofer es el chofer a verificar que se encuentra en la orden.
+	 * @param shipper es el shipper a verificar que se encuentra en la orden.
+	 */
+	private boolean sonLosInformadosPorElShipper(Orden orden, Camion camion, Chofer chofer, Cliente shipper) {
+		Camion camionOrden = orden.getCamion();
+		Chofer choferOrden = orden.getChofer();
+		Cliente shipperOrden = orden.getShipper();
+		return camionOrden.equals(camion) && choferOrden.equals(chofer) && shipperOrden.equals(shipper);
+	}
+	
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,7 +169,7 @@ public class TerminalPortuaria implements TerminalObservadora{
 	public void retirarImportacion(Camion camion, Chofer chofer, Cliente consignee) {
 		this.validarRetirarImportacion(camion, chofer, consignee);
 		Orden orden = this.ordenDeConsignee(consignee);
-		this.actualizarServiciosParaRetirar(orden);
+		ordenesDeImportacion.remove(orden);
 	}
 	
 	/**
@@ -126,10 +197,10 @@ public class TerminalPortuaria implements TerminalObservadora{
 	 * Indica si tiene registrados en la terminal el camion, chofer y el consignee dados.
 	 * @param camion es el camion a verificar si se encuentra registrado en la terminal.
 	 * @param chofer es el chofer a verificar si se encuentra registrado en la terminal.
-	 * @param consignee es el consignee a verificar si se encuentra registrado en la terminal.
+	 * @param cliente es el cliente a verificar si se encuentra registrado en la terminal.
 	 */
-	private boolean estanRegistradosParaIngresar(Camion camion, Chofer chofer, Cliente consignee) {
-		return this.estaRegistradoCamionYChofer(camion, chofer) && this.estaRegistradoCliente(consignee);
+	private boolean estanRegistradosParaIngresar(Camion camion, Chofer chofer, Cliente cliente) {
+		return this.estaRegistradoCamionYChofer(camion, chofer) && this.estaRegistradoCliente(cliente);
 	}
 	
 	/**
@@ -151,17 +222,6 @@ public class TerminalPortuaria implements TerminalObservadora{
 	}
 	
 	/**
-	 * Indica si la orden dada cumple con el plazo de almacenamiento que ofrece la Terminal Portuaria, el cual es de 24 horas almacenado en la misma.
-	 * @param orden es la orden a verificar si cumple con el plazo de almacenamiento gratuito.
-	 */
-	private boolean cumplePlazoAlmacenamientoGratuito(Orden orden) {
-		LocalDateTime fechaActual  = LocalDateTime.now(); 
-		LocalDateTime fechaLlegada = orden.fechaDeLlegada();
-		LocalDateTime fechaMaxima  = fechaLlegada.plusDays(1);
-		return fechaActual.isAfter(fechaLlegada) && fechaActual.isBefore(fechaMaxima);
-	}
-	
-	/**
 	 * Describe la orden de importacion del consignee dado que se encuentra registrada en la terminal.
 	 * @param consignee es el dueño de la carga.
 	 */
@@ -171,97 +231,86 @@ public class TerminalPortuaria implements TerminalObservadora{
 								   .findFirst()
 								   .get();
 	}
+
 	
-	/**
-	 * Describe la orden dada después de actualizarle los servicios al momento de ser retirada (si hace falta).
-	 * @param orden es la orden a actualizarle los servicios.
-	 */
-	private Orden actualizarServiciosParaRetirar(Orden orden) {
-		Orden ordenResultante = orden;
-		
-		if(this.cumplePlazoAlmacenamientoGratuito(orden)) {
-			orden.eliminarServicioExcedente();
-		}
-			
-		return ordenResultante;
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	public void trabajarEnBuque(Buque buque) {
+		this.validarTrabajosEnBuque(buque); // Valida que puede trabajar en el buque (misma coordenada).
+		this.iniciarTrabajos(buque); 	// Inicia la descarga y carga de ordenes en el buque.
+		this.generarReportes(buque); 	// Genera los reportes en base a lo cargado y descargado del buque.
+		this.finalizarTrabajos(buque);  // Finaliza la carga y descarga de ordenes en el buque, borrando de ambos lados lo cargado y descargado respectivamente.
 	}
 	
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	
-	/**
-	 * Registra como exportación en la Terminal Portuaria la orden dada.
-	 * @param orden es la orden a ser registrada como exportación en la Terminal Portuaria.
-	 * @param camion es el camion informado por el consignee que va a ingresar la carga.
-	 * @param chofer es el chofer informado por el consignee que va a ingresar la carga.
-	 * @param consignee es el dueño de la carga.
-	 */
-	public void registrarExportacion(Orden orden, Camion camion, Chofer chofer, Cliente consignee) {
-		this.validarRegistrarExportacion(orden, camion, chofer, consignee);
-		this.ordenesDeExportacion.add(orden);
-	}
-
-	/**
-	 * Valida si la orden dada puede registrarse como exportación.
-	 * @param orden es la orden a ser validada como exportación.
-	 * @param camion es el camion informado por el consignee que va a ingresar la carga.
-	 * @param chofer es el chofer informado por el consignee que va a ingresar la carga.
-	 * @param consignee es el dueño de la carga. 
-	 */
-	private void validarRegistrarExportacion(Orden orden, Camion camion, Chofer chofer, Cliente consignee) {
-		if(!this.cumpleHorarioExportacion(orden) || !this.cumpleIngresoExportacion(orden, camion, chofer, consignee)) {
-			throw new RuntimeException("No se encuentra en horario de exportación, o bien el camion y/o el chofer no estan registrados en la Terminal.");
+	private void validarTrabajosEnBuque(Buque buque) {
+		if(!coordenada.equals(buque.posicionActual())) { // Esto debería verificar si está en estado Arrived.
+			throw new RuntimeException("El buque no se encuentra en la terminal para realizar la carga o descarga");
 		}
 	}
 	
-	/**
-	 * Indica si la orden dada cumple el horario de exportación. Es decir, si se encuentra 3 horas antes de la hora de salida en el momento de consulta.
-	 * @param orden es la orden que se toma de referencia para evaluar si cumple con el horario de exportación.
-	 */
-	private boolean cumpleHorarioExportacion(Orden orden) {
-		LocalDateTime fechaActual  = LocalDateTime.now();
-		LocalDateTime fechaSalida = orden.fechaDeSalida();
-		LocalDateTime fechaMinimaPermitida = fechaSalida.minusHours(3);
-		return fechaActual.isAfter(fechaMinimaPermitida) && fechaActual.isBefore(fechaSalida);
+	private void iniciarTrabajos(Buque buque) {
+		buque.iniciarTrabajos(); 	  		// Esto debería pasar el buque a estado Working.
+		this.iniciarDescargaOrdenes(buque); // Añade las ordenes a la lista de importaciones.
+		this.iniciarCargaOrdenes(buque); 	// Añade las ordenes de la lista de exportaciones al buque.
 	}
 	
-	/**
-	 * Indica si tiene registrados en la Terminal el camion y chofer que se encuentran en la orden dada.
-	 * @param orden es la orden que se toma de referencia para evaluar si cumple con el transporte asociado a la misma.
-	 * @param camion es el camion informado por el consignee que va a ingresar la carga.
-	 * @param chofer es el chofer informado por el consignee que va a ingresar la carga.
-	 * @param consignee es el dueño de la carga.
-	 */
-	private boolean cumpleIngresoExportacion(Orden orden, Camion camion, Chofer chofer, Cliente consignee) {
-		return this.sonLosInformadosPorElConsignee(orden, camion, chofer, consignee) && 
-			   this.estanRegistradosParaIngresar(camion, chofer, consignee);
-	}
-	
-	/**
-	 * Indica si el cliente dado se encuentra registrado en la terminal.
-	 */
-	private boolean sonLosInformadosPorElConsignee(Orden orden, Camion camion, Chofer chofer, Cliente consignee) {
-		Camion camionOrden = orden.getCamion();
-		Chofer choferOrden = orden.getChofer();
-		Cliente consigneeOrden = orden.getConsignee();
-		return camionOrden.equals(camion) && choferOrden.equals(chofer) && consigneeOrden.equals(consignee);
-	}
-	
-	
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	public void cargarContainers(Buque buque) {
+	private void iniciarDescargaOrdenes(Buque buque) {
+		List<Orden> ordenes = buque.getOrdenesADescargar(this);
 		
+		for(Orden o : ordenes) {
+			ordenesDeImportacion.add(o);
+			o.crearServiciosACobrar();
+		}
+	}
+
+	private void iniciarCargaOrdenes(Buque buque) {
+		List<Orden> ordenes = ordenesDeExportacion.stream()
+												  .filter(o -> o.getViaje().equals(buque.getViajeActual()))
+												  .toList();
+		buque.cargarOrdenes(ordenes);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	private void generarReportes(Buque buque) {
+		// Genera reportes de importación
+		List<Orden> ordenesImportacion = ordenesDeImportacion.stream()
+				  						   				     .filter(o -> buque.getOrdenes().contains(o))
+				  								  			 .toList();
+		Map<String, Reporte> reportesImportaciones = generadorReportes.generarReportesConImportaciones(buque, ordenesImportacion);
+		
+		// Genera reportes de exportación
+		List<Orden> ordenesExportacion = ordenesDeExportacion.stream()
+				  											 .filter(o -> buque.getOrdenes().contains(o))
+				  											 .toList();
+		List<Reporte> reportesCompletos = generadorReportes.finalizarReportesConExportaciones(reportesImportaciones, ordenesExportacion);
+		
+		// Añadir los reportes generados
+		reportesGenerados.addAll(reportesCompletos);
 	}
 	
-	public void descargarContainers(Buque buque) {
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	private void finalizarTrabajos(Buque buque) {
+		List<Orden> ordenesCargadas = ordenesDeExportacion.stream()
+				  										  .filter(o -> o.getViaje().equals(buque.getViajeActual()))
+				  										  .toList();
+		List<Orden> ordenesDescargadas = buque.getOrdenesADescargar(this);
 		
+		buque.finalizarDescargaDeOrdenes(ordenesDescargadas); // Elimina las ordenes descargadas en la terminal que estaban en el buque.
+		this.finalizarCargaDeOrdenes(ordenesCargadas); // Elimina las ordenes cargadas en el buque de la terminal.
+		buque.finalizarTrabajos(); // Esto debería pasar el buque a estado Departing.
 	}
+	
+	private void finalizarCargaDeOrdenes(List<Orden> ordenesCargadas) {
+		for(Orden o : ordenesCargadas) {
+			this.ordenesDeExportacion.remove(o);
+		}
+	}
+	
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -314,9 +363,10 @@ public class TerminalPortuaria implements TerminalObservadora{
 	 * @param chofer es el chofer contratado para ser asignado a la orden a generar.
 	 * @param container es el container que contiene lo que va a ser transportado en la orden a generar.
 	 * @param viaje es el viaje determinado para ser asignado a la orden a generar.
+	 * @param shipper es el encargado de exportar la orden.
 	 */
-	public Orden generarOrden(Camion camion, Chofer chofer, Container container, Viaje viaje) {
-		return new OrdenDeExportacion(camion, chofer, container, viaje);
+	public Orden generarOrden(Camion camion, Chofer chofer, Container container, Viaje viaje, Cliente shipper) {
+		return new OrdenDeExportacion(camion, chofer, container, viaje, shipper);
 	}
 	
 	/**
@@ -327,26 +377,8 @@ public class TerminalPortuaria implements TerminalObservadora{
 	/*
 	public double precioServicio(PrecioServicioTerminal servicio) {
 		this.validarPrecioServicio(servicio);
-		return serviciosDisponibles.stream()
-								   .filter(s -> s.equals(servicio))
-								   .findFirst()
-								   .get()
-								   .getPrecio();
-	}*/
-
-
-	 public double precioServicio(PrecioServicioTerminal servicio) {
-		 
-		 this.validarServicio(servicio);
-		 return servicio.getPrecio();
-	 }
-
-	 private void validarServicio(PrecioServicioTerminal servicio) {
-		// TODO Auto-generated method stub
-		 if (!serviciosDisponibles.contains(servicio)) {
-			 throw new IllegalArgumentException("Servicio no disponible en esta terminal");
-		 }
-	 }
+		return servicio.getPrecio();
+	}
 
 	 
 	/**
@@ -359,51 +391,49 @@ public class TerminalPortuaria implements TerminalObservadora{
 		}
 	}
 	
-	/**
-	 * Genera reportes que unicamente tienen cargada la información de las importaciones.
-	 * Se debería llamar junto al proceso de descarga de los containers de importación del buque, ANTES
-	 * de ser borradas esas órdenes de importación de la terminal.
-	 * @param buque es el buque del que se toma como referencia para las ordenes de importación.
-	 */
-	private Map<String, Reporte> generarReportesConImportaciones(Buque buque) {
-		List<Orden> ordenesImp = this.ordenesDelViaje(ordenesDeImportacion, buque);
-		return generadorReportes.generarReportesConImportaciones(buque, ordenesImp);
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	
+	public void setBuscadorDeCircuito(CircuitoMaritimo circuitoMaritimo) {
+		
+		
 	}
 	
-	/**
-	 * Agrega la información de las exportaciones a los Reportes pasados y los guarda en la lista de reportes de la 
-	 * TerminalPortuaria.
-	 * Se debería llamar junto al proceso de carga de los containers de exportación al buque, ANTES
-	 * de ser borradas esas órdenes de exportación de la terminal.
-	 * @param buque es el buque del que se toma como referencia para las ordenes de exportación.
-	 * @param Map<String, Reporte> son los reportes que tienen las importaciones cargadas, los cuales se les agregará
-	 *  la información de las exportaciones.
-	 */
-	private void finalizarReportesConExportaciones(Buque buque, Map<String, Reporte> reportes) {
-		List<Orden> ordenesExp = this.ordenesDelViaje(ordenesDeExportacion, buque);
-		List<Reporte> reportesPorAgregar = generadorReportes.finalizarReportesConExportaciones(reportes, ordenesExp);
-		reportesGenerados.addAll(reportesPorAgregar);
+	public CircuitoMaritimo buscarCircuito(TerminalPortuaria terminalPortuaria) {
+		return null;
+		
 	}
 	
-	private List<Orden> ordenesDelViaje(Set<Orden> ordenes, Buque buque) {
-		List<Orden> aDevolver = ordenes.stream()
-										.filter(o -> o.getViaje().equals(buque.getViajeActual()))
-										.toList();
-		return aDevolver;
+	public List<Viaje> buscarViaje(Condicion condicion) {
+		return null;
+		
 	}
 	
+	public Duration tiempoEntre(TerminalPortuaria terminalPortuaria, Naviera naviera) {
+		return null;
+		
+	}
+	
+	public LocalDateTime proximaFechaHacia(TerminalPortuaria terminalPortuaria, Buque buque) {
+		return null;
+		
+	}
+	
+	public void notificarArribo(Buque buque) {
+		
+	}
+	
+	public void notificarSalidaTerminal(Buque buque) {
+		
+	}
+
 	// #################################### MÉTODOS AUXILIARES ################################## \\
 	
 	@Override
 	public boolean equals(Object object) {
-		return (this == object) || (this.esTerminalPortuaria(object) && (this.esElMismoQue(object)));
-	}
-	
-	private boolean esTerminalPortuaria(Object object) {
-		return object instanceof TerminalPortuaria;
-	}
-	
-	private boolean esElMismoQue(Object object) {
 		TerminalPortuaria terminalAComparar = (TerminalPortuaria) object;
 		return coordenada.equals(terminalAComparar.getCoordenada());
 	}

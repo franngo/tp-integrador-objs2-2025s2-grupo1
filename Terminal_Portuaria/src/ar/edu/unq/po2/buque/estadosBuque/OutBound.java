@@ -21,7 +21,7 @@ public class OutBound extends EstadoBuque {
 	@Override
 	public boolean debeCambiarDeFase() {
 		
-		return this.estaAMenosDe50km(miBuque.posicionActual(),terminalAArribar.coordenadasTerminal());
+		return this.estaAMenosDe50km(miBuque.posicionActual(),terminalAArribar.getCoordenada());
 	}
 	
 	public boolean estaAMenosDe50km(Coordenada ubicacionBuque, Coordenada ubicacionTerminal){
