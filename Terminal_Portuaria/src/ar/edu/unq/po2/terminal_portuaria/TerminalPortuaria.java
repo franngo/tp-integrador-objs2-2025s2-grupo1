@@ -38,8 +38,8 @@ public class TerminalPortuaria {
 	private Set<CircuitoMaritimo> circuitosMaritimosRegistrados;
 
 	private Set<PrecioServicioTerminal> serviciosDisponibles;
-	private Set<Orden> ordenesDeImportacion;
-	private Set<Orden> ordenesDeExportacion;
+	private List<Orden> ordenesDeImportacion;
+	private List<Orden> ordenesDeExportacion;
 	private List<Reporte> reportesGenerados;
   	
 	/**
@@ -55,8 +55,8 @@ public class TerminalPortuaria {
 		this.circuitosMaritimosRegistrados = new HashSet<CircuitoMaritimo>();
 		
 		this.serviciosDisponibles = new HashSet<PrecioServicioTerminal>();
-		this.ordenesDeImportacion = new HashSet<Orden>();
-		this.ordenesDeExportacion = new HashSet<Orden>();
+		this.ordenesDeImportacion = new ArrayList<Orden>();
+		this.ordenesDeExportacion = new ArrayList<Orden>();
 		this.reportesGenerados = new ArrayList<Reporte>();
 		
 		serviciosDisponibles.add(PrecioServicioTerminal.DIAEXCEDENTE);
@@ -223,10 +223,10 @@ public class TerminalPortuaria {
 	
 	
 	public void trabajarEnBuque(Buque buque) {
-		this.validarTrabajosEnBuque(buque);
-		this.iniciarTrabajos(buque);
-		this.generarReportes(buque);
-		this.finalizarTrabajos(buque);
+		this.validarTrabajosEnBuque(buque); // Valida que puede trabajar en el buque (misma coordenada).
+		this.iniciarTrabajos(buque); 	// Inicia la descarga y carga de ordenes en el buque.
+		this.generarReportes(buque); 	// Genera los reportes en base a lo cargado y descargado del buque.
+		this.finalizarTrabajos(buque);  // Finaliza la carga y descarga de ordenes en el buque, borrando de ambos lados lo cargado y descargado respectivamente.
 	}
 	
 	private void validarTrabajosEnBuque(Buque buque) {
@@ -284,8 +284,8 @@ public class TerminalPortuaria {
 				  										  .toList();
 		List<Orden> ordenesDescargadas = buque.getOrdenesADescargar(this);
 		
-		buque.finalizarDescargaDeOrdenes(ordenesDescargadas);
-		this.finalizarCargaDeOrdenes(ordenesCargadas);
+		buque.finalizarDescargaDeOrdenes(ordenesDescargadas); // Elimina las ordenes descargadas en la terminal que estaban en el buque.
+		this.finalizarCargaDeOrdenes(ordenesCargadas); // Elimina las ordenes cargadas en el buque de la terminal.
 		
 		buque.finalizarTrabajos(); // Esto debería pasar el buque a estado Departing.
 	}
@@ -396,11 +396,11 @@ public class TerminalPortuaria {
 		
 	}
 	
-	public void notificarArribo(Buque miBuque) {
+	public void notificarArribo(Buque buque) {
 		
 	}
 	
-	public void notificarSalidaTerminal(Buque miBuque) {
+	public void notificarSalidaTerminal(Buque buque) {
 		
 	}
 

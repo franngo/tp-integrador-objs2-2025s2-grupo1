@@ -1,6 +1,7 @@
 package ar.edu.unq.po2.buque;
 
 import java.util.List;
+import java.util.Set;
 
 import ar.edu.unq.po2.buque.estadosBuque.Arrived;
 
@@ -8,6 +9,7 @@ import ar.edu.unq.po2.buque.estadosBuque.EstadoBuque;
 import ar.edu.unq.po2.buque.estadosBuque.OutBound;
 import ar.edu.unq.po2.buque.estadosBuque.Working;
 import ar.edu.unq.po2.coordenada.Coordenada;
+import ar.edu.unq.po2.empresa_transportista.EmpresaTransportista;
 import ar.edu.unq.po2.orden.Orden;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 import ar.edu.unq.po2.viaje.Viaje;
@@ -124,26 +126,29 @@ public class Buque implements BuqueObservado{
 		
 	}
 	
-	public void iniciarTrabajos() throws Exception {
-		if(this.obtenerEstado() instanceof Arrived){
-			this.obtenerEstado().puedeIniciarWorking();
-		    this.obtenerEstado().modificarEstadoBuque();
+	public void iniciarTrabajos() {
+		this.validarIniciarTrabajos();
+		this.obtenerEstado().puedeIniciarWorking();
+		this.obtenerEstado().modificarEstadoBuque();
+	}
+	
+	private void validarIniciarTrabajos() {
+		if(!(this.obtenerEstado() instanceof Arrived)) {
+			throw new RuntimeException("El buque no se encuentra en la terminal");
 		}
-		else {
-			throw new Exception("El buque no se encuentra en la terminal");
-		}
-	} 
+	}
    
-     public void finalizarTrabajos()  throws Exception{
-    	 if(this.obtenerEstado() instanceof Working) {
-    		 this.obtenerEstado().puedePartir();
-    		 this.obtenerEstado().modificarEstadoBuque();
-    	 }
-    	 else {
-    		 throw new Exception("El buque aun no se encuentra en condiciones de partir");
-    	 }
+     public void finalizarTrabajos() {
+    	 this.validarFinalizarTrabajos();
+    	 this.obtenerEstado().puedePartir();
+    	 this.obtenerEstado().modificarEstadoBuque();
      }
      
+     private void validarFinalizarTrabajos() {
+    	 if(!(this.obtenerEstado() instanceof Working)) {
+    		 throw new RuntimeException("El buque aun no se encuentra en condiciones de partir");
+    	 }
+     }
      
      //Cuando termina todo el proceso, el barco deberia cambiar su destino
 	 public void arriboConExito() {
@@ -151,6 +156,26 @@ public class Buque implements BuqueObservado{
 		 this.terminalAArribar = null;
 		// TODO Auto-generated method stub
 		 // this.terminalAArribar = this.viaje().proximoDestino()
+		
+	 }
+
+	 public void finalizarDescargaDeOrdenes(List<Orden> ordenesDescargadas) {
+		// TODO Auto-generated method stub
+		
+	 }
+
+	 public List<Orden> getOrdenesADescargar(TerminalPortuaria terminalPortuaria) {
+		// TODO Auto-generated method stub
+		return null;
+	 }
+
+	 public List<Orden> getOrdenes() {
+		// TODO Auto-generated method stub
+		return null;
+	 }
+
+	 public void cargarOrdenes(List<Orden> ordenes) {
+		// TODO Auto-generated method stub
 		
 	 } 
 
