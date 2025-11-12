@@ -142,7 +142,17 @@ public class Buque implements BuqueObservado{
     	 else {
     		 throw new Exception("El buque aun no se encuentra en condiciones de partir");
     	 }
-     } 
+     }
+     
+     
+     //Cuando termina todo el proceso, el barco deberia cambiar su destino
+	 public void arriboConExito() {
+		 //provisorio
+		 this.terminalAArribar = null;
+		// TODO Auto-generated method stub
+		 // this.terminalAArribar = this.viaje().proximoDestino()
+		
+	 } 
 
 
     

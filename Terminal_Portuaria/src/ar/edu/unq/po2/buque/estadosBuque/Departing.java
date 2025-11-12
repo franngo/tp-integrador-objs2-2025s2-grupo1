@@ -26,6 +26,7 @@ public class Departing extends EstadoBuque{
 	@Override
 	public void modificarEstadoBuque() {
 		terminalAArribar.notificarSalidaTerminal(miBuque);
+		miBuque.arriboConExito();
 		miBuque.establecerEstado(new OutboundFinal(miBuque));
 		
 	}

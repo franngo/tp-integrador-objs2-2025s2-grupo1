@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import ar.edu.unq.po2.buque.Buque;
 import ar.edu.unq.po2.buque.estadosBuque.Departing;
 import ar.edu.unq.po2.buque.estadosBuque.OutboundFinal;
-import ar.edu.unq.po2.buque.estadosBuque.Working;
+
 import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
@@ -92,6 +92,7 @@ class DepartingTestCase {
 		estadoBuque.modificarEstadoBuque();
 		
 		assertTrue(buque.obtenerEstado() instanceof OutboundFinal);
+		
 	}
 
 }
