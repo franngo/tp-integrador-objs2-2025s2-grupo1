@@ -13,6 +13,9 @@ public class CircuitoMaritimo {
 	
 	//////////////////////////////////////////////CONSTRUCTOR///////////////////////////////////////////////////
 	
+	/*
+	 * PRECONDICIÓN: La lista de tramos no puede ser vacía.
+	 */
 	public CircuitoMaritimo(List<Tramo> tramos) {
 		
 		this.validarTramos(tramos);
@@ -43,6 +46,7 @@ public class CircuitoMaritimo {
 	
 	//////////////////////////////////////////////CONSTRUCTOR///////////////////////////////////////////////////
 	
+	//??
 	public Duration tiempoTotal() {
 		
 		Duration d = Duration.ZERO;
@@ -83,6 +87,68 @@ public class CircuitoMaritimo {
 		
 	}
 	
+	public boolean esCircuitoQueUneA(TerminalPortuaria t1, TerminalPortuaria t2) {
+		return this.tieneOrigen(t1) && this.tieneDestino(t2) && this.tienePrimeroA(t1, t2);
+	}
+	
+	private boolean tieneOrigen(TerminalPortuaria terminal) {
+		return this.tramos.stream().anyMatch((t) -> t.getTerminalOrigen().equals(terminal));
+	}
+	
+	private boolean tieneDestino(TerminalPortuaria terminal) {
+		return this.tramos.stream().anyMatch((t) -> t.getTerminalDestino().equals(terminal));
+	}
+	
+	private boolean tienePrimeroA(TerminalPortuaria t1, TerminalPortuaria t2) {
+		
+		if(this.tieneOrigen(t1) && this.tieneDestino(t2)) {
+		//si no se cumplen alguna de esas dos, no se va a cumplir esta tercera
+
+			List<Tramo> ts = new ArrayList<Tramo>();
+			int n = 0;
+			
+			while(this.tramos.get(n).getTerminalOrigen() != t1) {
+				n++;
+			}
+			//obtenemos el índice en donde se encuentra t1 como orígen en la lista de tramos
+			
+			while(n < this.tramos.size()) {
+				ts.add(this.tramos.get(n));
+				n++;
+			}
+			//obtenemos la lista de tramos desde que encontramos a t1 como orígen
+			
+			return ts.stream().anyMatch((t) -> t.getTerminalDestino().equals(t2));
+			//si está como destino t2 en alguno de los tramos, significa que se cumple la condición
+			
+		} else { return false; }
+		
+	}
+	
+	/*
+	 * PRECONDICIÓN: Se debe cumplir this.esCircuitoQueUneA(t1, t2)
+	 */
+	public List<Tramo> tramosDesdeHasta(TerminalPortuaria t1, TerminalPortuaria t2) {
+		
+		List<Tramo> ts = new ArrayList<Tramo>();
+		int n = 0;
+		
+		while(this.tramos.get(n).getTerminalOrigen() != t1) {
+			n++;
+		}
+		//obtenemos el índice en donde se encuentra t1 como orígen en la lista de tramos
+		
+		while(this.tramos.get(n).getTerminalDestino() != t2) {
+			ts.add(this.tramos.get(n));
+			n++;
+		}
+		ts.add(this.tramos.get(n));
+		
+		return ts;
+		
+	}
+	
+	//??
 	public double precioTotal() {
 		
 		return this.tramos.stream().map((t) -> t.getPrecioTramo()).mapToDouble(Double::doubleValue).sum();
@@ -95,12 +161,14 @@ public class CircuitoMaritimo {
 	 * segundo tramo, pero la origen del segundo tramo es la misma que la destino del primero, así que el total de 
 	 * terminales diferentes del circuito es de 3.
 	 */
+	//??
 	public int cantidadDeTerminales() {
 		
 		return this.tramos.size()+1;
 		
 	}
 	
+	//??
 	public TerminalPortuaria puertoDestino() {
 		
 		return this.tramos.getLast().getTerminalDestino();

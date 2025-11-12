@@ -24,12 +24,14 @@ public class Viaje {
 	
 	//////////////////////////////////////////////CONSTRUCTOR///////////////////////////////////////////////////
 	
+	//??
 	public LocalDateTime fechaDeSalida() {
 		
 		return this.fechaDeSalida;
 		
 	}
 	
+	//??
 	public LocalDateTime fechaDeLlegada() {
 
 		return this.fechaDeSalida.plus(circuito.tiempoTotal());
@@ -40,6 +42,7 @@ public class Viaje {
 		return this.fechaDeSalida.plus(circuito.tiempoHastaTerminal(terminal));
 	}
 	
+	//??
 	public TerminalPortuaria puertoDestino() {
 		
 		return circuito.puertoDestino();
