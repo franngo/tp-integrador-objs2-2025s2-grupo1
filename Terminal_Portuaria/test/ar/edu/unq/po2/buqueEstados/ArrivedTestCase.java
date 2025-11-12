@@ -28,7 +28,7 @@ class ArrivedTestCase {
 		//se crea el buque con su posicion coherente con el de la terminal
 		
 		coordenadaBuque = new Coordenada(0d,0d);
-		buque = new Buque(coordenadaBuque,null, null, "Matias");
+		buque = new Buque(coordenadaBuque,null,"Matias");
 		//se crea el estado que tendra el buque
 		estadoBuque= new Arrived(buque);
         buque.establecerEstado(estadoBuque);		

@@ -1,7 +1,6 @@
 package ar.edu.unq.po2.buque;
 
 import java.util.List;
-import java.util.Set;
 
 import ar.edu.unq.po2.buque.estadosBuque.Arrived;
 
@@ -9,7 +8,6 @@ import ar.edu.unq.po2.buque.estadosBuque.EstadoBuque;
 import ar.edu.unq.po2.buque.estadosBuque.OutBound;
 import ar.edu.unq.po2.buque.estadosBuque.Working;
 import ar.edu.unq.po2.coordenada.Coordenada;
-import ar.edu.unq.po2.empresa_transportista.EmpresaTransportista;
 import ar.edu.unq.po2.orden.Orden;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 import ar.edu.unq.po2.viaje.Viaje;
@@ -22,24 +20,25 @@ import ar.edu.unq.po2.viaje.Viaje;
  * */
 
 public class Buque implements BuqueObservado{
-	
-	
-    List<Orden> ordenesExportacion;
-   List<Orden> ordenesImportacion;
-    
-    boolean enViaje = false;
-    
-    
-    
+    List<Orden> ordenes;
+    boolean enViaje;
     String nombre;
-    
-    Viaje viajeActual = null;
-
+    Viaje viajeActual;
     Coordenada posicionActual;
-    
-    TerminalPortuaria terminalAArribar; // el OBSERVER
+    TerminalPortuaria terminalAArribar; // El observer
+    EstadoBuque estadoBuque;
   
-    public Coordenada posicionActual() {return posicionActual;}
+    public Buque(Coordenada coordenadas, List<Orden> ordenes, String nombre){
+    	this.enViaje = false;
+    	this.viajeActual = null;
+    	this.posicionActual = coordenadas;
+    	this.ordenes = ordenes;
+    	this.nombre = nombre;
+    }
+
+    public Coordenada posicionActual() {
+    	return posicionActual;
+    }
     
     public void nuevaPosicion(double latitud, double longitud) {
     	this.posicionActual.nuevaPosicion(latitud, longitud);
@@ -48,24 +47,10 @@ public class Buque implements BuqueObservado{
     public void adscribirObservador(TerminalPortuaria terminalObservadora) {
     	this.terminalAArribar = terminalObservadora;
     }
-    EstadoBuque estadoBuque;
     
     public EstadoBuque obtenerEstado() {
     	return estadoBuque;
     }
-
-    public Buque(Coordenada coordenadas,
-    		List<Orden> ordenesImportacion, 
-    		List<Orden> ordenesExportacion,
-    		String nombre){
-    	
-    	this.posicionActual=coordenadas;
-    	this.ordenesExportacion=ordenesExportacion;
-    	this.ordenesImportacion=ordenesImportacion;
-    	this.nombre = nombre;
-    }
-    
-    
 
     public void avanzarHacia(double latitud, double longitud){
         estadoBuque.avanzar(latitud,longitud);
@@ -73,17 +58,18 @@ public class Buque implements BuqueObservado{
         estadoBuque.notificarEstado();
      }
     
+    public void sinViaje() {
+    	this.enViaje = false;
+    }
     
-    
-    public void sinViaje() {this.enViaje=false;}
-    public void enViaje() {this.enViaje=true;}
-   
-	
+    public void enViaje() {
+    	this.enViaje = true;
+    }
 
 	public void iniciarViaje(Viaje viajeActual) throws Exception{
 		this.validarSiEstaEnViaje();
-        this.viajeActual=viajeActual;
-        this.terminalAArribar=viajeActual.puertoDestino();
+        this.viajeActual = viajeActual;
+        this.terminalAArribar = viajeActual.puertoDestino();
         estadoBuque = new OutBound(this);
     }
 	
@@ -99,32 +85,6 @@ public class Buque implements BuqueObservado{
 		return terminalAArribar;
 	}
     
-    public void descargarContainers() {} // depende de los estados//NECESITA UN CONDICIONAL
-    // PARA QUE LA INSTANCIA DE DWORKING DIGA QUE PUEDE 
-    public void cargarContainers() {} // depende de los estados
-
-	@Override
-	public void establecerEstado(EstadoBuque nuevoEstado) {
-		this.estadoBuque = nuevoEstado;
-		
-	}
-
-	
-    
-	public List<Orden> getOrdenesExportacion() {
-		return this.ordenesExportacion;
-	}
-	/*
-	//Lo implementan Benja y Franco
-	public Set<EmpresaTransportista> getOrdenes() {
-		// TODO Auto-generated method stub
-		return null;
-  */
-	public List<Orden> getOrdenesImportacion() {
-		return this.ordenesImportacion;
-
-	}
-
 	public Viaje getViajeActual() {
 		return this.viajeActual;
 	}
@@ -134,8 +94,13 @@ public class Buque implements BuqueObservado{
 	}
 
 	@Override
+	public void establecerEstado(EstadoBuque nuevoEstado) {
+		this.estadoBuque = nuevoEstado;
+		
+	}
+
+	@Override
 	public void notificarEstado() {
-		// TODO Auto-generated method stub
 		
 	}
      
@@ -164,38 +129,24 @@ public class Buque implements BuqueObservado{
      }
 
 	 public void finalizarDescargaDeOrdenes(List<Orden> ordenesDescargadas) {
-		// TODO Auto-generated method stub
 		
 	 }
 
 	 public List<Orden> getOrdenesADescargar(TerminalPortuaria terminalPortuaria) {
-		// TODO Auto-generated method stub
 		return null;
 	 }
 
 	 public List<Orden> getOrdenes() {
-		// TODO Auto-generated method stub
 		return null;
 	 }
 
 	 public void cargarOrdenes(List<Orden> ordenes) {
-		// TODO Auto-generated method stub
-		
+		 
 	 } 
      
      //Cuando termina todo el proceso, el barco deberia cambiar su destino a la proxima terminal
      // que le indique el viaje. No nos interesa que sucede 
 	 public void arriboConExito() {
-		 
 		  this.terminalAArribar = null;
-		
 	 } 
-
-    
-
-   
-   
-    
-   
-
 }

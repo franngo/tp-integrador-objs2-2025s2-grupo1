@@ -28,7 +28,7 @@ class OutboundTestCase {
 	void setUp() throws Exception {
 		//se crea el buque con su posicion
 		coordenadaBuque = new Coordenada(10d,20d);
-		buque = new Buque(coordenadaBuque,null, null, "Matias");
+		buque = new Buque(coordenadaBuque,null,"Matias");
 		//se crea el estado que tendra el buque
 		estadoBuque= new OutBound(buque);
         buque.establecerEstado(estadoBuque);		

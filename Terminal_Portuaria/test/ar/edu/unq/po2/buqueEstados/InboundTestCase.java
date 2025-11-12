@@ -35,7 +35,7 @@ class InboundTestCase {
 			when(terminalAArribar.coordenadasTerminal()).thenReturn(coordenadaTerminal);
 			//se crea el buque con su posicion
 			coordenadaBuque = new Coordenada(10d,20d);
-			buque = new Buque(coordenadaBuque,null, null, "Matias");
+			buque = new Buque(coordenadaBuque,null,"Matias");
 			buque.adscribirObservador(terminalAArribar);
 			//se crea el estado que tendra el buque
 			estadoBuque= new Inbound(buque);
