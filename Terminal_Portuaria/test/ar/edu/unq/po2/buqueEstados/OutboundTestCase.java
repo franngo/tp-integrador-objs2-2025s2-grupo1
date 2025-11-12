@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ar.edu.unq.po2.buque.Buque;
+import ar.edu.unq.po2.buque.estadosBuque.EstadoBuque;
 import ar.edu.unq.po2.buque.estadosBuque.Inbound;
 import ar.edu.unq.po2.buque.estadosBuque.OutBound;
 import ar.edu.unq.po2.coordenada.Coordenada;
@@ -26,23 +27,26 @@ class OutboundTestCase {
 	TerminalPortuaria terminalAArribar;
 	@BeforeEach
 	void setUp() throws Exception {
+		coordenadaTerminal = spy(new Coordenada(0d,0d));
+		//terminalAArribar = new TerminalPortuaria(new Coordenada(0d,0d));
+		terminalAArribar = mock(TerminalPortuaria.class);
+		when(terminalAArribar.coordenadasTerminal()).thenReturn(coordenadaTerminal);
 		//se crea el buque con su posicion
-		coordenadaBuque = new Coordenada(10d,20d);
+		
+		coordenadaBuque = new Coordenada(60d,60d);
 		buque = new Buque(coordenadaBuque,null, null, "Matias");
+		buque.adscribirObservador(terminalAArribar);
+		
+		//buque.terminalAArribar(terminalAArribar);
+		
 		//se crea el estado que tendra el buque
 		estadoBuque= new OutBound(buque);
         buque.establecerEstado(estadoBuque);		
         
         //terminal Mock con posicion 0,0 
-		terminalAArribar = mock(TerminalPortuaria.class);
-		coordenadaTerminal = spy(new Coordenada(0,0));
-		when(terminalAArribar.coordenadasTerminal()).thenReturn(coordenadaTerminal);
-		
 		
 		
 	
-	     buque.adscribirObservador(terminalAArribar);
-        
 		
 	}
 	
@@ -55,34 +59,44 @@ class OutboundTestCase {
 	void elBuqueSeMueveATravesDelEstadoTest() {
 		
 		//El estado no cambia porque no esta cerca de la terminal
-		estadoBuque.avanzar(20d, 20d);
-        assertEquals(buque.posicionActual().getLatitud(),20d);
-        assertEquals(buque.posicionActual().getLongitud(),20d);
-      //  Assert.assertTrue(buque.obtenerEstado() instanceof OutBound);
-        
+		estadoBuque.avanzar(55d, 55d);
+        assertEquals(buque.posicionActual().getLatitud(),55d);
+        assertEquals(buque.posicionActual().getLongitud(),55d);
+        assertTrue(buque.obtenerEstado() instanceof OutBound);
+   
       }
 	
+	@Test
 	void puedeCambiarEstadoTest() {
 		//el buque aun no puede cambiar de fase porque se encuentra lejos de la terminal
-		estadoBuque.avanzar(51d,51d);
+		estadoBuque.avanzar(60d,60d);
 		assertFalse(estadoBuque.debeCambiarDeFase());
 		
 		//el buque puede cambiar de fase porque se encuentra a menos de 50km de la terminal
-		estadoBuque.avanzar(49d, 49d);
+		estadoBuque.avanzar(10d, 10d);
 		assertTrue(estadoBuque.debeCambiarDeFase());
 		
 	}
-	
+	@Test
 	void elBuqueCambiaDeFase() {
 		estadoBuque.modificarEstadoBuque();
 		
 		assertTrue(buque.obtenerEstado() instanceof Inbound);
 	}
 	
-	void notificarEstado() {
-		//el buque no hace nada TODO implementar 
-	assertTrue(true);
+	@Test
+	void testEstadoBuqueGeneral() {
+		assertEquals(terminalAArribar,estadoBuque.terminalAArribar());
+		assertEquals(buque,estadoBuque.miBuque());
+		
+		/*
+		EstadoBuque estadoGeneral = new OutBound(buque);
+		buque.establecerEstado(estadoGeneral);
+		estadoGeneral.modificarEstadoBuque();
+		assertTrue(buque.obtenerEstado() instanceof EstadoBuque);
+		*/
 		
 	}
+
 
 }
