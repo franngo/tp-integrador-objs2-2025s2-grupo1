@@ -43,6 +43,7 @@ public class CircuitoMaritimo {
 	
 	//////////////////////////////////////////////CONSTRUCTOR///////////////////////////////////////////////////
 	
+	//??
 	public Duration tiempoTotal() {
 		
 		Duration d = Duration.ZERO;
@@ -83,6 +84,15 @@ public class CircuitoMaritimo {
 		
 	}
 	
+	public boolean tieneOrigen(TerminalPortuaria terminal) {
+		return this.tramos.stream().anyMatch((t) -> t.getTerminalOrigen().equals(terminal));
+	}
+	
+	public boolean tieneDestino(TerminalPortuaria terminal) {
+		return this.tramos.stream().anyMatch((t) -> t.getTerminalDestino().equals(terminal));
+	}
+	
+	//??
 	public double precioTotal() {
 		
 		return this.tramos.stream().map((t) -> t.getPrecioTramo()).mapToDouble(Double::doubleValue).sum();
@@ -95,12 +105,14 @@ public class CircuitoMaritimo {
 	 * segundo tramo, pero la origen del segundo tramo es la misma que la destino del primero, así que el total de 
 	 * terminales diferentes del circuito es de 3.
 	 */
+	//??
 	public int cantidadDeTerminales() {
 		
 		return this.tramos.size()+1;
 		
 	}
 	
+	//??
 	public TerminalPortuaria puertoDestino() {
 		
 		return this.tramos.getLast().getTerminalDestino();
