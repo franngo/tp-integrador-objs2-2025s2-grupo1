@@ -50,8 +50,10 @@ public class Viaje {
 	}
 
 	public TerminalPortuaria proximoDestino() {
-		// TODO Auto-generated method stub
-		return new TerminalPortuaria();
+		
+		TerminalPortuaria t = this.buque.terminalAArribar();
+		return this.circuito.proximoDestino(t);
+		
 	}
 	
 }

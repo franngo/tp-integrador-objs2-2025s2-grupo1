@@ -253,5 +253,15 @@ public class CircuitoMaritimoTest {
 		assertEquals(3, circuito.cantTerminalesEnTramosDesdeHasta(terminal2, terminal4));
 		
 	}
+	
+	@Test
+	public void proximoDestino() {
+		
+		circuito = new CircuitoMaritimo(ts);
+		
+		assertEquals(terminal4, circuito.proximoDestino(terminal3));
+		assertEquals(null, circuito.proximoDestino(terminal5));
+		
+	}
 
 }
