@@ -224,13 +224,9 @@ public class TerminalPortuaria {
 	
 	public void trabajarEnBuque(Buque buque) {
 		this.validarTrabajosEnBuque(buque);
-		
-		buque.iniciarTrabajos(); // Esto debería pasar el buque a estado Working.
-		this.descargarContainers(buque); // Añade los containers a la lista de importaciones.
-		this.cargarContainers(buque); // Añade los containers de la lista de exportaciones al buque.
-		
+		this.iniciarTrabajos(buque);
 		this.generarReportes(buque);
-		buque.finalizarTrabajos(); // Esto debería pasar el buque a estado Departing.
+		this.finalizarTrabajos(buque);
 	}
 	
 	private void validarTrabajosEnBuque(Buque buque) {
@@ -239,19 +235,26 @@ public class TerminalPortuaria {
 		}
 	}
 	
-	private void cargarContainers(Buque buque) {
-		
-		// Cargar containers
-		
-		// Enviar mails?
+	private void iniciarTrabajos(Buque buque) {
+		buque.iniciarTrabajos(); 	  // Esto debería pasar el buque a estado Working.
+		this.iniciarDescargaOrdenes(buque); // Añade las ordenes a la lista de importaciones.
+		this.iniciarCargaOrdenes(buque); 	  // Añade las ordenes de la lista de exportaciones al buque.
 	}
 	
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	private void descargarContainers(Buque buque) {
-		// Descargar containers
+	private void iniciarDescargaOrdenes(Buque buque) {
+		List<Orden> ordenes = buque.getOrdenesADescargar(this);
 		
-		// Enviar mails?
+		for(Orden o : ordenes) {
+			ordenesDeImportacion.add(o);
+			o.crearServiciosACobrar();
+		}
+	}
+
+	private void iniciarCargaOrdenes(Buque buque) {
+		List<Orden> ordenes = ordenesDeExportacion.stream()
+												  .filter(o -> o.getViaje().equals(buque.getViajeActual()))
+												  .toList();
+		buque.cargarOrdenes(ordenes);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -273,31 +276,24 @@ public class TerminalPortuaria {
 		reportesGenerados.addAll(reportesCompletos);
 	}
 	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	/**
-	 * Genera reportes que unicamente tienen cargada la información de las importaciones.
-	 * Se debería llamar después de descargar los containers de importaciones del buque.
-	 * @param buque es el buque del que se toma como referencia para las ordenes de importación.
-	 */
-	private Map<String, Reporte> generarReportesConImportaciones(Buque buque) {
-		List<Orden> ordenes = ordenesDeImportacion.stream()
-												  .filter(o -> buque.getOrdenes().contains(o))
-												  .toList();
-		return generadorReportes.generarReportesConImportaciones(buque, ordenes);
+	private void finalizarTrabajos(Buque buque) {
+		List<Orden> ordenesCargadas = ordenesDeExportacion.stream()
+				  										  .filter(o -> o.getViaje().equals(buque.getViajeActual()))
+				  										  .toList();
+		List<Orden> ordenesDescargadas = buque.getOrdenesADescargar(this);
+		
+		buque.finalizarDescargaDeOrdenes(ordenesDescargadas);
+		this.finalizarCargaDeOrdenes(ordenesCargadas);
+		
+		buque.finalizarTrabajos(); // Esto debería pasar el buque a estado Departing.
 	}
 	
-	/**
-	 * Agrega la información de las exportaciones a los Reportes pasados y los guarda en la lista de reportes de la Terminal Portuaria.
-	 * Se debería llamar después de cargar los containers de exportaciones al buque.
-	 * @param buque es el buque del que se toma como referencia para las ordenes de exportación.
-	 * @param Map<String, Reporte> son los reportes que tienen las importaciones cargadas, los cuales se les agregará la información de las exportaciones.
-	 */
-	private void finalizarReportesConExportaciones(Buque buque, Map<String, Reporte> reportes) {
-		List<Orden> ordenes = ordenesDeExportacion.stream()
-												  .filter(o -> buque.getOrdenes().contains(o))
-												  .toList();
-		List<Reporte> reportesPorAgregar = generadorReportes.finalizarReportesConExportaciones(reportes, ordenes);
-		reportesGenerados.addAll(reportesPorAgregar);
+	private void finalizarCargaDeOrdenes(List<Orden> ordenesCargadas) {
+		for(Orden o : ordenesCargadas) {
+			this.ordenesDeExportacion.remove(o);
+		}
 	}
 	
 	
@@ -400,6 +396,13 @@ public class TerminalPortuaria {
 		
 	}
 	
+	public void notificarArribo(Buque miBuque) {
+		
+	}
+	
+	public void notificarSalidaTerminal(Buque miBuque) {
+		
+	}
 
 	// #################################### MÉTODOS AUXILIARES ################################## \\
 	

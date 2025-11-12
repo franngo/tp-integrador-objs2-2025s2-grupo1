@@ -82,6 +82,10 @@ public abstract class Orden {
 	public Cliente getShipper() {
 		return shipper;
 	}
+	
+	public Viaje getViaje() {
+		return viaje;
+	}
 
 	/**
 	 * Indica si la orden se encuentra en viaje o no.

@@ -2,66 +2,164 @@ package ar.edu.unq.po2.buque;
 
 import java.util.List;
 
+import ar.edu.unq.po2.buque.estadosBuque.Arrived;
+
+import ar.edu.unq.po2.buque.estadosBuque.EstadoBuque;
+import ar.edu.unq.po2.buque.estadosBuque.OutBound;
+import ar.edu.unq.po2.buque.estadosBuque.Working;
 import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.orden.Orden;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 import ar.edu.unq.po2.viaje.Viaje;
+
 
 /*
  * @Autor : Matias Sanchez
  *
  *
  * */
-public class Buque {
+
+public class Buque implements BuqueObservado{
 	
-	private String nombre;
-	private Viaje viajeActual;
-	private List<Orden> ordenes;
 	
-	public String getNombre() {
-		return this.nombre;
+    List<Orden> ordenesExportacion;
+   List<Orden> ordenesImportacion;
+    
+    
+    
+    
+    String nombre;
+    
+    Viaje viajeActual = null;
+
+    Coordenada posicionActual;
+    
+    TerminalPortuaria terminalAArribar; // el OBSERVER
+  
+    public Coordenada posicionActual() {return posicionActual;}
+    
+    public void nuevaPosicion(double latitud, double longitud) {
+    	this.posicionActual.nuevaPosicion(latitud, longitud);
+    }
+    
+    public void adscribirObservador(TerminalPortuaria terminalObservadora) {
+    	this.terminalAArribar = terminalObservadora;
+    }
+    EstadoBuque estadoBuque;
+    
+    public EstadoBuque obtenerEstado() {
+    	return estadoBuque;
+    }
+
+    public Buque(Coordenada coordenadas,
+    		List<Orden> ordenesImportacion, 
+    		List<Orden> ordenesExportacion,
+    		String nombre){
+    	
+    	this.posicionActual=coordenadas;
+    	this.ordenesExportacion=ordenesExportacion;
+    	this.ordenesImportacion=ordenesImportacion;
+    	this.nombre = nombre;
+    }
+    
+    
+
+    public void avanzarHacia(double latitud, double longitud){
+        estadoBuque.avanzar(latitud,longitud);
+        estadoBuque.actualizarSiSeRequiere();
+        estadoBuque.notificarEstado();
+     }
+    
+    
+    
+    
+   
+	
+
+	public void iniciarViaje(Viaje viajeActual){
+        this.viajeActual=viajeActual;
+        estadoBuque = new OutBound(this);
+    }
+    
+    
+    public void descargarContainers() {} // depende de los estados//NECESITA UN CONDICIONAL
+    // PARA QUE LA INSTANCIA DE DWORKING DIGA QUE PUEDE 
+    public void cargarContainers() {} // depende de los estados
+
+	@Override
+	public void establecerEstado(EstadoBuque nuevoEstado) {
+		this.estadoBuque = nuevoEstado;
+		
 	}
-	
+
+	public TerminalPortuaria terminalAArribar() {
+		return terminalAArribar;
+	}
+    
+	public List<Orden> getOrdenesExportacion() {
+		return this.ordenesExportacion;
+	}
+	/*
+	//Lo implementan Benja y Franco
+	public Set<EmpresaTransportista> getOrdenes() {
+		// TODO Auto-generated method stub
+		return null;
+  */
+	public List<Orden> getOrdenesImportacion() {
+		return this.ordenesImportacion;
+
+	}
+
 	public Viaje getViajeActual() {
 		return this.viajeActual;
 	}
 	
-	public List<Orden> getOrdenes() {
-		return this.ordenes;
+	public String getNombre() {
+		return this.nombre;
 	}
 
-	public void iniciarTrabajos() {
-		// Habría que implementar esto.
-	}
-
-	public void finalizarTrabajos() {
-		// Habría que implementar esto.
+	@Override
+	public void notificarEstado() {
+		// TODO Auto-generated method stub
+		
 	}
 	
-  /*
-    Viaje viajeActual;
-    Coordenada posicionActual;
-    TerminalPortuaria terminalDestino;
+	public void iniciarTrabajos() throws Exception {
+		if(this.obtenerEstado() instanceof Arrived){
+			this.obtenerEstado().puedeIniciarWorking();
+		    this.obtenerEstado().modificarEstadoBuque();
+		}
+		else {
+			throw new Exception("El buque no se encuentra en la terminal");
+		}
+	} 
+   
+     public void finalizarTrabajos()  throws Exception{
+    	 if(this.obtenerEstado() instanceof Working) {
+    		 this.obtenerEstado().puedePartir();
+    		 this.obtenerEstado().modificarEstadoBuque();
+    	 }
+    	 else {
+    		 throw new Exception("El buque aun no se encuentra en condiciones de partir");
+    	 }
+     }
+     
+     
+     //Cuando termina todo el proceso, el barco deberia cambiar su destino
+	 public void arriboConExito() {
+		 //provisorio
+		 this.terminalAArribar = null;
+		// TODO Auto-generated method stub
+		 // this.terminalAArribar = this.viaje().proximoDestino()
+		
+	 } 
 
-    EstadoBuque estadoBuque;
 
-    public Buque(){}
+    
 
-    public void avanzarHacia(double latitud, double longitud){
-        posicionActual.nuevaPosicion(latitud,longitud);
-        // this.notificarNuevaPosicion(); ESPERAR A QUE BENJA IMPLEMENTE TERMINAL
-    }
-
-    public void iniciarViaje(Viaje Viaje){
-        viajeActual=viaje;
-        estadoBuque = new OutBound();
-    }
-
-
-    public void notificarNuevaPosicion(TerminalPortuaria terminal){
-        terminal.notificarPosicion(this);
-    }
-*/
-
+   
+   
+    
+   
 
 }
