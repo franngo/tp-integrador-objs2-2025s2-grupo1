@@ -373,13 +373,10 @@ public class TerminalPortuaria implements TerminalObservadora{
 	 * Describe el precio del servicio dado.
 	 * @param servicio es el servicio a consultar su precio.
 	 */
-	
-	/*
 	public double precioServicio(PrecioServicioTerminal servicio) {
 		this.validarPrecioServicio(servicio);
 		return servicio.getPrecio();
 	}
-
 	 
 	/**
 	 * Valida si puede devolver el precio del servicio dado.
@@ -422,14 +419,6 @@ public class TerminalPortuaria implements TerminalObservadora{
 		
 	}
 	
-	public void notificarArribo(Buque buque) {
-		
-	}
-	
-	public void notificarSalidaTerminal(Buque buque) {
-		
-	}
-
 	// #################################### MÉTODOS AUXILIARES ################################## \\
 	
 	@Override
@@ -443,60 +432,53 @@ public class TerminalPortuaria implements TerminalObservadora{
 		return coordenada.hashCode();
 	}
 
+		
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	
+	// METODOS PARA LO QUE  ES EL BUQUE, REFACTORIZAR UNA VEZ ESTEN IMPLEMENTADOS
+	//A PARTIR DE AQUI ES TODO LO QUE HACE LA TERMINAL CUANDO EL BUQUE ESTA LLEGANDO
+	/*
+	public void actualizar(Buque buque) {
+		
+		
+	}
 	
-
-
-// #####################################################################	 
-// #####################################################################	 
-
-// METODOS PARA LO QUE  ES EL BUQUE, REFACTORIZAR UNA VEZ ESTEN IMPLEMENTADOS
-//A PARTIR DE AQUI ES TODO LO QUE HACE LA TERMINAL CUANDO EL BUQUE ESTA LLEGANDO
-/*
-public void actualizar(Buque buque) {
+	public boolean puedeIniciarWorking(Buque miBuque) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
+	public boolean partidaHabilitada(Buque miBuque) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	*/
+	@Override
+	public void adscribirObservado(Buque buque) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void notificarConsignee(Viaje viajeActual) {
+		// TIENE QUE HACERSE UNA SOLA VEZ
+		
+	}
 	
-}
-
-public boolean puedeIniciarWorking(Buque miBuque) {
-	// TODO Auto-generated method stub
-	return false;
-}
-
-public boolean partidaHabilitada(Buque miBuque) {
-	// TODO Auto-generated method stub
-	return false;
-}
-*/
-@Override
-public void adscribirObservado(Buque buque) {
-	// TODO Auto-generated method stub
+	public void notificarArribo(Buque miBuque) {
+		// TODO Auto-generated method stub
+		System.out.println("AVISA A LOS CONSIGNEE QUE LA CARGA ESTA POR LLEGAR");
+	}
 	
-}
-public void notificarConsignee(Viaje viajeActual) {
-	// TIENE QUE HACERSE UNA SOLA VEZ
+	public void notificarSalidaTerminal(Buque miBuque) {
+		// TODO Auto-generated method stu
+		System.out.println("MANDA LOS MAILS A LOS SHIPPERS");
+		
+	}
 	
-}
-
-public void notificarArribo(Buque miBuque) {
-	// TODO Auto-generated method stub
-	System.out.println("AVISA A LOS CONSIGNEE QUE LA CARGA ESTA POR LLEGAR");
-}
-
-public void notificarSalidaTerminal(Buque miBuque) {
-	// TODO Auto-generated method stu
-	System.out.println("MANDA LOS MAILS A LOS SHIPPERS");
-	
-}
-
-public double limiteHorasAlmacenaje() {
-	// TODO Auto-generated method stub
-	return 24;
-}
-
-
-// #####################################################################
-// #####################################################################
-
+	public double limiteHorasAlmacenaje() {
+		// TODO Auto-generated method stub
+		return 24;
+	}
 }

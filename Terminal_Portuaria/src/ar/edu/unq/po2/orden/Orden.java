@@ -101,10 +101,6 @@ public abstract class Orden {
 		this.estaEnViaje = valor;
 	}
 	
-	public Viaje getViaje() {
-		return this.viaje;
-	}
-	
 	/**
 	 * Describe los servicios que tiene la orden.
 	 */
