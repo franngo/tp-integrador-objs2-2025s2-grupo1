@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ar.edu.unq.po2.buque.Buque;
+import ar.edu.unq.po2.buque.estadosBuque.Departing;
 import ar.edu.unq.po2.buque.estadosBuque.Working;
 import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
@@ -61,11 +62,11 @@ class WorkingTestCase {
 		
 		assertTrue(estadoBuque.debeCambiarDeFase());
 	}
-	
+	@Test
 	void elBuqueCambiaDeEstado() {
           estadoBuque.modificarEstadoBuque();
 		 
-		 assertTrue(buque.obtenerEstado() instanceof Working);
+		 assertTrue(buque.obtenerEstado() instanceof Departing);
 	}
 
 }
