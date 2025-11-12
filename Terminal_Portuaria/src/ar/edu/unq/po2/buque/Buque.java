@@ -161,10 +161,8 @@ public class Buque implements BuqueObservado{
      //Cuando termina todo el proceso, el barco deberia cambiar su destino a la proxima terminal
      // que le indique el viaje. No nos interesa que sucede 
 	 public void arriboConExito() {
-		 //provisorio
-		 this.terminalAArribar = null;
-		// TODO Auto-generated method stub
-		 // this.terminalAArribar = this.viaje().proximoDestino()
+		 
+		  this.terminalAArribar = null;
 		
 	 } 
 

@@ -22,6 +22,7 @@ class BuqueTestCase {
 	
 	Buque miBuque;
 	TerminalPortuaria terminalDumb;
+	TerminalPortuaria proximoDestino;
 	EstadoBuque estadoBuque;
 	Coordenada coordenadasBuque;
 	Coordenada coordenadasTerminal;
@@ -30,7 +31,8 @@ class BuqueTestCase {
 	Viaje viajeDumb;
 	@BeforeEach
 	void setUp()  {
-		
+		proximoDestino = mock(TerminalPortuaria.class);
+		 
 		terminalDumb= mock(TerminalPortuaria.class);
 		coordenadasTerminal = new Coordenada(0d,0d);
 		when(terminalDumb.coordenadasTerminal()).thenReturn(coordenadasTerminal);
@@ -41,6 +43,7 @@ class BuqueTestCase {
 		coordenadasBuque = new Coordenada(30d,20d);
 		viajeDumb = mock(Viaje.class);
 		when(viajeDumb.puertoDestino()).thenReturn(terminalDumb);
+		when(viajeDumb.proximoDestino()).thenReturn(proximoDestino);
 		
 		miBuque = new Buque(coordenadasBuque,ordenesImportacion,ordenesExportacion,"El Perla Negra");
 		
@@ -53,6 +56,10 @@ class BuqueTestCase {
 		 assertThrows(Exception.class, () -> {
 		        miBuque.iniciarViaje(viajeDumb);
 		    });
+		 
+		 miBuque.sinViaje();
+		 assertDoesNotThrow(() -> {miBuque.iniciarViaje(viajeDumb);});
+		 
 	}
 	@Test
 	void elBarcoIniciaElViaje() throws Exception {
@@ -70,6 +77,28 @@ class BuqueTestCase {
 		
 		assertEquals(30d,miBuque.posicionActual().getLatitud());
 		assertEquals(40d,miBuque.posicionActual().getLongitud());
+		
+	}
+	@Test 
+	void elBuqueComunicaSusDatos() {
+		
+		assertEquals("El Perla Negra",miBuque.getNombre());
+		assertEquals(List.of(),miBuque.getOrdenesExportacion());
+		assertEquals(List.of(),miBuque.getOrdenesImportacion());
+	}
+	
+	@Test
+	void elBuqueModificaSuDestino() {
+		
+		TerminalPortuaria unDestino = mock(TerminalPortuaria.class);
+		miBuque.terminalAArribar(unDestino);
+		assertEquals(unDestino,miBuque.terminalAArribar());
+		
+		TerminalPortuaria otroDestino = mock(TerminalPortuaria.class);
+		miBuque.terminalAArribar(otroDestino);
+		
+		assertEquals(otroDestino,miBuque.terminalAArribar());
+		
 		
 	}
 

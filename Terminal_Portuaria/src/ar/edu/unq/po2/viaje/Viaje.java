@@ -48,5 +48,10 @@ public class Viaje {
 		return circuito.puertoDestino();
 		
 	}
+
+	public TerminalPortuaria proximoDestino() {
+		// TODO Auto-generated method stub
+		return new TerminalPortuaria();
+	}
 	
 }
