@@ -119,15 +119,6 @@ public class CircuitoMaritimo {
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	//??
-	public TerminalPortuaria puertoDestino() {
-		
-		return this.tramos.getLast().getTerminalDestino();
-		
-	}
-	
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-	
 	/*
 	 * PRECONDICIÓN: Se debe cumplir this.esCircuitoQueUneA(origen, destino)
 	 */
@@ -170,7 +161,25 @@ public class CircuitoMaritimo {
 		
 	}
 	
-	////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////métodos necesarios para Viaje//////////////////////////////////////////////////////////
+	
+	//Usado para que el Viaje asociado pueda decir la fecha de llegada (necesario para las Condiciones)
+	public Duration tiempoTotal() {
+		
+		Duration d = Duration.ZERO;
+		for(Tramo t : this.tramos) {
+			d = d.plus(t.getTiempoTotal());
+		}
+		return d;
+		
+	}
+	
+	//Usado para que el Viaje asociado pueda decir la terminal destino (necesario para las Condiciones)
+	public TerminalPortuaria puertoDestino() {
+		
+		return this.tramos.getLast().getTerminalDestino();
+		
+	}
 	
 	public Duration tiempoHastaTerminal(TerminalPortuaria terminal) {
 		
@@ -218,17 +227,6 @@ public class CircuitoMaritimo {
 	public int cantidadDeTerminales() {
 		
 		return this.tramos.size()+1;
-		
-	}
-	
-	//???
-	public Duration tiempoTotal() {
-		
-		Duration d = Duration.ZERO;
-		for(Tramo t : this.tramos) {
-			d = d.plus(t.getTiempoTotal());
-		}
-		return d;
 		
 	}
 	
