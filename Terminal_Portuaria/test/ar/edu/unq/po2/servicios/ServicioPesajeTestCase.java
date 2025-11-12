@@ -5,6 +5,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,19 +21,21 @@ class ServicioPesajeTestCase {
 	
    Container miContainer;
    ServicioPesaje miServPesaje;
-   
+   LocalDateTime horaInicioServicio;
    TerminalPortuaria terminalDumb; 
+   
 	@BeforeEach
 	public void setUp() throws Exception {
+		horaInicioServicio = LocalDateTime.now();
 		terminalDumb= mock(TerminalPortuaria.class);
 		when(terminalDumb.precioServicio(PrecioServicioTerminal.PESAJE)).thenReturn(20000d);
 		miContainer = mock(Tanque.class);
-		miServPesaje = new ServicioPesaje(miContainer);
+		miServPesaje = new ServicioPesaje(miContainer,horaInicioServicio);
 	}
 
 	@Test
 	public void costoPorPesajeTest() {
-		assertEquals(20000d, miServPesaje.costoServicio(terminalDumb));
+		assertEquals(20000d, miServPesaje.costoServicio(terminalDumb,LocalDateTime.now()));
 	}
 	
 	@Test
