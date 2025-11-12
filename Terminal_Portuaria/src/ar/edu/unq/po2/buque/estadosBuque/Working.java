@@ -23,7 +23,7 @@ public class Working extends EstadoBuque{
 		
 	}
 	@Override
-	public void notificarEstado(TerminalPortuaria terminal) {
+	public void notificarEstado() {
 		// TODO Auto-generated method stub
 		
 	}

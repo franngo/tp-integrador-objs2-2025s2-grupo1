@@ -2,6 +2,7 @@ package ar.edu.unq.po2.buque;
 
 import java.util.List;
 
+import ar.edu.unq.po2.buque.estadosBuque.Arrived;
 import ar.edu.unq.po2.buque.estadosBuque.Departing;
 import ar.edu.unq.po2.buque.estadosBuque.EstadoBuque;
 import ar.edu.unq.po2.buque.estadosBuque.OutBound;
@@ -123,13 +124,23 @@ public class Buque implements BuqueObservado{
 		
 	}
 	
-	public void iniciarTrabajos() {
-		this.establecerEstado(new Working(this));
-	} // Esto debería pasar el buque a estado Working.
+	public void iniciarTrabajos() throws Exception {
+		if(this.obtenerEstado() instanceof Arrived){
+		    this.obtenerEstado().modificarEstadoBuque();
+		}
+		else {
+			throw new Exception("El buque no se encuentra en la terminal");
+		}
+	} 
    
-     public void finalizarTrabajos() {
-    	 this.establecerEstado(new Departing(this));
-     } // Esto debería pasar el buque a estado Departing.
+     public void finalizarTrabajos()  throws Exception{
+    	 if(this.obtenerEstado() instanceof Working) {
+    		 this.obtenerEstado().modificarEstadoBuque();
+    	 }
+    	 else {
+    		 throw new Exception("El buque aun no se encuentra en condiciones de partir");
+    	 }
+     } 
 
 
     
