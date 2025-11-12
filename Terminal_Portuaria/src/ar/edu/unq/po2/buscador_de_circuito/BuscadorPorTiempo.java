@@ -10,7 +10,7 @@ public class BuscadorPorTiempo implements BuscadorDeCircuito {
 	
 	public CircuitoMaritimo buscarMejorCircuito(List<CircuitoMaritimo> circuitos, TerminalPortuaria origen, 
 			TerminalPortuaria destino) {
-		return circuitos.stream().min(Comparator.comparing(c -> c.precioEnTramosDesdeHasta(origen, destino))).get();
+		return circuitos.stream().min(Comparator.comparing(c -> c.tiempoEnTramosDesdeHasta(origen, destino))).get();
 	}
 
 }

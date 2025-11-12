@@ -227,7 +227,7 @@ public class CircuitoMaritimoTest {
 		when(tramo3.getTiempoTotal()).thenReturn(Duration.ofHours(4));
 		when(tramo4.getTiempoTotal()).thenReturn(Duration.ofHours(3));
 		
-		//assertEquals(Duration.ofHours(14), circuito.tiempoEnTramosDesdeHasta());
+		assertEquals(Duration.ofHours(8), circuito.tiempoEnTramosDesdeHasta(terminal2, terminal4));
 		
 	}
 	
@@ -241,7 +241,7 @@ public class CircuitoMaritimoTest {
 		
 		circuito = new CircuitoMaritimo(ts);
 		
-		//assertEquals(160.5, circuito.precioEnTramosDesdeHasta());
+		assertEquals(80.0, circuito.precioEnTramosDesdeHasta(terminal2, terminal4));
 		
 	}
 	
@@ -250,7 +250,7 @@ public class CircuitoMaritimoTest {
 		
 		circuito = new CircuitoMaritimo(ts);
 		
-		//assertEquals(3, circuito.cantTerminalesEnTramosDesdeHasta(terminal2, terminal4));
+		assertEquals(3, circuito.cantTerminalesEnTramosDesdeHasta(terminal2, terminal4));
 		
 	}
 
