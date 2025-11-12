@@ -75,6 +75,81 @@ public class TerminalPortuaria {
 		return new Coordenada(coordenada.getLatitud(), coordenada.getLongitud());
 	}
 	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	/**
+	 * Registra como exportación en la terminal la orden dada.
+	 * @param orden es la orden a ser registrada como exportación en la terminal.
+	 * @param camion es el camion informado por el shipper que va a ingresar la carga a la terminal.
+	 * @param chofer es el chofer informado por el shipper que va a ingresar la carga a la terminal.
+	 */
+	public void registrarExportacion(Orden orden, Camion camion, Chofer chofer) {
+		this.validarRegistrarExportacion(orden, camion, chofer, orden.getShipper());
+		orden.crearServiciosACobrar();
+		this.ordenesDeExportacion.add(orden);
+	}
+
+	/**
+	 * Valida si la orden dada puede registrarse como exportación.
+	 * @param orden es la orden a ser validada como exportación.
+	 * @param camion es el camion informado por el shipper que va a ingresar la carga.
+	 * @param chofer es el chofer informado por el shipper que va a ingresar la carga.
+	 * @param shipper es el que realiza la exportación. 
+	 */
+	private void validarRegistrarExportacion(Orden orden, Camion camion, Chofer chofer, Cliente shipper) {
+		if(!this.cumpleHorarioExportacion(orden) || !this.cumpleIngresoExportacion(orden, camion, chofer, shipper)) {
+			throw new RuntimeException("No se encuentra en horario de exportación, o no se ha informado correctamente quienes deberan ingresar a la terminal.");
+		}
+	}
+	
+	/**
+	 * Indica si la orden dada cumple el horario de exportación. Es decir, si se encuentra 3 horas antes de la hora de salida en el momento de consulta.
+	 * La fecha de salida de la orden siempre es respecto a esta terminal.
+	 * @param orden es la orden que se toma de referencia para evaluar si cumple con el horario de exportación.
+	 */
+	private boolean cumpleHorarioExportacion(Orden orden) {
+		LocalDateTime fechaActual = LocalDateTime.now();
+		LocalDateTime fechaSalida = orden.fechaDeSalida();
+		LocalDateTime fechaMinimaPermitida = fechaSalida.minusHours(3);
+		return fechaActual.isAfter(fechaMinimaPermitida) && fechaActual.isBefore(fechaSalida);
+	}
+	
+	/**
+	 * Indica si tiene registrados en la terminal el camion y chofer que se encuentran en la orden dada.
+	 * @param orden es la orden que se toma de referencia para evaluar si cumple con el transporte asociado a la misma.
+	 * @param camion es el camion informado por el shipper que va a ingresar la carga.
+	 * @param chofer es el chofer informado por el shipper que va a ingresar la carga.
+	 * @param shipper es el que realiza la exportación.
+	 */
+	private boolean cumpleIngresoExportacion(Orden orden, Camion camion, Chofer chofer, Cliente shipper) {
+		return this.estanRegistradosParaIngresar(camion, chofer, shipper) && 
+			   this.sonLosInformadosPorElShipper(orden, camion, chofer, shipper);
+	}
+	
+	/**
+	 * Indica si el camion, el chofer y el shipper dado son los informados en la orden dada.
+	 * @param orden es la orden a verificar en la que se encuentran los datos dados.
+	 * @param camion es el camion a verificar que se encuentra en la orden.
+	 * @param chofer es el chofer a verificar que se encuentra en la orden.
+	 * @param shipper es el shipper a verificar que se encuentra en la orden.
+	 */
+	private boolean sonLosInformadosPorElShipper(Orden orden, Camion camion, Chofer chofer, Cliente shipper) {
+		Camion camionOrden = orden.getCamion();
+		Chofer choferOrden = orden.getChofer();
+		Cliente shipperOrden = orden.getShipper();
+		return camionOrden.equals(camion) && choferOrden.equals(chofer) && shipperOrden.equals(shipper);
+	}
+	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
 	/**
 	 * Retira la importación la orden del consignee dado que se encuentra en la terminal, en base al camión y chofer dado.
 	 * @param camion es el camion informado por el consignee que va a retirar la carga.
@@ -153,75 +228,6 @@ public class TerminalPortuaria {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	
-	/**
-	 * Registra como exportación en la terminal la orden dada.
-	 * @param orden es la orden a ser registrada como exportación en la terminal.
-	 * @param camion es el camion informado por el shipper que va a ingresar la carga a la terminal.
-	 * @param chofer es el chofer informado por el shipper que va a ingresar la carga a la terminal.
-	 */
-	public void registrarExportacion(Orden orden, Camion camion, Chofer chofer) {
-		this.validarRegistrarExportacion(orden, camion, chofer, orden.getShipper());
-		orden.crearServiciosACobrar();
-		this.ordenesDeExportacion.add(orden);
-	}
-
-	/**
-	 * Valida si la orden dada puede registrarse como exportación.
-	 * @param orden es la orden a ser validada como exportación.
-	 * @param camion es el camion informado por el shipper que va a ingresar la carga.
-	 * @param chofer es el chofer informado por el shipper que va a ingresar la carga.
-	 * @param shipper es el que realiza la exportación. 
-	 */
-	private void validarRegistrarExportacion(Orden orden, Camion camion, Chofer chofer, Cliente shipper) {
-		if(!this.cumpleHorarioExportacion(orden) || !this.cumpleIngresoExportacion(orden, camion, chofer, shipper)) {
-			throw new RuntimeException("No se encuentra en horario de exportación, o no se ha informado correctamente quienes deberan ingresar a la terminal.");
-		}
-	}
-	
-	/**
-	 * Indica si la orden dada cumple el horario de exportación. Es decir, si se encuentra 3 horas antes de la hora de salida en el momento de consulta.
-	 * La fecha de salida de la orden siempre es respecto a esta terminal.
-	 * @param orden es la orden que se toma de referencia para evaluar si cumple con el horario de exportación.
-	 */
-	private boolean cumpleHorarioExportacion(Orden orden) {
-		LocalDateTime fechaActual = LocalDateTime.now();
-		LocalDateTime fechaSalida = orden.fechaDeSalida();
-		LocalDateTime fechaMinimaPermitida = fechaSalida.minusHours(3);
-		return fechaActual.isAfter(fechaMinimaPermitida) && fechaActual.isBefore(fechaSalida);
-	}
-	
-	/**
-	 * Indica si tiene registrados en la terminal el camion y chofer que se encuentran en la orden dada.
-	 * @param orden es la orden que se toma de referencia para evaluar si cumple con el transporte asociado a la misma.
-	 * @param camion es el camion informado por el shipper que va a ingresar la carga.
-	 * @param chofer es el chofer informado por el shipper que va a ingresar la carga.
-	 * @param shipper es el que realiza la exportación.
-	 */
-	private boolean cumpleIngresoExportacion(Orden orden, Camion camion, Chofer chofer, Cliente shipper) {
-		return this.estanRegistradosParaIngresar(camion, chofer, shipper) && 
-			   this.sonLosInformadosPorElShipper(orden, camion, chofer, shipper);
-	}
-	
-	/**
-	 * Indica si el camion, el chofer y el shipper dado son los informados en la orden dada.
-	 * @param orden es la orden a verificar en la que se encuentran los datos dados.
-	 * @param camion es el camion a verificar que se encuentra en la orden.
-	 * @param chofer es el chofer a verificar que se encuentra en la orden.
-	 * @param shipper es el shipper a verificar que se encuentra en la orden.
-	 */
-	private boolean sonLosInformadosPorElShipper(Orden orden, Camion camion, Chofer chofer, Cliente shipper) {
-		Camion camionOrden = orden.getCamion();
-		Chofer choferOrden = orden.getChofer();
-		Cliente shipperOrden = orden.getShipper();
-		return camionOrden.equals(camion) && choferOrden.equals(chofer) && shipperOrden.equals(shipper);
-	}
-	
-	
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	
 	public void trabajarEnBuque(Buque buque) {
 		this.validarTrabajosEnBuque(buque); // Valida que puede trabajar en el buque (misma coordenada).
 		this.iniciarTrabajos(buque); 	// Inicia la descarga y carga de ordenes en el buque.
@@ -236,9 +242,9 @@ public class TerminalPortuaria {
 	}
 	
 	private void iniciarTrabajos(Buque buque) {
-		buque.iniciarTrabajos(); 	  // Esto debería pasar el buque a estado Working.
+		buque.iniciarTrabajos(); 	  		// Esto debería pasar el buque a estado Working.
 		this.iniciarDescargaOrdenes(buque); // Añade las ordenes a la lista de importaciones.
-		this.iniciarCargaOrdenes(buque); 	  // Añade las ordenes de la lista de exportaciones al buque.
+		this.iniciarCargaOrdenes(buque); 	// Añade las ordenes de la lista de exportaciones al buque.
 	}
 	
 	private void iniciarDescargaOrdenes(Buque buque) {
@@ -286,7 +292,6 @@ public class TerminalPortuaria {
 		
 		buque.finalizarDescargaDeOrdenes(ordenesDescargadas); // Elimina las ordenes descargadas en la terminal que estaban en el buque.
 		this.finalizarCargaDeOrdenes(ordenesCargadas); // Elimina las ordenes cargadas en el buque de la terminal.
-		
 		buque.finalizarTrabajos(); // Esto debería pasar el buque a estado Departing.
 	}
 	
