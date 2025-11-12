@@ -1,6 +1,7 @@
 package ar.edu.unq.po2.naviera;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -64,22 +65,15 @@ public class NavieraTest {
 	}
 	
 	@Test
-	public void cronograma() {
-		
-		//innecesario?
-		
-	}
-	
-	@Test
 	public void publicarViaje() {
 		
 		//caso con error donde no se puede publicar el viaje
 		
-		CircuitoMaritimo circuito4 = mock(CircuitoMaritimo.class);
+		CircuitoMaritimo circuito4 = mock(CircuitoMaritimo.class); //circuito que NO está en la lista de circuitos de naviera
 		
 		assertThrows(RuntimeException.class, () -> { naviera.publicarViaje(LocalDateTime.now(), circuito4, buque1); } );
 		
-		Buque buque4 = mock(Buque.class);
+		Buque buque4 = mock(Buque.class); //buque que NO está en la lista de buques de naviera
 		
 		assertThrows(RuntimeException.class, () -> { naviera.publicarViaje(LocalDateTime.now(), circuito1, buque4); } );
 		
@@ -87,39 +81,31 @@ public class NavieraTest {
 		
 		//caso sin error
 		
+		assertEquals(0, naviera.cronograma().size());
+		
 		naviera.publicarViaje(LocalDateTime.now(), circuito2, buque3);
 		
-		/*
-		
-		when(tramo1.getTerminalOrigen()).thenReturn(terminal1);
-		when(tramo1.getTerminalDestino()).thenReturn(terminal2);
-		
-		when(tramo2.getTerminalOrigen()).thenReturn(terminal2);
-		when(tramo2.getTerminalDestino()).thenReturn(terminal3);
-		
-		when(tramo3.getTerminalOrigen()).thenReturn(terminal3);
-		when(tramo3.getTerminalDestino()).thenReturn(terminal4);
-		
-		when(tramo4.getTerminalOrigen()).thenReturn(terminal4);
-		when(tramo4.getTerminalDestino()).thenReturn(terminal5);
-		
-		circuito = new CircuitoMaritimo(ts);
-		
-		TerminalPortuaria terminal6 = mock(TerminalPortuaria.class);
-		
-		assertFalse(circuito.esCircuitoQueUneA(terminal6, terminal2));
-		assertFalse(circuito.esCircuitoQueUneA(terminal2, terminal6));
-		assertFalse(circuito.esCircuitoQueUneA(terminal4, terminal2));
-		assertTrue(circuito.esCircuitoQueUneA(terminal2, terminal4));
-		
-		*/
+		assertEquals(1, naviera.cronograma().size());
 		
 	}
 	
 	@Test
 	public void circuitosQueUnan() {
 		
-
+		TerminalPortuaria t1 = mock(TerminalPortuaria.class);
+		TerminalPortuaria t2 = mock(TerminalPortuaria.class);
+		
+		when(circuito1.esCircuitoQueUneA(t1, t2)).thenReturn(true);
+		when(circuito2.esCircuitoQueUneA(t1, t2)).thenReturn(false);
+		when(circuito3.esCircuitoQueUneA(t1, t2)).thenReturn(true);
+		
+		List<CircuitoMaritimo> csCumplen = naviera.circuitosQueUnan(t1, t2);
+		
+		assertEquals(2, csCumplen.size());
+		
+		assertTrue(csCumplen.contains(circuito1));
+		assertFalse(csCumplen.contains(circuito2));
+		assertTrue(csCumplen.contains(circuito3));
 		
 	}
 

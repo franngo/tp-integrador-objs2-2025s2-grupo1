@@ -22,7 +22,7 @@ public class Naviera {
 	}
 	
 	public List<Viaje> cronograma() {
-		return viajes;
+		return this.viajes;
 	}
 	
 	public void publicarViaje(LocalDateTime fechaSalida, CircuitoMaritimo circuito, Buque buque) {
