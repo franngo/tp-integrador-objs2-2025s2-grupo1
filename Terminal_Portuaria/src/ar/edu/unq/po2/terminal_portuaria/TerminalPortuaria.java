@@ -61,7 +61,7 @@ public class TerminalPortuaria {
 		
 		serviciosDisponibles.add(PrecioServicioTerminal.DIAEXCEDENTE);
 		serviciosDisponibles.add(PrecioServicioTerminal.KILOWATTCONSUMIDO);
-			serviciosDisponibles.add(PrecioServicioTerminal.LAVADOCOMUN);
+		serviciosDisponibles.add(PrecioServicioTerminal.LAVADOCOMUN);
 		serviciosDisponibles.add(PrecioServicioTerminal.LAVADOPESADO);
 		serviciosDisponibles.add(PrecioServicioTerminal.PESAJE);
 		serviciosDisponibles.add(PrecioServicioTerminal.PRECIODESCONSOLIDADO);
@@ -85,9 +85,7 @@ public class TerminalPortuaria {
 		this.validarRetirarImportacion(camion, chofer, consignee);
 		
 		Orden orden = this.ordenDeConsignee(consignee);
-		this.actualizarServiciosParaRetirarSiHaceFalta(orden);
-		
-		
+		this.actualizarServiciosParaRetirarSiHaceFalta(orden); // Revisar!!
 		
 		ordenesDeImportacion.remove(orden);
 	}
@@ -181,14 +179,13 @@ public class TerminalPortuaria {
 	
 	
 	/**
-	 * Registra como exportación en la Terminal Portuaria la orden dada.
-	 * @param orden es la orden a ser registrada como exportación en la Terminal Portuaria.
-	 * @param camion es el camion informado por el shipper que va a ingresar la carga.
-	 * @param chofer es el chofer informado por el shipper que va a ingresar la carga.
-	 * @param shipper es el que realiza la exportación.
+	 * Registra como exportación en la terminal la orden dada.
+	 * @param orden es la orden a ser registrada como exportación en la terminal.
+	 * @param camion es el camion informado por el shipper que va a ingresar la carga a la terminal.
+	 * @param chofer es el chofer informado por el shipper que va a ingresar la carga a la terminal.
 	 */
-	public void registrarExportacion(Orden orden, Camion camion, Chofer chofer, Cliente shipper) {
-		this.validarRegistrarExportacion(orden, camion, chofer, shipper);
+	public void registrarExportacion(Orden orden, Camion camion, Chofer chofer) {
+		this.validarRegistrarExportacion(orden, camion, chofer, orden.getShipper());
 		this.ordenesDeExportacion.add(orden);
 	}
 
@@ -250,10 +247,15 @@ public class TerminalPortuaria {
 	public void iniciarTrabajosEnBuque(Buque buque) {
 		this.validarTrabajosEnBuque(buque);
 		buque.iniciarTrabajos(); // Esto debería pasar el buque a estado Working.
-		this.descargarContainers(buque);
-		this.cargarContainers(buque);
-		buque.finalizarTrabajos(); // Esto debería pasar el buque a estado Departing.
 
+		this.descargarContainers(buque); // Añade los containers a la lista de importaciones.
+		
+		// this.generarReportes(); ¿Tiene sentido, no?
+		Map<String, Reporte> reportes = this.generarReportesConImportaciones(buque); // Genera reportes con lo cargado en importaciones, que es lo nuevo.
+		this.finalizarReportesConExportaciones(buque, reportes); // Genera los reportes que faltan con las exportaciones existentes.
+		
+		this.cargarContainers(buque); // Añade los containers de la lista de exportaciones al buque.
+		buque.finalizarTrabajos(); // Esto debería pasar el buque a estado Departing.
 	}
 	
 	private void validarTrabajosEnBuque(Buque buque) {
@@ -263,6 +265,7 @@ public class TerminalPortuaria {
 	}
 	
 	private void cargarContainers(Buque buque) {
+		
 		// Cargar containers
 		
 		// Enviar mails?
@@ -276,6 +279,52 @@ public class TerminalPortuaria {
 		// Enviar mails?
 	}
 
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	private void generarReportes(Buque buque) {
+		// Genera reportes de importación
+		List<Orden> ordenesImportacion = ordenesDeImportacion.stream()
+				  						   				     .filter(o -> buque.getOrdenes().contains(o))
+				  								  			 .toList();
+		Map<String, Reporte> reportesImportaciones = generadorReportes.generarReportesConImportaciones(buque, ordenesImportacion);
+		
+		// Genera reportes de exportación
+		List<Orden> ordenesExportacion = ordenesDeExportacion.stream()
+				  											 .filter(o -> buque.getOrdenes().contains(o))
+				  											 .toList();
+		List<Reporte> reportesCompletos = generadorReportes.finalizarReportesConExportaciones(reportesImportaciones, ordenesExportacion);
+		
+		// Añadir los reportes generados
+		reportesGenerados.addAll(reportesCompletos);
+	}
+	
+	
+	/**
+	 * Genera reportes que unicamente tienen cargada la información de las importaciones.
+	 * Se debería llamar después de descargar los containers de importaciones del buque.
+	 * @param buque es el buque del que se toma como referencia para las ordenes de importación.
+	 */
+	private Map<String, Reporte> generarReportesConImportaciones(Buque buque) {
+		List<Orden> ordenes = ordenesDeImportacion.stream()
+												  .filter(o -> buque.getOrdenes().contains(o))
+												  .toList();
+		return generadorReportes.generarReportesConImportaciones(buque, ordenes);
+	}
+	
+	/**
+	 * Agrega la información de las exportaciones a los Reportes pasados y los guarda en la lista de reportes de la Terminal Portuaria.
+	 * Se debería llamar después de cargar los containers de exportaciones al buque.
+	 * @param buque es el buque del que se toma como referencia para las ordenes de exportación.
+	 * @param Map<String, Reporte> son los reportes que tienen las importaciones cargadas, los cuales se les agregará la información de las exportaciones.
+	 */
+	private void finalizarReportesConExportaciones(Buque buque, Map<String, Reporte> reportes) {
+		List<Orden> ordenes = ordenesDeExportacion.stream()
+												  .filter(o -> buque.getOrdenes().contains(o))
+												  .toList();
+		List<Reporte> reportesPorAgregar = generadorReportes.finalizarReportesConExportaciones(reportes, ordenes);
+		reportesGenerados.addAll(reportesPorAgregar);
+	}
+	
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -320,9 +369,10 @@ public class TerminalPortuaria {
 	 * @param chofer es el chofer contratado para ser asignado a la orden a generar.
 	 * @param container es el container que contiene lo que va a ser transportado en la orden a generar.
 	 * @param viaje es el viaje determinado para ser asignado a la orden a generar.
+	 * @param shipper es el encargado de exportar la orden.
 	 */
-	public Orden generarOrden(Camion camion, Chofer chofer, Container container, Viaje viaje) {
-		return new OrdenDeExportacion(camion, chofer, container, viaje);
+	public Orden generarOrden(Camion camion, Chofer chofer, Container container, Viaje viaje, Cliente shipper) {
+		return new OrdenDeExportacion(camion, chofer, container, viaje, shipper);
 	}
 	
 	/**
@@ -342,32 +392,6 @@ public class TerminalPortuaria {
 		if (!serviciosDisponibles.contains(servicio)) {
 			throw new RuntimeException("El servicio dado no se encuentra disponible en la terminal.");
 		}
-	}
-	
-	/**
-	 * Genera reportes que unicamente tienen cargada la información de las importaciones.
-	 * Se debería llamar después de descargar los containers de importaciones del buque.
-	 * @param buque es el buque del que se toma como referencia para las ordenes de importación.
-	 */
-	private Map<String, Reporte> generarReportesConImportaciones(Buque buque) {
-		List<Orden> ordenes = ordenesDeImportacion.stream()
-												  .filter(o -> buque.getOrdenes().contains(o))
-												  .toList();
-		return generadorReportes.generarReportesConImportaciones(buque, ordenes);
-	}
-	
-	/**
-	 * Agrega la información de las exportaciones a los Reportes pasados y los guarda en la lista de reportes de la Terminal Portuaria.
-	 * Se debería llamar después de cargar los containers de exportaciones al buque.
-	 * @param buque es el buque del que se toma como referencia para las ordenes de exportación.
-	 * @param Map<String, Reporte> son los reportes que tienen las importaciones cargadas, los cuales se les agregará la información de las exportaciones.
-	 */
-	private void finalizarReportesConExportaciones(Buque buque, Map<String, Reporte> reportes) {
-		List<Orden> ordenes = ordenesDeExportacion.stream()
-												  .filter(o -> buque.getOrdenes().contains(o))
-												  .toList();
-		List<Reporte> reportesPorAgregar = generadorReportes.finalizarReportesConExportaciones(reportes, ordenes);
-		reportesGenerados.addAll(reportesPorAgregar);
 	}
 	
 	

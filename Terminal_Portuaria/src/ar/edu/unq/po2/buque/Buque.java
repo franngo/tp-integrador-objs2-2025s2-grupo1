@@ -29,6 +29,14 @@ public class Buque {
 	public List<Orden> getOrdenes() {
 		return this.ordenes;
 	}
+
+	public void iniciarTrabajos() {
+		// Habría que implementar esto.
+	}
+
+	public void finalizarTrabajos() {
+		// Habría que implementar esto.
+	}
 	
   /*
     Viaje viajeActual;
