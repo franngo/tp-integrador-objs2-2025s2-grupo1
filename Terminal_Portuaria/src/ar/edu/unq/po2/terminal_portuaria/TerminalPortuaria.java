@@ -453,6 +453,11 @@ public void notificarSalidaTerminal(Buque miBuque) {
 	
 }
 
+public double limiteHorasAlmacenaje() {
+	// TODO Auto-generated method stub
+	return 24;
+}
+
 
 // #####################################################################
 // #####################################################################

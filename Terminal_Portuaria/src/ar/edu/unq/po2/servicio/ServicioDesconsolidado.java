@@ -3,6 +3,9 @@ package ar.edu.unq.po2.servicio;
 
 
 
+
+import java.time.LocalDateTime;
+
 import ar.edu.unq.po2.container.Container;
 
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
@@ -14,16 +17,16 @@ import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
  * */
 public class ServicioDesconsolidado extends Servicio{
 	
-	public ServicioDesconsolidado(Container containerServ) {
-		super(containerServ);
+	public ServicioDesconsolidado(Container containerServ, LocalDateTime horaInicioServicio) {
+		super(containerServ,horaInicioServicio);
 	}
     /*
      * Se necesita que cuando la terminal cobre el servicio divida 
      * el costo por la cantidad de clientes que tenga el containerServ 
      * */
 	@Override
-	public double costoServicio(TerminalPortuaria terminalPortuaria) {
-		// TODO Auto-generated method stub
+	public double costoServicio(TerminalPortuaria terminalPortuaria, LocalDateTime horaCobro) {
+		// no depende de las fechas, el costo es fijo
 		return terminalPortuaria.precioServicio(PrecioServicioTerminal.PRECIODESCONSOLIDADO);
 	}
 

@@ -1,5 +1,7 @@
 package ar.edu.unq.po2.container;
 
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,21 +17,21 @@ public class ConcreteVisitorContainer implements VisitorContainer{
 	@Override
 	public List<Servicio> serviciosDry(Dry container) {
 				
-		return this.serviciosTotales(container,new ServicioDesconsolidado(container));
+		return this.serviciosTotales(container,new ServicioDesconsolidado(container,LocalDateTime.now()));
 	}
 
 	@Override
 	public List<Servicio> serviciosTanque(Tanque container) {
 		
 		
-		return this.serviciosTotales(container,new ServicioRevisionDiaria(container)) ;
+		return this.serviciosTotales(container,new ServicioRevisionDiaria(container,LocalDateTime.now())) ;
 	}
 
 	@Override
 	public List<Servicio> serviciosReefer(Reefer container) {
 		
 		
-		return this.serviciosTotales(container,new ServicioElectricidad(container));
+		return this.serviciosTotales(container,new ServicioElectricidad(container,LocalDateTime.now()));
 	}
      
 	
@@ -37,9 +39,9 @@ public class ConcreteVisitorContainer implements VisitorContainer{
         List<Servicio> servicios = new ArrayList<>();
         
         // Servicios comunes
-        servicios.add(new ServicioLavado(container));
-        servicios.add(new ServicioPesaje(container));
-        servicios.add(new ServicioExcedente(container));
+        servicios.add(new ServicioLavado(container,LocalDateTime.now()));
+        servicios.add(new ServicioPesaje(container,LocalDateTime.now()));
+        servicios.add(new ServicioExcedente(container,LocalDateTime.now()));
         
         // Servicios específicos
         servicios.addAll(Arrays.asList(adicionales));
