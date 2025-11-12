@@ -42,9 +42,9 @@ public class Naviera {
 	public List<CircuitoMaritimo> circuitosQueUnan(TerminalPortuaria t1, TerminalPortuaria t2) {
 		
 		List<CircuitoMaritimo> cs = circuitos.stream().
-				filter((c) -> c.tieneOrigen(t1) && c.tieneOrigen(t2)).
+				filter((c) -> c.esCircuitoQueUneA(t1, t2)).
 				toList();
-		return cs; //faltaría ver cómo validar que t1 se encuentra antes que t2 en el circuito...
+		return cs;
 		
 	}
 

@@ -84,12 +84,42 @@ public class CircuitoMaritimo {
 		
 	}
 	
-	public boolean tieneOrigen(TerminalPortuaria terminal) {
+	public boolean esCircuitoQueUneA(TerminalPortuaria t1, TerminalPortuaria t2) {
+		return this.tieneOrigen(t1) && this.tieneDestino(t2) && this.tienePrimeroA(t1, t2);
+	}
+	
+	private boolean tieneOrigen(TerminalPortuaria terminal) {
 		return this.tramos.stream().anyMatch((t) -> t.getTerminalOrigen().equals(terminal));
 	}
 	
-	public boolean tieneDestino(TerminalPortuaria terminal) {
+	private boolean tieneDestino(TerminalPortuaria terminal) {
 		return this.tramos.stream().anyMatch((t) -> t.getTerminalDestino().equals(terminal));
+	}
+	
+	private boolean tienePrimeroA(TerminalPortuaria t1, TerminalPortuaria t2) {
+		
+		if(this.tieneOrigen(t1) && this.tieneDestino(t2)) {
+		//si no se cumplen alguna de esas dos, no se va a cumplir esta tercera
+
+			List<Tramo> ts = new ArrayList<Tramo>();
+			int n = 0;
+			
+			while(this.tramos.get(n).getTerminalOrigen() != t1) {
+				n++;
+			}
+			//obtenemos el índice en donde se encuentra t1 como orígen en la lista de tramos
+			
+			while(n < this.tramos.size()) {
+				ts.add(this.tramos.get(n));
+				n++;
+			}
+			//obtenemos la lista de tramos desde que encontramos a t1 como orígen
+			
+			return ts.stream().anyMatch((t) -> t.getTerminalDestino().equals(t2));
+			//si está como destino t2 en alguno de los tramos, significa que se cumple la condición
+			
+		} else { return false; }
+		
 	}
 	
 	//??
