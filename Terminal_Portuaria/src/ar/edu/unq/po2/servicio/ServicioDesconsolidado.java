@@ -3,7 +3,7 @@ package ar.edu.unq.po2.servicio;
 
 
 
-import java.time.Clock;
+
 import java.time.LocalDateTime;
 
 import ar.edu.unq.po2.container.Container;
@@ -26,7 +26,7 @@ public class ServicioDesconsolidado extends Servicio{
      * */
 	@Override
 	public double costoServicio(TerminalPortuaria terminalPortuaria, LocalDateTime horaCobro) {
-		// TODO Auto-generated method stub
+		// no depende de las fechas, el costo es fijo
 		return terminalPortuaria.precioServicio(PrecioServicioTerminal.PRECIODESCONSOLIDADO);
 	}
 

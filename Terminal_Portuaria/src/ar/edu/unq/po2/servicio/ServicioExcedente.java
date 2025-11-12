@@ -1,7 +1,7 @@
 package ar.edu.unq.po2.servicio;
 
 
-import java.time.Clock;
+
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -17,17 +17,31 @@ public class ServicioExcedente extends Servicio{
 
 	@Override
 	public double costoServicio(TerminalPortuaria terminalPortuaria,LocalDateTime horaCobro) {
+		  if(this.excedioTiempoDeRetiro(horaCobro,terminalPortuaria)) {
+		         return (double)(terminalPortuaria.precioServicio(PrecioServicioTerminal.DIAEXCEDENTE) * 
+				       this.diasACobrar(horaCobro));
+	      }
+		  else {
+			  return this.costoCero();
+		  }
+	
+	}
+	
+	private boolean excedioTiempoDeRetiro(LocalDateTime horaCobro, TerminalPortuaria terminal) {
 		
-		return (double)(terminalPortuaria.precioServicio(PrecioServicioTerminal.DIAEXCEDENTE) * 
-				this.diasACobrar());
-	
+		double horasAlmacenaje =  ChronoUnit.DAYS.between(horaCobro,this.getInicioServicio());
+		return horasAlmacenaje > terminal.limiteHorasAlmacenaje();
 	}
 	
-	public int diasACobrar() {
+
+	public double diasACobrar(LocalDateTime horaCobro) {
 	//TODO REIMPLEMENTAR
-		// return (int) ChronoUnit.DAYS.between(LocalDateTime.now(), this.getInicioServicio());
-		return 1;				
+		  double dias = ChronoUnit.DAYS.between(horaCobro, this.getInicioServicio()) - 1;
+		
+		return Math.max(1.0,dias);				
 	}
+	
+	private double costoCero() {return 0d;}
     
 	@Override
 	public String tipoServicio() {

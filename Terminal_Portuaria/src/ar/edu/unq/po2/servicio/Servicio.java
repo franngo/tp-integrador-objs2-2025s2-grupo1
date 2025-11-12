@@ -2,7 +2,7 @@ package ar.edu.unq.po2.servicio;
 
 
 
-import java.time.Clock;
+
 import java.time.LocalDateTime;
 
 import ar.edu.unq.po2.cliente.Cliente;
@@ -35,7 +35,7 @@ public abstract class Servicio {
 	/*public LocalDateTime getInicioServicio() {
 		return inicioServicio;
 	}*/
-	public LocalDateTime getInicioServicio() {
+	protected LocalDateTime getInicioServicio() {
 		return inicioServicio;
 	}
 	public Container getContainer() {
@@ -50,6 +50,7 @@ public abstract class Servicio {
 	 * */
 	public abstract double costoServicio(TerminalPortuaria terminalPortuaria, LocalDateTime horaCobro);
 		
+
 	
 	
 		

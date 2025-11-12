@@ -24,7 +24,7 @@ public class ServicioLavado extends Servicio{
 
 	@Override
 	public double costoServicio(TerminalPortuaria terminalPortuaria, LocalDateTime horaCobro) {
-		// TODO Auto-generated method stub
+		// No depende de la hora de cobro, el costo es fijo
 		if(this.superaCapacidad()) {
 			return terminalPortuaria.precioServicio(PrecioServicioTerminal.LAVADOPESADO);
 		}
