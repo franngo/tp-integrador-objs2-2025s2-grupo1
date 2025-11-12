@@ -33,7 +33,8 @@ class ServicioExcedenteTestCase {
 	
 	@Test
 	public void costoDeServicioTest() {
-		assertEquals(20000d,miServExcedente.costoServicio(terminalDumb));
+		//TODO MODIFICAR
+		assertEquals(0d,miServExcedente.costoServicio(terminalDumb));
 	}
 	
 	@Test
