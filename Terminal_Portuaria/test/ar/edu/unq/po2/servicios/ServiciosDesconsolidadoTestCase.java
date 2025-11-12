@@ -5,7 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,13 +34,13 @@ class ServiciosDesconsolidadoTestCase {
 		terminalDumb = mock(TerminalPortuaria.class);
 		dumbDry = mock(Dry.class);
 		when(terminalDumb.precioServicio(any())).thenReturn(20000d);
-		miServConDry= new ServicioDesconsolidado(dumbDry);
+		miServConDry= new ServicioDesconsolidado(dumbDry,LocalDateTime.now());
 		
 	}
 	
 	@Test
 	public void costoDeServicioTest() {
-		assertEquals(20000d,miServConDry.costoServicio(terminalDumb));
+		assertEquals(20000d,miServConDry.costoServicio(terminalDumb,LocalDateTime.now()));
 	}
 	
 	@Test
