@@ -9,20 +9,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ar.edu.unq.po2.buque.Buque;
-import ar.edu.unq.po2.buque.estadosBuque.Arrived;
-
 import ar.edu.unq.po2.buque.estadosBuque.Working;
 import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
-class ArrivedTestCase {
+class WorkingTestCase {
 
 	Buque buque;
 	Coordenada coordenadaBuque;
 	Coordenada coordenadaTerminal;
 	
-	Arrived estadoBuque;
+	Working estadoBuque;
 	TerminalPortuaria terminalAArribar;
+	
 	@BeforeEach
 	void setUp() throws Exception {
 		//se crea el buque con su posicion coherente con el de la terminal
@@ -30,7 +29,7 @@ class ArrivedTestCase {
 		coordenadaBuque = new Coordenada(0d,0d);
 		buque = new Buque(coordenadaBuque,null, null, "Matias");
 		//se crea el estado que tendra el buque
-		estadoBuque= new Arrived(buque);
+		estadoBuque= new Working(buque);
         buque.establecerEstado(estadoBuque);		
         
         //terminal Mock con posicion 0,0 
@@ -42,44 +41,31 @@ class ArrivedTestCase {
 		
 	
 	     buque.adscribirObservador(terminalAArribar);
-        
-		
-	}
-	
-	/*
-	 * El buque no peude cambiar de fase hasta que la terminal de visto bueno
-	 * */
+	  }
+
 	@Test
-	void elBuqueNopuedeCambiarDeFaseTest() {
-		
-		assertFalse(estadoBuque.debeCambiarDeFase());
-		
-		// este metodo lo llama la terminal
-		estadoBuque.puedeIniciarWorking();
-		
-		assertTrue(estadoBuque.debeCambiarDeFase());
-		
-		
-	}
-	
-	/*
-	 * el buque no puede cambiar sus coordenadas 
-	 * */
-	 @Test
-     void elBuqueNoCambiaCoordenadasTest() {
-		 estadoBuque.avanzar(100d, 100d);
+	void elBuqueNocambiaPosicionEnEstadoWorking() {
+	      estadoBuque.avanzar(100d, 100d);
 		 
 		 assertEquals(0d, buque.posicionActual().getLatitud());
 		 assertEquals(0d, buque.posicionActual().getLongitud());
-		 
-		 
-	 }
-	 
-	 @Test
-	 void elBuquePasaAEstadoWorking() {
-		 estadoBuque.modificarEstadoBuque();
+	}
+	
+	@Test
+	void elBuqueNoParteSinConfirmacionTest() {
+		
+		//el buque no puede cambiar de fase hasta que se le confirme la partida
+		assertFalse(estadoBuque.debeCambiarDeFase());
+		
+		estadoBuque.puedePartir();
+		
+		assertTrue(estadoBuque.debeCambiarDeFase());
+	}
+	
+	void elBuqueCambiaDeEstado() {
+          estadoBuque.modificarEstadoBuque();
 		 
 		 assertTrue(buque.obtenerEstado() instanceof Working);
-	 }
+	}
 
 }

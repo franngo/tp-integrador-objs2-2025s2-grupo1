@@ -3,7 +3,7 @@ package ar.edu.unq.po2.buque;
 import java.util.List;
 
 import ar.edu.unq.po2.buque.estadosBuque.Arrived;
-import ar.edu.unq.po2.buque.estadosBuque.Departing;
+
 import ar.edu.unq.po2.buque.estadosBuque.EstadoBuque;
 import ar.edu.unq.po2.buque.estadosBuque.OutBound;
 import ar.edu.unq.po2.buque.estadosBuque.Working;
@@ -136,6 +136,7 @@ public class Buque implements BuqueObservado{
    
      public void finalizarTrabajos()  throws Exception{
     	 if(this.obtenerEstado() instanceof Working) {
+    		 this.obtenerEstado().puedePartir();
     		 this.obtenerEstado().modificarEstadoBuque();
     	 }
     	 else {

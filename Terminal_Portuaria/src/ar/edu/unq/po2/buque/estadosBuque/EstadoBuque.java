@@ -36,6 +36,11 @@ public abstract class EstadoBuque {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void puedePartir() {
+		// TODO Auto-generated method stub
+		
+	}
 		
 	
 	
