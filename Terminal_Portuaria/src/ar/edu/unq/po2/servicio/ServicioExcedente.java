@@ -29,14 +29,14 @@ public class ServicioExcedente extends Servicio{
 	
 	private boolean excedioTiempoDeRetiro(LocalDateTime horaCobro, TerminalPortuaria terminal) {
 		
-		double horasAlmacenaje =  ChronoUnit.DAYS.between(horaCobro,this.getInicioServicio());
+		double horasAlmacenaje =  ChronoUnit.HOURS.between(this.getInicioServicio(),horaCobro);
 		return horasAlmacenaje > terminal.limiteHorasAlmacenaje();
 	}
 	
 
-	public double diasACobrar(LocalDateTime horaCobro) {
+	private double diasACobrar(LocalDateTime horaCobro) {
 	//TODO REIMPLEMENTAR
-		  double dias = ChronoUnit.DAYS.between(horaCobro, this.getInicioServicio()) - 1;
+		  double dias = ChronoUnit.DAYS.between(this.getInicioServicio(),horaCobro);
 		
 		return Math.max(1.0,dias);				
 	}
