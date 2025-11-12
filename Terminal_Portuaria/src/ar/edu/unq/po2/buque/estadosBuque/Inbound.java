@@ -1,11 +1,11 @@
 package ar.edu.unq.po2.buque.estadosBuque;
 
 import ar.edu.unq.po2.buque.Buque;
-import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
+
 
 public class Inbound extends EstadoBuque{
     
-
+    boolean yaNotifico = false;
 	public Inbound(Buque miBuque) {
 		super(miBuque);
 		// TODO Auto-generated constructor stub
@@ -25,13 +25,20 @@ public class Inbound extends EstadoBuque{
 
 
 	@Override
-	public void notificarEstado(TerminalPortuaria terminal) {
-	    terminal.notificarConsignee(miBuque.getViajeActual());
+	public void notificarEstado() {
+		if(!yaNotifico) {
+	    terminalAArribar.notificarArribo(miBuque);
+	    this.notificacionConfirmada();
+		}
+	}
+	
+	public void notificacionConfirmada() {
+		this.yaNotifico=true;
 	}
 	
 	@Override
 	public void avanzar(double latitud, double longitud) {
-		// TODO Auto-generated method stub
+		miBuque.nuevaPosicion(latitud, longitud);
 		
 	}
 

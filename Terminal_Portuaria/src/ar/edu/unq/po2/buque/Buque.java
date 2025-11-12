@@ -37,6 +37,10 @@ public class Buque implements BuqueObservado{
   
     public Coordenada posicionActual() {return posicionActual;}
     
+    public void nuevaPosicion(double latitud, double longitud) {
+    	this.posicionActual.nuevaPosicion(latitud, longitud);
+    }
+    
     public void adscribirObservador(TerminalPortuaria terminalObservadora) {
     	this.terminalAArribar = terminalObservadora;
     }

@@ -2,7 +2,7 @@ package ar.edu.unq.po2.buque.estadosBuque;
 
 import ar.edu.unq.po2.buque.Buque;
 import ar.edu.unq.po2.coordenada.Coordenada;
-import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
+
 
 
 public class OutBound extends EstadoBuque {

@@ -442,6 +442,11 @@ public void notificarConsignee(Viaje viajeActual) {
 	
 }
 
+public void notificarArribo(Buque miBuque) {
+	// TODO Auto-generated method stub
+	System.out.println("algo");
+}
+
 
 // #####################################################################
 // #####################################################################
