@@ -44,48 +44,7 @@ public class CircuitoMaritimo {
 		
 	}
 	
-	//////////////////////////////////////////////CONSTRUCTOR///////////////////////////////////////////////////
-	
-	//???
-	public Duration tiempoTotal() {
-		
-		Duration d = Duration.ZERO;
-		for(Tramo t : this.tramos) {
-			d = d.plus(t.getTiempoTotal());
-		}
-		return d;
-		
-	}
-	
-	public Duration tiempoHastaTerminal(TerminalPortuaria terminal) {
-		
-		this.validarSiEsDestino(terminal);
-		
-		//Primero consigo la lista de tramos hasta la terminal deseada.
-		List<Tramo> ts = new ArrayList<Tramo>();
-		int n = 0;
-		while(this.tramos.get(n).getTerminalDestino() != terminal) {
-			ts.add(this.tramos.get(n));
-			n++;
-		}
-		ts.add(this.tramos.get(n)); //añado también el tramo con la terminal deseada como puerto destino.
-		
-		//Ahora, ya con esa lista, calculo la duración total de este segmento del Viaje.
-		Duration d = Duration.ZERO;
-		for(Tramo t : ts) {
-			d = d.plus(t.getTiempoTotal());
-		}
-		return d;
-		
-	}
-	
-	private void validarSiEsDestino(TerminalPortuaria terminal) {
-		
-		if(this.tramos.stream().noneMatch((t) -> t.getTerminalDestino().equals(terminal))) {
-			throw new RuntimeException("Dicha terminal no es un destino de este circuito marítimo");
-		}
-		
-	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	public boolean esCircuitoQueUneA(TerminalPortuaria t1, TerminalPortuaria t2) {
 		return this.tieneOrigen(t1) && this.tieneDestino(t2) && this.tienePrimeroA(t1, t2);
@@ -125,11 +84,15 @@ public class CircuitoMaritimo {
 		
 	}
 	
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	public boolean incluyeA(TerminalPortuaria t) {
 		
 		return this.tieneOrigen(t) || this.tieneDestino(t);
 		
 	}
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/*
 	 * PRECONDICIÓN: Se debe cumplir this.esCircuitoQueUneA(t1, t2)
@@ -154,25 +117,7 @@ public class CircuitoMaritimo {
 		
 	}
 	
-	//??
-	public double precioTotal() {
-		
-		return this.tramos.stream().map((t) -> t.getPrecioTramo()).mapToDouble(Double::doubleValue).sum();
-		
-	}
-	
-	/*
-	 * Observación: La razón de que se devuelva la cantidad de tramos sumada en uno es que, por ejemplo, en un circuito 
-	 * con 2 tramos hay 4 terminales involucradas: la origen y la destino del primer tramo, y la origen y la destino del
-	 * segundo tramo, pero la origen del segundo tramo es la misma que la destino del primero, así que el total de 
-	 * terminales diferentes del circuito es de 3.
-	 */
-	//??
-	public int cantidadDeTerminales() {
-		
-		return this.tramos.size()+1;
-		
-	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	//??
 	public TerminalPortuaria puertoDestino() {
@@ -181,19 +126,110 @@ public class CircuitoMaritimo {
 		
 	}
 	
-	//TODO
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	/*
+	 * PRECONDICIÓN: Se debe cumplir this.esCircuitoQueUneA(origen, destino)
+	 */
 	public double precioEnTramosDesdeHasta(TerminalPortuaria origen, TerminalPortuaria destino) {
-		return 1.0;
+		
+		List<Tramo> ts = this.tramosDesdeHasta(origen, destino);
+		
+		return ts.stream().map((t) -> t.getPrecioTramo()).mapToDouble(Double::doubleValue).sum();
+		
 	}
 	
-	//TODO
+	/*
+	 * PRECONDICIÓN: Se debe cumplir this.esCircuitoQueUneA(origen, destino)
+	 */
 	public Duration tiempoEnTramosDesdeHasta(TerminalPortuaria origen, TerminalPortuaria destino) {
-		return Duration.ofHours(0);
+		
+		List<Tramo> ts = this.tramosDesdeHasta(origen, destino);
+		
+		Duration d = Duration.ZERO;
+		for(Tramo t : ts) {
+			d = d.plus(t.getTiempoTotal());
+		}
+		return d;
+		
 	}
 	
-	//TODO
+	/*
+	 * PRECONDICIÓN: Se debe cumplir this.esCircuitoQueUneA(origen, destino)
+	 * 
+	 * Observación: La razón de que se devuelva la cantidad de tramos sumada en uno es que, por ejemplo, en un circuito 
+	 * con 2 tramos hay 4 terminales involucradas: la origen y la destino del primer tramo, y la origen y la destino del
+	 * segundo tramo, pero la origen del segundo tramo es la misma que la destino del primero, así que el total de 
+	 * terminales diferentes del circuito es de 3.
+	 */
 	public int cantTerminalesEnTramosDesdeHasta(TerminalPortuaria origen, TerminalPortuaria destino) {
-		return 1;
+		
+		List<Tramo> ts = this.tramosDesdeHasta(origen, destino);
+		
+		return ts.size()+1;
+		
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	public Duration tiempoHastaTerminal(TerminalPortuaria terminal) {
+		
+		this.validarSiEsDestino(terminal);
+		
+		//Primero consigo la lista de tramos hasta la terminal deseada.
+		List<Tramo> ts = new ArrayList<Tramo>();
+		int n = 0;
+		while(this.tramos.get(n).getTerminalDestino() != terminal) {
+			ts.add(this.tramos.get(n));
+			n++;
+		}
+		ts.add(this.tramos.get(n)); //añado también el tramo con la terminal deseada como puerto destino.
+		
+		//Ahora, ya con esa lista, calculo la duración total de este segmento del Viaje.
+		Duration d = Duration.ZERO;
+		for(Tramo t : ts) {
+			d = d.plus(t.getTiempoTotal());
+		}
+		return d;
+		
+	}
+	
+	private void validarSiEsDestino(TerminalPortuaria terminal) {
+		
+		if(this.tramos.stream().noneMatch((t) -> t.getTerminalDestino().equals(terminal))) {
+			throw new RuntimeException("Dicha terminal no es un destino de este circuito marítimo");
+		}
+		
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	//??
+	public double precioTotal() {
+		
+		return this.tramos.stream().map((t) -> t.getPrecioTramo()).mapToDouble(Double::doubleValue).sum();
+		
+	}
+	
+
+	//??
+	public int cantidadDeTerminales() {
+		
+		return this.tramos.size()+1;
+		
+	}
+	
+	//???
+	public Duration tiempoTotal() {
+		
+		Duration d = Duration.ZERO;
+		for(Tramo t : this.tramos) {
+			d = d.plus(t.getTiempoTotal());
+		}
+		return d;
+		
 	}
 	
 }	
