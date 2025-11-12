@@ -36,4 +36,8 @@ public class Viaje {
 		 */
 		return new TerminalPortuaria(new Coordenada(40, 40)); // Tiene un valor aleatorio para que no tire error, es necesario que una subtarea defina el destino.
 	}
+
+	public LocalDateTime fechaDeLlegadaATerminal(TerminalPortuaria terminalPortuaria) {
+		return null;
+	}
 }

@@ -83,10 +83,7 @@ public class TerminalPortuaria {
 	 */
 	public void retirarImportacion(Camion camion, Chofer chofer, Cliente consignee) {
 		this.validarRetirarImportacion(camion, chofer, consignee);
-		
 		Orden orden = this.ordenDeConsignee(consignee);
-		this.actualizarServiciosParaRetirarSiHaceFalta(orden); // Revisar!!
-		
 		ordenesDeImportacion.remove(orden);
 	}
 	
@@ -150,28 +147,6 @@ public class TerminalPortuaria {
 								   .get();
 	}
 
-	/**
-	 * Describe la orden dada después de actualizarle los servicios al momento de ser retirada si hace falta.
-	 * @param orden es la orden a actualizarle los servicios.
-	 */
-	private Orden actualizarServiciosParaRetirarSiHaceFalta(Orden orden) {
-		if(this.cumplePlazoAlmacenamientoGratuito(orden)) {
-			orden.eliminarServicioExcedente();
-		}
-		return orden;
-	}
-
-	/**
-	 * Indica si la orden dada cumple con el plazo de almacenamiento que ofrece la Terminal Portuaria, el cual es de 24 horas almacenado en la misma.
-	 * @param orden es la orden a verificar si cumple con el plazo de almacenamiento gratuito.
-	 */
-	private boolean cumplePlazoAlmacenamientoGratuito(Orden orden) {
-		LocalDateTime fechaActual  = LocalDateTime.now(); 
-		LocalDateTime fechaLlegada = orden.fechaDeLlegadaA(this);
-		LocalDateTime fechaMaxima  = fechaLlegada.plusDays(1);
-		return fechaActual.isAfter(fechaLlegada) && fechaActual.isBefore(fechaMaxima);
-	}
-
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -186,6 +161,7 @@ public class TerminalPortuaria {
 	 */
 	public void registrarExportacion(Orden orden, Camion camion, Chofer chofer) {
 		this.validarRegistrarExportacion(orden, camion, chofer, orden.getShipper());
+		orden.crearServiciosACobrar();
 		this.ordenesDeExportacion.add(orden);
 	}
 
@@ -223,19 +199,21 @@ public class TerminalPortuaria {
 	 */
 	private boolean cumpleIngresoExportacion(Orden orden, Camion camion, Chofer chofer, Cliente shipper) {
 		return this.estanRegistradosParaIngresar(camion, chofer, shipper) && 
-			   this.sonLosInformadosPorElShipper(orden, camion, chofer);
+			   this.sonLosInformadosPorElShipper(orden, camion, chofer, shipper);
 	}
 	
 	/**
-	 * Indica si el camion y el chofer dados son los informados en la orden dada.
+	 * Indica si el camion, el chofer y el shipper dado son los informados en la orden dada.
 	 * @param orden es la orden a verificar en la que se encuentran los datos dados.
 	 * @param camion es el camion a verificar que se encuentra en la orden.
 	 * @param chofer es el chofer a verificar que se encuentra en la orden.
+	 * @param shipper es el shipper a verificar que se encuentra en la orden.
 	 */
-	private boolean sonLosInformadosPorElShipper(Orden orden, Camion camion, Chofer chofer) {
+	private boolean sonLosInformadosPorElShipper(Orden orden, Camion camion, Chofer chofer, Cliente shipper) {
 		Camion camionOrden = orden.getCamion();
 		Chofer choferOrden = orden.getChofer();
-		return camionOrden.equals(camion) && choferOrden.equals(chofer);
+		Cliente shipperOrden = orden.getShipper();
+		return camionOrden.equals(camion) && choferOrden.equals(chofer) && shipperOrden.equals(shipper);
 	}
 	
 	
@@ -244,17 +222,14 @@ public class TerminalPortuaria {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	
-	public void iniciarTrabajosEnBuque(Buque buque) {
+	public void trabajarEnBuque(Buque buque) {
 		this.validarTrabajosEnBuque(buque);
+		
 		buque.iniciarTrabajos(); // Esto debería pasar el buque a estado Working.
-
 		this.descargarContainers(buque); // Añade los containers a la lista de importaciones.
-		
-		// this.generarReportes(); ¿Tiene sentido, no?
-		Map<String, Reporte> reportes = this.generarReportesConImportaciones(buque); // Genera reportes con lo cargado en importaciones, que es lo nuevo.
-		this.finalizarReportesConExportaciones(buque, reportes); // Genera los reportes que faltan con las exportaciones existentes.
-		
 		this.cargarContainers(buque); // Añade los containers de la lista de exportaciones al buque.
+		
+		this.generarReportes(buque);
 		buque.finalizarTrabajos(); // Esto debería pasar el buque a estado Departing.
 	}
 	
@@ -430,14 +405,6 @@ public class TerminalPortuaria {
 	
 	@Override
 	public boolean equals(Object object) {
-		return (this == object) || (this.esTerminalPortuaria(object) && (this.esElMismoQue(object)));
-	}
-	
-	private boolean esTerminalPortuaria(Object object) {
-		return object instanceof TerminalPortuaria;
-	}
-	
-	private boolean esElMismoQue(Object object) {
 		TerminalPortuaria terminalAComparar = (TerminalPortuaria) object;
 		return coordenada.equals(terminalAComparar.getCoordenada());
 	}

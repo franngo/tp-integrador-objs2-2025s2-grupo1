@@ -104,14 +104,6 @@ public class Camion {
 	
 	@Override
 	public boolean equals(Object object) {
-		return (this == object) || (this.esCamion(object) && (this.esElMismoQue(object)));
-	}
-	
-	private boolean esCamion(Object object) {
-		return object instanceof Camion;
-	}
-	
-	private boolean esElMismoQue(Object object) {
 		Camion camionAComparar = (Camion) object;
 		return patente.equals(camionAComparar.getPatente());
 	}
