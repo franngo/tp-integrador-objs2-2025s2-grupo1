@@ -27,9 +27,9 @@ class OutboundTestCase {
 	TerminalPortuaria terminalAArribar;
 	@BeforeEach
 	void setUp() throws Exception {
-		coordenadaTerminal = spy(new Coordenada(0d,0d));
+		coordenadaTerminal = new Coordenada(0d,0d);
 		//terminalAArribar = new TerminalPortuaria(new Coordenada(0d,0d));
-		terminalAArribar = mock(TerminalPortuaria.class);
+		terminalAArribar = spy(new TerminalPortuaria());
 		when(terminalAArribar.coordenadasTerminal()).thenReturn(coordenadaTerminal);
 		//se crea el buque con su posicion
 		
@@ -69,7 +69,7 @@ class OutboundTestCase {
 	@Test
 	void puedeCambiarEstadoTest() {
 		//el buque aun no puede cambiar de fase porque se encuentra lejos de la terminal
-		estadoBuque.avanzar(60d,60d);
+		estadoBuque.avanzar(51d,51d);
 		assertFalse(estadoBuque.debeCambiarDeFase());
 		
 		//el buque puede cambiar de fase porque se encuentra a menos de 50km de la terminal
