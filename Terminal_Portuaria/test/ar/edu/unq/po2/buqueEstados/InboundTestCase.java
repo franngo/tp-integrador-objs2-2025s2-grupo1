@@ -63,13 +63,13 @@ class InboundTestCase {
 		verify(terminalAArribar,times(1)).notificarArribo(buque);
 
      }
-		
+	@Test
 	void puedeCambiarDeFaseTest() {
 		//el buque llega a las mismas coordenadas que la terminal
-		estadoBuque.avanzar(0, 0);
+		estadoBuque.avanzar(0d, 0d);
 		assertTrue(estadoBuque.debeCambiarDeFase());
 	}
-	
+	@Test
 	void elEstadoCambiaDeFase() {
 		estadoBuque.modificarEstadoBuque();
 		assertTrue(buque.obtenerEstado() instanceof Arrived);
