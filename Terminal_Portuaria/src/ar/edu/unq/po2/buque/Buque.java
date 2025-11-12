@@ -126,6 +126,7 @@ public class Buque implements BuqueObservado{
 	
 	public void iniciarTrabajos() throws Exception {
 		if(this.obtenerEstado() instanceof Arrived){
+			this.obtenerEstado().puedeIniciarWorking();
 		    this.obtenerEstado().modificarEstadoBuque();
 		}
 		else {

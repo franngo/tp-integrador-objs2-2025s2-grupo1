@@ -31,6 +31,11 @@ public abstract class EstadoBuque {
 
 	public abstract void avanzar(double latitud, double longitud);
 		// TODO Auto-generated method stub
+
+	public void puedeIniciarWorking() {
+		// TODO Auto-generated method stub
+		
+	}
 		
 	
 	

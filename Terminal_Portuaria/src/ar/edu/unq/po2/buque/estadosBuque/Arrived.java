@@ -20,7 +20,7 @@ public class Arrived extends EstadoBuque{
 	}
      
 	
-	public boolean laTerminalDioVistoBueno() {return true;}
+	public boolean laTerminalDioVistoBueno() {return puedeIniciarWorking;}
 	
 	@Override
 	public void modificarEstadoBuque() {
@@ -35,13 +35,13 @@ public class Arrived extends EstadoBuque{
 
 	@Override
 	public void notificarEstado() {
-		// TODO Auto-generated method stub
-		
+		// No notifica nada en este estado
 	}
 
 	@Override
 	public void avanzar(double latitud, double longitud) {
-		// TODO Auto-generated method stub
+		// El buque no deberia poder moverse en este estado porque esta 
+		// en laterminal
 		
 	}
 
