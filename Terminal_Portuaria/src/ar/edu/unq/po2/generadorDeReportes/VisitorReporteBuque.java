@@ -8,12 +8,12 @@ public class VisitorReporteBuque implements VisitorReporte {
 	
 	public String visitOrdenDeImportacion(OrdenDeImportacion orden) {
 		Container c = orden.getCarga();
-		return "			<item>" + c.getIdConnteiner() + "</item>";
+		return "			<item>" + c.getIdConnteiner() + "</item>\n";
 	}
 	
 	public String visitOrdenDeExportacion(OrdenDeExportacion orden) {
 		Container c = orden.getCarga();
-		return "			<item>" + c.getIdConnteiner() + "</item>";
+		return "			<item>" + c.getIdConnteiner() + "</item>\n";
 	}
 
 }

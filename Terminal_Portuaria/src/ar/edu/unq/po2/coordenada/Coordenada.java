@@ -47,6 +47,21 @@ public class Coordenada {
         this.setLatitud(latitud);
         this.setLongitud(longitud);
     }
+    
+    
+    public double distanciaA(Coordenada otraCoordenada) {
+    	 double dx = this.latitud - otraCoordenada.getLatitud();
+         double dy = this.longitud - otraCoordenada.getLongitud();
+         return Math.sqrt(dx * dx + dy * dy);
+    	
+    }
+    
+    public boolean enMismaPosicionCon(Coordenada otraCoordenada) {
+    	boolean mismaLongitud = this.longitud == otraCoordenada.getLongitud();
+    	boolean mismLatitud = this.latitud == otraCoordenada.getLatitud();
+    	return mismLatitud && mismaLongitud;
+    }
+    
 
     public double distanciaA(Coordenada otraCoordenada) {
    	 double dx = this.latitud - otraCoordenada.getLatitud();

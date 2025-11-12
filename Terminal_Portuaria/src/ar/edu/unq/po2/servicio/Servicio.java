@@ -1,7 +1,9 @@
 package ar.edu.unq.po2.servicio;
 
 
-import java.time.LocalDate;
+
+
+import java.time.LocalDateTime;
 
 import ar.edu.unq.po2.cliente.Cliente;
 import ar.edu.unq.po2.container.Container;
@@ -17,19 +19,23 @@ public abstract class Servicio {
 	
 	protected Cliente clienteConsignee;
 	
-	private LocalDate inicioServicio;
+	private LocalDateTime inicioServicio;
 	
 	
-	public Servicio(Container containerServ) {
+	
+	public Servicio(Container containerServ, LocalDateTime horaInicio) {
 		this.clienteConsignee=containerServ.getDuenioConsignee();
 		this.containerServ = containerServ;
-		this.inicioServicio = LocalDate.now();
+		this.inicioServicio = horaInicio;
 	}
 	
 	public Cliente getClienteConsignee() {
 		return clienteConsignee;
 	}
-	public LocalDate getInicioServicio() {
+	/*public LocalDateTime getInicioServicio() {
+		return inicioServicio;
+	}*/
+	protected LocalDateTime getInicioServicio() {
 		return inicioServicio;
 	}
 	public Container getContainer() {
@@ -42,7 +48,11 @@ public abstract class Servicio {
 	/*
 	 * cuando se invoca este metodo se supone que se descuenta el horario actual del de la instancia
 	 * */
-	public abstract double costoServicio(TerminalPortuaria terminalPortuaria); 
+	public abstract double costoServicio(TerminalPortuaria terminalPortuaria, LocalDateTime horaCobro);
+		
+
+	
+	
 		
 	
 		

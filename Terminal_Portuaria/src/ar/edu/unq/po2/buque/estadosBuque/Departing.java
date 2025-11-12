@@ -16,7 +16,7 @@ public class Departing extends EstadoBuque{
 	public boolean debeCambiarDeFase() {
 	
 		// TODO Auto-generated method stub
-		return miBuque.posicionActual().distanciaA(terminalAArribar.getCoordenada()) 
+		return miBuque.posicionActual().distanciaA(terminalAArribar.coordenadasTerminal()) 
 				> this.unKM();
 	}
     
