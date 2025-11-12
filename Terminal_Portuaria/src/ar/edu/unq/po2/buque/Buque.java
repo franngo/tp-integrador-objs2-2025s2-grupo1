@@ -25,6 +25,7 @@ public class Buque implements BuqueObservado{
     List<Orden> ordenesExportacion;
    List<Orden> ordenesImportacion;
     
+    boolean enViaje = false;
     
     
     
@@ -72,15 +73,29 @@ public class Buque implements BuqueObservado{
     
     
     
-    
+    public void sinViaje() {this.enViaje=false;}
+    public void enViaje() {this.enViaje=true;}
    
 	
 
-	public void iniciarViaje(Viaje viajeActual){
+	public void iniciarViaje(Viaje viajeActual) throws Exception{
+		this.validarSiEstaEnViaje();
         this.viajeActual=viajeActual;
+        this.terminalAArribar=viajeActual.puertoDestino();
         estadoBuque = new OutBound(this);
     }
+	
+	private void validarSiEstaEnViaje() throws Exception {
+		if(enViaje) { throw new Exception("El barco ya esta en viaje");}
+	}
     
+	public void terminalAArribar(TerminalPortuaria terminal) {
+		this.terminalAArribar=terminal;
+	}
+	
+	public TerminalPortuaria terminalAArribar() {
+		return terminalAArribar;
+	}
     
     public void descargarContainers() {} // depende de los estados//NECESITA UN CONDICIONAL
     // PARA QUE LA INSTANCIA DE DWORKING DIGA QUE PUEDE 
@@ -92,9 +107,7 @@ public class Buque implements BuqueObservado{
 		
 	}
 
-	public TerminalPortuaria terminalAArribar() {
-		return terminalAArribar;
-	}
+	
     
 	public List<Orden> getOrdenesExportacion() {
 		return this.ordenesExportacion;
@@ -145,12 +158,11 @@ public class Buque implements BuqueObservado{
      }
      
      
-     //Cuando termina todo el proceso, el barco deberia cambiar su destino
+     //Cuando termina todo el proceso, el barco deberia cambiar su destino a la proxima terminal
+     // que le indique el viaje. No nos interesa que sucede 
 	 public void arriboConExito() {
-		 //provisorio
-		 this.terminalAArribar = null;
-		// TODO Auto-generated method stub
-		 // this.terminalAArribar = this.viaje().proximoDestino()
+		 
+		  this.terminalAArribar = null;
 		
 	 } 
 
