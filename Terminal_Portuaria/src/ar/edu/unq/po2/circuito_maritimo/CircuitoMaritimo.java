@@ -122,6 +122,29 @@ public class CircuitoMaritimo {
 		
 	}
 	
+	/*
+	 * PRECONDICIÓN: Se debe cumplir this.esCircuitoQueUneA(t1, t2)
+	 */
+	public List<Tramo> tramosDesdeHasta(TerminalPortuaria t1, TerminalPortuaria t2) {
+		
+		List<Tramo> ts = new ArrayList<Tramo>();
+		int n = 0;
+		
+		while(this.tramos.get(n).getTerminalOrigen() != t1) {
+			n++;
+		}
+		//obtenemos el índice en donde se encuentra t1 como orígen en la lista de tramos
+		
+		while(this.tramos.get(n).getTerminalDestino() != t2) {
+			ts.add(this.tramos.get(n));
+			n++;
+		}
+		ts.add(this.tramos.get(n));
+		
+		return ts;
+		
+	}
+	
 	//??
 	public double precioTotal() {
 		
