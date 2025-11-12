@@ -25,7 +25,7 @@ public class ServicioRevisionDiaria extends Servicio{
 	 * Los dias que el tanque paso en la terminal
 	 * */
 	private double diasRevisionDiaria(LocalDateTime horaCobro) {
-		long dias = ChronoUnit.DAYS.between(horaCobro, this.getInicioServicio());
+		long dias = ChronoUnit.DAYS.between(this.getInicioServicio(),horaCobro);
 	    return Math.max(1, dias); 
 	}
 
