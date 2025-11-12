@@ -28,6 +28,11 @@ public abstract class EstadoBuque {
 	
 	protected Buque miBuque() {return miBuque;}
 	protected TerminalPortuaria terminalAArribar() {return terminalAArribar;}
+
+	public abstract void avanzar(double latitud, double longitud);
+		// TODO Auto-generated method stub
+		
+	
 	
 
 	

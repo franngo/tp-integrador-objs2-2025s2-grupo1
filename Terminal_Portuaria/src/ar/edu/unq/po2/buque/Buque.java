@@ -20,7 +20,10 @@ public class Buque implements BuqueObservado{
 	
 	
     List<Orden> ordenesExportacion;
-    List<Orden> ordenesImportacion;
+   List<Orden> ordenesImportacion;
+    
+    
+    
     
     String nombre;
     
@@ -55,16 +58,16 @@ public class Buque implements BuqueObservado{
     
 
     public void avanzarHacia(double latitud, double longitud){
-        posicionActual.nuevaPosicion(latitud,longitud);
-        this.notificarEstado();
-    	estadoBuque.actualizarSiSeRequiere();
+        estadoBuque.avanzar(latitud,longitud);
+        estadoBuque.actualizarSiSeRequiere();
+        estadoBuque.notificarEstado(this.terminalAArribar());
+       
     
     }
     
     
-    public void notificarEstado() {
-        estadoBuque.notificarEstado(this.terminalAArribar());
-	}
+   
+	
 
 	public void iniciarViaje(Viaje viajeActual){
         this.viajeActual=viajeActual;
@@ -72,7 +75,8 @@ public class Buque implements BuqueObservado{
     }
     
     
-    public void descargarContainers() {} // depende de los estados
+    public void descargarContainers() {} // depende de los estados//NECESITA UN CONDICIONAL
+    // PARA QUE LA INSTANCIA DE DWORKING DIGA QUE PUEDE 
     public void cargarContainers() {} // depende de los estados
 
 	@Override
@@ -105,6 +109,12 @@ public class Buque implements BuqueObservado{
 	
 	public String getNombre() {
 		return this.nombre;
+	}
+
+	@Override
+	public void notificarEstado() {
+		// TODO Auto-generated method stub
+		
 	}
 
 

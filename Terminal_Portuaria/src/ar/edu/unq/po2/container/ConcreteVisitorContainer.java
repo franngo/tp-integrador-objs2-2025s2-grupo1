@@ -39,6 +39,7 @@ public class ConcreteVisitorContainer implements VisitorContainer{
         // Servicios comunes
         servicios.add(new ServicioLavado(container));
         servicios.add(new ServicioPesaje(container));
+        servicios.add(new ServicioExcedente(container));
         
         // Servicios específicos
         servicios.addAll(Arrays.asList(adicionales));

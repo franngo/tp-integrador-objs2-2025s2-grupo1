@@ -26,6 +26,11 @@ public class Inbound extends EstadoBuque{
 
 	@Override
 	public void notificarEstado(TerminalPortuaria terminal) {
+	    terminal.notificarConsignee(miBuque.getViajeActual());
+	}
+	
+	@Override
+	public void avanzar(double latitud, double longitud) {
 		// TODO Auto-generated method stub
 		
 	}

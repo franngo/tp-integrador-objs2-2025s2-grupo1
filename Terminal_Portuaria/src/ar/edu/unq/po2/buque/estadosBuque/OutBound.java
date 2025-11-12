@@ -36,6 +36,12 @@ public class OutBound extends EstadoBuque {
 		
 	}
 
+	@Override
+	public void avanzar(double latitud, double longitud) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 	

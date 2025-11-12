@@ -28,4 +28,9 @@ public class Working extends EstadoBuque{
 		
 	}
 
+	@Override
+	public void avanzar(double latitud, double longitud) {
+		
+	}
+
 }
