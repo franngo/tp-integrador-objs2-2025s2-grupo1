@@ -46,7 +46,7 @@ public class CircuitoMaritimo {
 	
 	//////////////////////////////////////////////CONSTRUCTOR///////////////////////////////////////////////////
 	
-	//??
+	//???
 	public Duration tiempoTotal() {
 		
 		Duration d = Duration.ZERO;
@@ -122,6 +122,12 @@ public class CircuitoMaritimo {
 			//si está como destino t2 en alguno de los tramos, significa que se cumple la condición
 			
 		} else { return false; }
+		
+	}
+	
+	public boolean incluyeA(TerminalPortuaria t) {
+		
+		return this.tieneOrigen(t) || this.tieneDestino(t);
 		
 	}
 	

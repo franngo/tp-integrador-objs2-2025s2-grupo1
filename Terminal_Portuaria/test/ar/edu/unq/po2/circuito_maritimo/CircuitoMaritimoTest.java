@@ -248,5 +248,31 @@ public class CircuitoMaritimoTest {
 		assertEquals(terminal4, t2.getTerminalDestino());
 		
 	}
+	
+	@Test
+	public void incluyeA() {
+		
+		when(tramo1.getTerminalOrigen()).thenReturn(terminal1);
+		when(tramo1.getTerminalDestino()).thenReturn(terminal2);
+		
+		when(tramo2.getTerminalOrigen()).thenReturn(terminal2);
+		when(tramo2.getTerminalDestino()).thenReturn(terminal3);
+		
+		when(tramo3.getTerminalOrigen()).thenReturn(terminal3);
+		when(tramo3.getTerminalDestino()).thenReturn(terminal4);
+		
+		when(tramo4.getTerminalOrigen()).thenReturn(terminal4);
+		when(tramo4.getTerminalDestino()).thenReturn(terminal5);
+		
+		circuito = new CircuitoMaritimo(ts);
+		
+		assertTrue(circuito.incluyeA(terminal1)); //se cumple this.tieneOrigen(terminal1)
+		assertTrue(circuito.incluyeA(terminal5)); //se cumple this.tieneDestino(terminal5)
+		
+		TerminalPortuaria terminal6 = mock(TerminalPortuaria.class);
+		
+		assertFalse(circuito.incluyeA(terminal6)); //no se cumple this.tieneOrigen(terminal6) ni this.tieneDestino(terminal6)
+		
+	}
 
 }
