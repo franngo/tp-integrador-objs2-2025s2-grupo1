@@ -24,10 +24,10 @@ public abstract class EstadoBuque {
 	}
 	
 	public abstract boolean debeCambiarDeFase();
-	public abstract void modificarEstadoBuque();
+	public  abstract void modificarEstadoBuque();
 	
-	protected Buque miBuque() {return miBuque;}
-	protected TerminalPortuaria terminalAArribar() {return terminalAArribar;}
+	public Buque miBuque() {return miBuque;}
+	public TerminalPortuaria terminalAArribar() {return terminalAArribar;}
 
 	public abstract void avanzar(double latitud, double longitud);
 		// TODO Auto-generated method stub
