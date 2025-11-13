@@ -142,7 +142,7 @@ class TerminalPortuariaTest {
 	}
 	
 	@Test
-	public void buscarCircuito() {
+	public void testFuncionamientoBuscarCircuito() {
 		Naviera naviera1 = mock(Naviera.class);
 		Naviera naviera2 = mock(Naviera.class);
 		Naviera naviera3 = mock(Naviera.class);
