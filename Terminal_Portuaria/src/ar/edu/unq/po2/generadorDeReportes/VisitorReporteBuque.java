@@ -9,4 +9,5 @@ public class VisitorReporteBuque implements VisitorReporte {
 		Container c = orden.getCarga();
 		return "			<item>" + c.getIdConnteiner() + "</item>\n";
 	}
+
 }

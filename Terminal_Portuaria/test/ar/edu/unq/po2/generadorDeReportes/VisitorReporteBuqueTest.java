@@ -29,17 +29,21 @@ public class VisitorReporteBuqueTest {
 	
 	@Test
 	public void visitOrdenDeImportacion() {
+		
 		ordenImp = mock(Orden.class);
 		when(ordenImp.getCarga()).thenReturn(container);
 		
 		assertEquals("			<item>MARC9378524</item>\n", visitor.visitOrden(ordenImp));
+
 	}
 	
 	@Test
 	public void visitOrdenDeExportacion() {
+		
 		ordenExp = mock(Orden.class);
 		when(ordenExp.getCarga()).thenReturn(container);
 		
 		assertEquals("			<item>MARC9378524</item>\n", visitor.visitOrden(ordenExp));
+
 	}
 }

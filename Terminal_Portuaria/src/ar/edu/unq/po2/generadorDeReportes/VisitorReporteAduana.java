@@ -9,4 +9,5 @@ public class VisitorReporteAduana implements VisitorReporte {
 		Container c = orden.getCarga();
 		return "    			<li><p> Tipo: " + c.tipoCarga() + ", ID: " + c.getIdConnteiner() + "</p></li>\n";
 	}
+
 }

@@ -43,7 +43,6 @@ class BuqueTestCase {
 		viajeDumb = mock(Viaje.class);
 		when(viajeDumb.puertoDestino()).thenReturn(terminalDumb);
 		when(viajeDumb.proximoDestino()).thenReturn(proximoDestino);
-		
 		miBuque = new Buque(coordenadasBuque,ordenes,"El Perla Negra");
 	}
 	
