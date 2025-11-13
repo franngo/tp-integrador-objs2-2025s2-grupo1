@@ -1,7 +1,9 @@
 package ar.edu.unq.po2.naviera;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import ar.edu.unq.po2.buque.Buque;
@@ -56,6 +58,17 @@ public class Naviera {
 				filter((v) -> v.tieneOrigen(t)).
 				toList();
 		return vs;
+		
+	}
+	
+	public Duration tiempoEntre(TerminalPortuaria t1, TerminalPortuaria t2) {
+		
+		List<CircuitoMaritimo> cs = this.circuitosQueUnan(t1, t2);
+		
+		Duration d = cs.stream().min(Comparator.comparing(c -> c.tiempoEnTramosDesdeHasta(t1, t2))).get().
+				tiempoEnTramosDesdeHasta(t1, t2);
+		
+		return d;
 		
 	}
 

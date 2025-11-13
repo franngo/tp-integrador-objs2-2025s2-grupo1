@@ -458,7 +458,8 @@ public class TerminalPortuaria implements TerminalObservadora {
 	 * @param 
 	 */
 	public Duration tiempoEntre(TerminalPortuaria terminalPortuaria, Naviera naviera) {
-		return null;
+		
+		return naviera.tiempoEntre(this, terminalPortuaria);
 		
 	}
 	
