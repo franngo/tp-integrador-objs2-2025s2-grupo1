@@ -9,6 +9,9 @@ import java.util.Map;
 import java.util.Set;
 
 import ar.edu.unq.po2.buque.Buque;
+import ar.edu.unq.po2.buscador_de_circuito.BuscadorDeCircuito;
+import ar.edu.unq.po2.buscador_de_circuito.BuscadorPorPrecio;
+import ar.edu.unq.po2.buscador_de_viaje.BuscadorDeViaje;
 import ar.edu.unq.po2.buscador_de_viaje.Condicion;
 import ar.edu.unq.po2.camion.Camion;
 
@@ -43,6 +46,9 @@ public class TerminalPortuaria implements TerminalObservadora{
 	private List<Orden> ordenesDeImportacion;
 	private List<Orden> ordenesDeExportacion;
 	private List<Reporte> reportesGenerados;
+	
+	private BuscadorDeCircuito buscadorDeCircuito;
+	private BuscadorDeViaje buscadorDeViaje;
   	
 	/**
 	 * @param coordenada son las coordenadas en donde se encuentra geográficamente la Terminal Portuaria.
@@ -60,6 +66,9 @@ public class TerminalPortuaria implements TerminalObservadora{
 		this.ordenesDeImportacion = new ArrayList<Orden>();
 		this.ordenesDeExportacion = new ArrayList<Orden>();
 		this.reportesGenerados = new ArrayList<Reporte>();
+		
+		this.buscadorDeCircuito = new BuscadorPorPrecio(); //se elige uno particular para que no inicie vacío
+		this.buscadorDeViaje = new BuscadorDeViaje();
 		
 		serviciosDisponibles.add(PrecioServicioTerminal.DIAEXCEDENTE);
 		serviciosDisponibles.add(PrecioServicioTerminal.KILOWATTCONSUMIDO);
@@ -276,20 +285,30 @@ public class TerminalPortuaria implements TerminalObservadora{
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	private void generarReportes(Buque buque) {
+		
 		// Genera reportes de importación
-		List<Orden> ordenesImportacion = ordenesDeImportacion.stream()
-				  						   				     .filter(o -> buque.getOrdenes().contains(o))
-				  								  			 .toList();
-		Map<String, Reporte> reportesImportaciones = generadorReportes.generarReportesConImportaciones(buque, ordenesImportacion);
+		List<Orden> ordenesImp = this.ordenesDelViaje(ordenesDeImportacion, buque);
+		Map<String, Reporte> reportesImportaciones = generadorReportes.generarReportesConImportaciones(buque, ordenesImp);
 		
 		// Genera reportes de exportación
-		List<Orden> ordenesExportacion = ordenesDeExportacion.stream()
-				  											 .filter(o -> buque.getOrdenes().contains(o))
-				  											 .toList();
-		List<Reporte> reportesCompletos = generadorReportes.finalizarReportesConExportaciones(reportesImportaciones, ordenesExportacion);
+		List<Orden> ordenesExp = this.ordenesDelViaje(ordenesDeExportacion, buque);
+		List<Reporte> reportesCompletos = generadorReportes.finalizarReportesConExportaciones(reportesImportaciones, ordenesExp);
 		
 		// Añadir los reportes generados
 		reportesGenerados.addAll(reportesCompletos);
+		
+	}
+	
+	private List<Orden> ordenesDelViaje(List<Orden> ordenes, Buque buque) {
+
+		List<Orden> aDevolver = ordenes.stream()
+
+										.filter(o -> buque.getOrdenes().contains(o))
+
+										.toList();
+
+		return aDevolver;
+		
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -394,13 +413,18 @@ public class TerminalPortuaria implements TerminalObservadora{
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	
-	public void setBuscadorDeCircuito(CircuitoMaritimo circuitoMaritimo) {
+	public void setBuscadorDeCircuito(BuscadorDeCircuito buscador) {
 		
+		this.buscadorDeCircuito = buscador;
 		
 	}
 	
 	public CircuitoMaritimo buscarCircuito(TerminalPortuaria terminalPortuaria) {
-		return null;
+		
+		List<CircuitoMaritimo> cs = new ArrayList<CircuitoMaritimo>();
+		this.navierasRegistradas.stream().forEach((n) -> cs.addAll(n.circuitosQueUnan(this, terminalPortuaria)));
+		
+		return buscadorDeCircuito.buscarMejorCircuito(cs, this, terminalPortuaria);
 		
 	}
 	
@@ -418,6 +442,8 @@ public class TerminalPortuaria implements TerminalObservadora{
 		return null;
 		
 	}
+	
+	
 	
 	// #################################### MÉTODOS AUXILIARES ################################## \\
 	
