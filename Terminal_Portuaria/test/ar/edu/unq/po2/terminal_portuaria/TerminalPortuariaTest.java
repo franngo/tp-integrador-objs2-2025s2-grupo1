@@ -291,5 +291,22 @@ class TerminalPortuariaTest {
 		
 	}
 	
+	@Test 
+	void laTerminalMandaServiciosALosShipper() {
+		
+		Buque buqueMock = mock(Buque.class);
+       assertDoesNotThrow(() -> {
+			
+			
+			terminalGestionada.notificarSalidaTerminal(buqueMock);
+	        
+	    });
+	}
+	
+	@Test
+	void laTerminalDiceSuLimiteExcedente() {
+		assertEquals(24,terminalGestionada.limiteHorasAlmacenaje());
+	}
+	
 	
 }
