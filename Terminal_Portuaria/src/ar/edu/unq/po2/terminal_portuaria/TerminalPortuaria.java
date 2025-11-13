@@ -3,6 +3,7 @@ package ar.edu.unq.po2.terminal_portuaria;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -514,7 +515,8 @@ public class TerminalPortuaria implements TerminalObservadora {
 	 * @param 
 	 */
 	public Duration tiempoEntre(TerminalPortuaria terminalPortuaria, Naviera naviera) {
-		return null;
+		
+		return naviera.tiempoEntre(this, terminalPortuaria);
 		
 	}
 	
@@ -522,8 +524,16 @@ public class TerminalPortuaria implements TerminalObservadora {
 	 * 
 	 * @param 
 	 */
-	public LocalDateTime proximaFechaHacia(TerminalPortuaria terminalPortuaria, Buque buque) {
-		return null;
+	public LocalDateTime proximaFechaHacia(TerminalPortuaria destino, Buque buque) {
+		
+		List<Viaje> vs = new ArrayList<Viaje>();
+		this.navierasRegistradas.stream().forEach((n) -> vs.addAll(n.viajesQueUnanConBuque(this, destino, buque)));
+		
+		Viaje vDef = vs.stream().min(Comparator.comparing(v -> v.fechaDeLlegadaATerminal(this))).get();
+		//min, al comparar por LocalDate, se queda con la fecha más antigua/alejada en el tiempo respecto a las demás,
+		//o sea, la próxima (pensándolo desde el punto de vista de que ninguna de esas fechas sucedieron aún).
+		
+		return vDef.fechaDeLlegadaATerminal(this);
 		
 	}
 	

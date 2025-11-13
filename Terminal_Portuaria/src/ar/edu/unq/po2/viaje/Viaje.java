@@ -62,4 +62,14 @@ public class Viaje {
 		
 	}
 	
+	public boolean esViajeQueUneA(TerminalPortuaria t1, TerminalPortuaria t2) {
+		
+		return this.circuito.esCircuitoQueUneA(t1, t2);
+		
+	}
+	
+	public Buque getBuque() {
+		return this.buque;
+	}
+	
 }

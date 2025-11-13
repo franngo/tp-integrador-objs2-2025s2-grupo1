@@ -10,6 +10,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -216,7 +217,6 @@ class TerminalPortuariaTest {
 		Viaje v3 = mock(Viaje.class);
 		vs2.add(v3);
 		
-		
 		List<Viaje>  vs3 = new ArrayList<Viaje>();
 		Viaje v4 = mock(Viaje.class);
 		Viaje v5 = mock(Viaje.class);
@@ -250,6 +250,65 @@ class TerminalPortuariaTest {
 		assertFalse(vsCumplen.contains(v3));
 		assertFalse(vsCumplen.contains(v4));
 		assertFalse(vsCumplen.contains(v5));
+		
+	}
+	
+	@Test
+	public void tiempoEntre() {
+		
+		Naviera naviera1 = mock(Naviera.class);
+		
+		terminalGestionada.registrarNaviera(naviera1);
+		
+		TerminalPortuaria destino = mock(TerminalPortuaria.class);
+		
+		when(naviera1.tiempoEntre(terminalGestionada, destino)).thenReturn(Duration.ofHours(3));
+		
+		assertEquals(Duration.ofHours(3), terminalGestionada.tiempoEntre(destino, naviera1));
+		
+	}
+	
+	@Test
+	public void proximaFechaHacia() {
+		
+		Naviera naviera1 = mock(Naviera.class);
+		Naviera naviera2 = mock(Naviera.class);
+		Naviera naviera3 = mock(Naviera.class);
+		
+		terminalGestionada.registrarNaviera(naviera1);
+		terminalGestionada.registrarNaviera(naviera2);
+		terminalGestionada.registrarNaviera(naviera3);
+		
+		List<Viaje> vs1 = new ArrayList<Viaje>();
+		Viaje v1 = mock(Viaje.class);
+		Viaje v2 = mock(Viaje.class);
+		vs1.add(v1);
+		vs1.add(v2);
+		
+		List<Viaje> vs2 = new ArrayList<Viaje>();
+		Viaje v3 = mock(Viaje.class);
+		vs2.add(v3);
+		
+		List<Viaje>  vs3 = new ArrayList<Viaje>();
+		Viaje v4 = mock(Viaje.class);
+		Viaje v5 = mock(Viaje.class);
+		vs3.add(v4);
+		vs3.add(v5);
+		
+		TerminalPortuaria destino = mock(TerminalPortuaria.class);
+		Buque buque = mock(Buque.class);
+		
+		when(naviera1.viajesQueUnanConBuque(terminalGestionada, destino, buque)).thenReturn(vs1);
+		when(naviera2.viajesQueUnanConBuque(terminalGestionada, destino, buque)).thenReturn(vs2);
+		when(naviera3.viajesQueUnanConBuque(terminalGestionada, destino, buque)).thenReturn(vs3);
+		
+		when(v1.fechaDeLlegadaATerminal(terminalGestionada)).thenReturn(LocalDateTime.of(2025, 11, 12, 14, 30));
+		when(v2.fechaDeLlegadaATerminal(terminalGestionada)).thenReturn(LocalDateTime.of(2026, 10, 12, 14, 30));
+		when(v3.fechaDeLlegadaATerminal(terminalGestionada)).thenReturn(LocalDateTime.of(2025, 10, 12, 14, 30));
+		when(v4.fechaDeLlegadaATerminal(terminalGestionada)).thenReturn(LocalDateTime.of(2025, 12, 12, 14, 30));
+		when(v5.fechaDeLlegadaATerminal(terminalGestionada)).thenReturn(LocalDateTime.of(2027, 11, 12, 14, 30));
+		
+		assertEquals(LocalDateTime.of(2025, 10, 12, 14, 30), terminalGestionada.proximaFechaHacia(destino, buque));
 		
 	}
 	

@@ -95,5 +95,25 @@ public class ViajeTest {
 		assertTrue(viaje.tieneOrigen(terminal5));
 		
 	}
+	
+	@Test
+	public void esViajeQueUneA() {
+		
+		TerminalPortuaria terminal4 = mock(TerminalPortuaria.class);
+		
+		when(circuito.esCircuitoQueUneA(terminal4, terminal5)).thenReturn(true);
+		
+		assertTrue(viaje.esViajeQueUneA(terminal4, terminal5));
+		
+	}
+	
+	@Test
+	public void getBuque() {
+		
+		assertEquals(buque, viaje.getBuque());
+		
+	}
+	
+	
 
 }
