@@ -13,12 +13,11 @@ import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 import ar.edu.unq.po2.viaje.Viaje;
 
 
-/*
- * @Autor : Matias Sanchez
- *
- *
- * */
-
+/**
+* Describe un buque.
+* @author Matias Sanchez 
+* @author Benjamin Maldonado.
+*/
 public class Buque implements BuqueObservado{
     List<Orden> ordenes;
     boolean enViaje;

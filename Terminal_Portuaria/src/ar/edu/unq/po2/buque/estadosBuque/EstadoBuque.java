@@ -4,7 +4,6 @@ import ar.edu.unq.po2.buque.Buque;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 public abstract class EstadoBuque {
-	
 	protected Buque miBuque;
     protected TerminalPortuaria terminalAArribar;
     

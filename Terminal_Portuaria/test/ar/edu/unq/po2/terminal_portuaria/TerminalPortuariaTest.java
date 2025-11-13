@@ -21,7 +21,6 @@ import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.empresa_transportista.EmpresaTransportista;
 import ar.edu.unq.po2.naviera.Naviera;
 import ar.edu.unq.po2.orden.Orden;
-import ar.edu.unq.po2.orden.OrdenDeExportacion;
 import ar.edu.unq.po2.viaje.Viaje;
 
 /**

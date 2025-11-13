@@ -26,11 +26,11 @@ import ar.edu.unq.po2.viaje.Viaje;
 
 /**
 * Describe una terminal portuaria.
-* @author Benjamin Maldonado & Franco Oreskovic.
+* @author Benjamin Maldonado 
+* @author Franco Oreskovic.
 */
 
-
-public class TerminalPortuaria implements TerminalObservadora{
+public class TerminalPortuaria implements TerminalObservadora {
 	private Coordenada coordenada;
 	private GeneradorDeReportes generadorReportes;
 	

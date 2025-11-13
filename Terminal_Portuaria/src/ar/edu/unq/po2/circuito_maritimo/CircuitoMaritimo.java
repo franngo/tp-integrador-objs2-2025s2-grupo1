@@ -91,6 +91,19 @@ public class CircuitoMaritimo {
 		return this.tieneOrigen(t) || this.tieneDestino(t);
 		
 	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	public TerminalPortuaria proximoDestino(TerminalPortuaria terminal) {
+		
+		List<Tramo> tr = this.tramos.stream().filter((t) -> t.getTerminalOrigen().equals(terminal)).toList();
+		if(tr.isEmpty()) {
+			return null; //esto en el caso de que no haya un siguiente
+		} else {
+			return tr.getFirst().getTerminalDestino();
+		}
+
+	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	

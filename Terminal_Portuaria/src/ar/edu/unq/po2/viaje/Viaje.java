@@ -7,7 +7,6 @@ import ar.edu.unq.po2.circuito_maritimo.CircuitoMaritimo;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 public class Viaje {
-	
 	private LocalDateTime fechaDeSalida;
 	private CircuitoMaritimo circuito;
 	private Buque buque;
@@ -50,8 +49,7 @@ public class Viaje {
 	}
 
 	public TerminalPortuaria proximoDestino() {
-		// TODO Auto-generated method stub
-		return new TerminalPortuaria();
+		TerminalPortuaria t = this.buque.terminalAArribar();
+		return this.circuito.proximoDestino(t);
 	}
-	
 }
