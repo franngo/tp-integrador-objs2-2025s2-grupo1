@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -134,6 +135,23 @@ public class NavieraTest {
 		assertTrue(vsCumplen.contains(v1));
 		assertFalse(vsCumplen.contains(v2));
 		assertTrue(vsCumplen.contains(v3));
+		
+	}
+	
+	@Test
+	public void tiempoEntre() {
+		
+		TerminalPortuaria t1 = mock(TerminalPortuaria.class);
+		TerminalPortuaria t2 = mock(TerminalPortuaria.class);
+		
+		when(circuito1.esCircuitoQueUneA(t1, t2)).thenReturn(true);
+		when(circuito2.esCircuitoQueUneA(t1, t2)).thenReturn(false);
+		when(circuito3.esCircuitoQueUneA(t1, t2)).thenReturn(true);
+		
+		when(circuito1.tiempoEnTramosDesdeHasta(t1, t2)).thenReturn(Duration.ofHours(10));
+		when(circuito3.tiempoEnTramosDesdeHasta(t1, t2)).thenReturn(Duration.ofHours(8));
+		
+		assertEquals(Duration.ofHours(8), naviera.tiempoEntre(t1, t2));
 		
 	}
 

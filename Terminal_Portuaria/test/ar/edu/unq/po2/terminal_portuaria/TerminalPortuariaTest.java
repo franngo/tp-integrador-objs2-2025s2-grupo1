@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -246,6 +247,21 @@ class TerminalPortuariaTest {
 		assertFalse(vsCumplen.contains(v3));
 		assertFalse(vsCumplen.contains(v4));
 		assertFalse(vsCumplen.contains(v5));
+		
+	}
+	
+	@Test
+	public void tiempoEntre() {
+		
+		Naviera naviera1 = mock(Naviera.class);
+		
+		terminalGestionada.registrarNaviera(naviera1);
+		
+		TerminalPortuaria destino = mock(TerminalPortuaria.class);
+		
+		when(naviera1.tiempoEntre(terminalGestionada, destino)).thenReturn(Duration.ofHours(3));
+		
+		assertEquals(Duration.ofHours(3), terminalGestionada.tiempoEntre(destino, naviera1));
 		
 	}
 	
