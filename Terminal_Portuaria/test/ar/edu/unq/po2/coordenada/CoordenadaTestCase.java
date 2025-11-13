@@ -74,5 +74,12 @@ public class CoordenadaTestCase {
     	assertEquals(67.91d,distanciaRedondeada);
     }
     
+    @Test
+    void testHashCodeIgualParaObjetosIguales() {
+        Coordenada c1 = new Coordenada(10.0, 20.0);
+        Coordenada c2 = new Coordenada(10.0, 20.0);
+        assertEquals(c1.hashCode(), c2.hashCode());
+        }
+    
     
 }
