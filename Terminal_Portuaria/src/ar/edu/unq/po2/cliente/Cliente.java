@@ -24,4 +24,9 @@ public class Cliente{
 	   return nombreCliente;
    }
 
+   public void recibirMail(String cuerpoMail) {
+	// No hace nada, solo recibe el mail
+	
+   }
+
 }

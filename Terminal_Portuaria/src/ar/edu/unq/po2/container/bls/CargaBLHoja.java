@@ -29,5 +29,10 @@ public class CargaBLHoja implements CargaBL{
 		// TODO Auto-generated method stub
 		return cliente.nombreCliente();
 	}
+	@Override
+	public Cliente getDuenioConsignee() {
+		// TODO Auto-generated method stub
+		return cliente;
+	}
 
 }

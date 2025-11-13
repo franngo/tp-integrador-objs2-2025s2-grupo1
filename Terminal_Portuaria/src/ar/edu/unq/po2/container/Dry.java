@@ -63,7 +63,7 @@ public class Dry extends Container {
 	    @Override
 	    public Cliente getDuenioConsignee() {
 	    	// IMPLEMENTAR TODO
-	    	return new Cliente("Matias"); 
+	    	return cargaBL.getDuenioConsignee();
 	    }
 
 }

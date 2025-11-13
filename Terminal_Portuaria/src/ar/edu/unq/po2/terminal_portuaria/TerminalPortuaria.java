@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import ar.edu.unq.po2.buque.Buque;
 import ar.edu.unq.po2.buscador_de_circuito.BuscadorDeCircuito;
@@ -536,15 +537,35 @@ public class TerminalPortuaria implements TerminalObservadora {
 	 * @param 
 	 */
 	public void notificarArribo(Buque miBuque) {
-		System.out.println("AVISA A LOS CONSIGNEE QUE LA CARGA ESTA POR LLEGAR");
+		List <Orden> ordenesAvisar = this.ordenesMail(miBuque.getViajeActual());
+		ordenesAvisar.stream().forEach(orden -> this.enviarMailLlegada(orden));
 	}
-
+	
+	public List<Orden> ordenesMail(Viaje viaje){
+		 return ordenesDeImportacion.stream()
+	            .filter(orden -> orden.getViaje() == viaje)
+	            .collect(Collectors.toList());
+	}
+    
+	
+	public void enviarMailLlegada(Orden orden) {
+		String cuerpoMail = "Estimado/a " + orden.getConsignee().nombreCliente() + ",\n\n" +
+			    "Le informamos que su carga asociada al contenedor " + orden.getCarga().getIdConnteiner() +
+			    " está próxima a llegar a destino.\n\n" +
+			    "Por favor, manténgase atento a las próximas actualizaciones.\n\n" +
+			    "Saludos cordiales,\n" +
+			    "Departamento de Logística\n" +
+			    "Puerto Internacional de Buenos Aires";
+		
+		orden.getConsignee().recibirMail(cuerpoMail);
+	}
 	/**
 	 * 
 	 * @param 
 	 */
 	public void notificarSalidaTerminal(Buque miBuque) {
 		System.out.println("MANDA LOS MAILS A LOS SHIPPERS");
+		
 	}
 
 	/**

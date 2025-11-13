@@ -1,9 +1,13 @@
 package ar.edu.unq.po2.terminal_portuaria;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
@@ -246,6 +250,25 @@ class TerminalPortuariaTest {
 		assertFalse(vsCumplen.contains(v3));
 		assertFalse(vsCumplen.contains(v4));
 		assertFalse(vsCumplen.contains(v5));
+		
+	}
+	
+	@Test
+	void laTerminalNotificaConsigneeTest() {
+		
+		Container containerMock = mock(Container.class);
+		
+		Orden ordenMock = spy(new Orden(null,null,containerMock,null,null));
+		when(ordenMock.getConsignee()).thenReturn(new Cliente("Matias"));
+		Buque buqueMock = mock(Buque.class);
+	
+		
+		assertDoesNotThrow(() -> {
+			terminalGestionada.notificarArribo(buqueMock);
+			
+			terminalGestionada.enviarMailLlegada(ordenMock);
+	        
+	    });
 		
 	}
 	
