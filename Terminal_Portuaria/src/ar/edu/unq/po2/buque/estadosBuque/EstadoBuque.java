@@ -1,6 +1,9 @@
 package ar.edu.unq.po2.buque.estadosBuque;
 
+import java.util.List;
+
 import ar.edu.unq.po2.buque.Buque;
+import ar.edu.unq.po2.orden.Orden;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 public abstract class EstadoBuque {
@@ -40,13 +43,18 @@ public abstract class EstadoBuque {
 		// TODO Auto-generated method stub
 		
 	}
-		
-	
-	
 
+	// IMPLEMENTACIÓN BENJA
 	
-	
+	public void cargarOrdenes(List<Orden> ordenes) {
+		throw new RuntimeException("No puede realizar esta acción en este estado.");
+	}
 
+	public List<Orden> getOrdenesADescargar(TerminalPortuaria terminalPortuaria) {
+		throw new RuntimeException("No puede realizar esta acción en este estado.");
+	}
 
-	
+	public void finalizarDescargaDeOrdenes(List<Orden> ordenes) {
+		throw new RuntimeException("No puede realizar esta acción en este estado.");
+	}
 }

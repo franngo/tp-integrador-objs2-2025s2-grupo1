@@ -52,7 +52,7 @@ public class Buque implements BuqueObservado{
     }
 
     public void avanzarHacia(double latitud, double longitud){
-        estadoBuque.avanzar(latitud,longitud);
+        estadoBuque.avanzar(latitud, longitud);
         estadoBuque.actualizarSiSeRequiere();
         estadoBuque.notificarEstado();
      }
@@ -77,7 +77,7 @@ public class Buque implements BuqueObservado{
 	}
     
 	public void terminalAArribar(TerminalPortuaria terminal) {
-		this.terminalAArribar=terminal;
+		this.terminalAArribar = terminal;
 	}
 	
 	public TerminalPortuaria terminalAArribar() {
@@ -102,6 +102,8 @@ public class Buque implements BuqueObservado{
 	public void notificarEstado() {
 		
 	}
+	
+	// IMPLEMENTACIÓN BENJA
      
 	public void iniciarTrabajos() {
 		this.validarIniciarTrabajos();
@@ -126,22 +128,24 @@ public class Buque implements BuqueObservado{
     		 throw new RuntimeException("El buque aun no se encuentra en condiciones de partir");
     	 }
      }
+     
+     public List<Orden> getOrdenes() {
+    	 return ordenes;
+     }
 
-	 public void finalizarDescargaDeOrdenes(List<Orden> ordenesDescargadas) {
-		
+     public void finalizarDescargaDeOrdenes(List<Orden> ordenes) {
+		this.obtenerEstado().finalizarDescargaDeOrdenes(ordenes);
 	 }
 
 	 public List<Orden> getOrdenesADescargar(TerminalPortuaria terminalPortuaria) {
-		return null;
-	 }
-
-	 public List<Orden> getOrdenes() {
-		return ordenes;
+		return this.obtenerEstado().getOrdenesADescargar(terminalPortuaria);
 	 }
 
 	 public void cargarOrdenes(List<Orden> ordenes) {
-		 
+		 this.obtenerEstado().cargarOrdenes(ordenes);
 	 } 
+	 
+	 /////////////////////////////////////////////////////////////////////////////////////////////////
      
      //Cuando termina todo el proceso, el barco deberia cambiar su destino a la proxima terminal
      // que le indique el viaje. No nos interesa que sucede 
