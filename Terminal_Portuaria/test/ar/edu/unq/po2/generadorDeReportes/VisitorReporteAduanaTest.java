@@ -11,7 +11,6 @@ import ar.edu.unq.po2.container.Container;
 import ar.edu.unq.po2.orden.Orden;
 
 public class VisitorReporteAduanaTest {
-	
 	//SUT
 	VisitorReporteAduana visitor;
 	
@@ -22,13 +21,11 @@ public class VisitorReporteAduanaTest {
 	
 	@BeforeEach
 	public void setUp() {
-		
 		visitor = new VisitorReporteAduana();
 		
 		container = mock(Container.class);
 		when(container.tipoCarga()).thenReturn("Tanque");
 		when(container.getIdConnteiner()).thenReturn("MARC9378524");
-		
 	}
 	
 	@Test
@@ -52,5 +49,4 @@ public class VisitorReporteAduanaTest {
 				visitor.visitOrden(ordenExp));
 
 	}
-
 }

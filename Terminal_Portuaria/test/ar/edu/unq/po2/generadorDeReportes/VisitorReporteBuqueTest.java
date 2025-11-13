@@ -11,7 +11,6 @@ import ar.edu.unq.po2.container.Container;
 import ar.edu.unq.po2.orden.Orden;
 
 public class VisitorReporteBuqueTest {
-	
 	//SUT
 	VisitorReporteBuque visitor;
 	
@@ -22,12 +21,10 @@ public class VisitorReporteBuqueTest {
 	
 	@BeforeEach
 	public void setUp() {
-		
 		visitor = new VisitorReporteBuque();
 		
 		container = mock(Container.class);
 		when(container.getIdConnteiner()).thenReturn("MARC9378524");
-		
 	}
 	
 	@Test
@@ -49,5 +46,4 @@ public class VisitorReporteBuqueTest {
 		assertEquals("			<item>MARC9378524</item>\n", visitor.visitOrden(ordenExp));
 
 	}
-
 }

@@ -33,7 +33,6 @@ import ar.edu.unq.po2.viaje.Viaje;
 */
 
 class TerminalPortuariaTest {
-	
 	TerminalPortuaria terminalGestionada;
 	
 	@BeforeEach
@@ -144,7 +143,6 @@ class TerminalPortuariaTest {
 	
 	@Test
 	public void buscarCircuito() {
-		
 		Naviera naviera1 = mock(Naviera.class);
 		Naviera naviera2 = mock(Naviera.class);
 		Naviera naviera3 = mock(Naviera.class);
@@ -189,7 +187,5 @@ class TerminalPortuariaTest {
 		thenReturn(c4);
 		
 		assertEquals(c4, terminalGestionada.buscarCircuito(destino));
-		
 	}
-	
 }

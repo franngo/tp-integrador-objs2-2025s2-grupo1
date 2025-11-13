@@ -67,7 +67,7 @@ public class TerminalPortuaria implements TerminalObservadora {
 		this.ordenesDeExportacion = new ArrayList<Orden>();
 		this.reportesGenerados = new ArrayList<Reporte>();
 		
-		this.buscadorDeCircuito = new BuscadorPorPrecio(); //se elige uno particular para que no inicie vacío
+		this.buscadorDeCircuito = new BuscadorPorPrecio();
 		this.buscadorDeViaje = new BuscadorDeViaje();
 		
 		serviciosDisponibles.add(PrecioServicioTerminal.DIAEXCEDENTE);
@@ -85,12 +85,6 @@ public class TerminalPortuaria implements TerminalObservadora {
 	public Coordenada getCoordenada() {
 		return new Coordenada(coordenada.getLatitud(), coordenada.getLongitud());
 	}
-	
-	
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
 	
 	/**
 	 * Registra como exportación en la terminal la orden dada.
@@ -154,12 +148,6 @@ public class TerminalPortuaria implements TerminalObservadora {
 		Cliente shipperOrden = orden.getShipper();
 		return camionOrden.equals(camion) && choferOrden.equals(chofer) && shipperOrden.equals(shipper);
 	}
-	
-	
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 	
 	/**
 	 * Retira la importación la orden del consignee dado que se encuentra en la terminal, en base al camión y chofer dado.
@@ -233,12 +221,10 @@ public class TerminalPortuaria implements TerminalObservadora {
 								   .get();
 	}
 
-	
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	
+	/**
+	 * Realiza los trabajos de carga y descarga con el buque dado, si el mismo se encuentra en la terminal.
+	 * @param buque es el buque sobre el cual realizar los trabajos.
+	 */
 	public void trabajarEnBuque(Buque buque) {
 		this.validarTrabajosEnBuque(buque); // Valida que puede trabajar en el buque (misma coordenada).
 		this.iniciarTrabajos(buque); 	// Inicia la descarga y carga de ordenes en el buque.
@@ -246,18 +232,30 @@ public class TerminalPortuaria implements TerminalObservadora {
 		this.finalizarTrabajos(buque);  // Finaliza la carga y descarga de ordenes en el buque, borrando de ambos lados lo cargado y descargado respectivamente.
 	}
 	
+	/**
+	 * Valida que la terminal puede trabajar con el buque dado.
+	 * @param buque es el buque sobre el cual realizar la validación.
+	 */
 	private void validarTrabajosEnBuque(Buque buque) {
 		if(!coordenada.equals(buque.posicionActual())) { // Esto debería verificar si está en estado Arrived.
 			throw new RuntimeException("El buque no se encuentra en la terminal para realizar la carga o descarga");
 		}
 	}
 	
+	/**
+	 * Inicia los trabajos de carga y descarga en el buque dado.
+	 * @param buque es el buque sobre el cual realizar la carga y descarga.
+	 */
 	private void iniciarTrabajos(Buque buque) {
 		buque.iniciarTrabajos(); 	  		// Esto debería pasar el buque a estado Working.
 		this.iniciarDescargaOrdenes(buque); // Añade las ordenes a la lista de importaciones.
 		this.iniciarCargaOrdenes(buque); 	// Añade las ordenes de la lista de exportaciones al buque.
 	}
 	
+	/**
+	 * Inicia la descarga de las ordenes del buque en la terminal dada.
+	 * @param buque es el buque sobre el cual realizar la descarga.
+	 */
 	private void iniciarDescargaOrdenes(Buque buque) {
 		List<Orden> ordenes = buque.getOrdenesADescargar(this);
 		
@@ -267,6 +265,10 @@ public class TerminalPortuaria implements TerminalObservadora {
 		}
 	}
 
+	/**
+	 * Inicia la carga de las ordenes del buque en la terminal dada.
+	 * @param buque es el buque sobre el cual realizar la carga.
+	 */
 	private void iniciarCargaOrdenes(Buque buque) {
 		List<Orden> ordenes = ordenesDeExportacion.stream()
 												  .filter(o -> o.getViaje().equals(buque.getViajeActual()))
@@ -276,8 +278,11 @@ public class TerminalPortuaria implements TerminalObservadora {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
+	/**
+	 * Genera los reportes de las importaciones y exportaciones realizadas con el buque dado.
+	 * @param buque es el buque que se toma de referencia para realizar los reportes.
+	 */
 	private void generarReportes(Buque buque) {
-		
 		// Genera reportes de importación
 		List<Orden> ordenesImp = this.ordenesDelViaje(ordenesDeImportacion, buque);
 		Map<String, Reporte> reportesImportaciones = generadorReportes.generarReportesConImportaciones(buque, ordenesImp);
@@ -288,23 +293,26 @@ public class TerminalPortuaria implements TerminalObservadora {
 		
 		// Añadir los reportes generados
 		reportesGenerados.addAll(reportesCompletos);
-		
 	}
 	
+	/**
+	 * Describe las ordenes del viaje del buque dado que coincidan con las ordenes dadas.
+	 * @param ordenes son las ordenes que se toman de referencia.
+	 * @param buque es el buque a tomar de referencia el viaje.
+	 */
 	private List<Orden> ordenesDelViaje(List<Orden> ordenes, Buque buque) {
-
 		List<Orden> aDevolver = ordenes.stream()
-
-										.filter(o -> buque.getOrdenes().contains(o))
-
-										.toList();
-
+									   .filter(o -> buque.getOrdenes().contains(o))
+									   .toList();
 		return aDevolver;
-		
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
+	/**
+	 * Finaliza los trabajos de la terminal en el buque dado, terminando de cargar y descargar ordenes del mismo.
+	 * @param buque es el buque en el cual finalizar los trabajos
+	 */
 	private void finalizarTrabajos(Buque buque) {
 		List<Orden> ordenesCargadas = ordenesDeExportacion.stream()
 				  										  .filter(o -> o.getViaje().equals(buque.getViajeActual()))
@@ -316,17 +324,15 @@ public class TerminalPortuaria implements TerminalObservadora {
 		buque.finalizarTrabajos(); // Esto debería pasar el buque a estado Departing.
 	}
 	
+	/**
+	 * Finaliza la carga de ordenes, donde las ordenes dadas son las ordenes a eliminar de la terminal porque fueron cargadas.
+	 * @param ordenesCargadas son las ordenes que anteriormente fueron cargadas y deben eliminarse de la terminal.
+	 */
 	private void finalizarCargaDeOrdenes(List<Orden> ordenesCargadas) {
 		for(Orden o : ordenesCargadas) {
 			this.ordenesDeExportacion.remove(o);
 		}
 	}
-	
-	
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 	
 	/**
 	 * Registra la empresa transportista dada en la Terminal Portuaria.
@@ -362,6 +368,10 @@ public class TerminalPortuaria implements TerminalObservadora {
 		this.circuitosMaritimosRegistrados.add(circuitoMaritimo);
 	}
 	
+	/**
+	 * Valida que el circuito incluya a esta terminal.
+	 * @param circuitoMaritimo es el circuito maritimo que se valida.
+	 */
 	private void validarQueIncluyaTerminal(CircuitoMaritimo circuitoMaritimo) {
 		if(!circuitoMaritimo.incluyeA(this)) {
 			throw new RuntimeException("El circuito marítimo debe incluir a la terminal para poder ser registrado.");
@@ -404,38 +414,51 @@ public class TerminalPortuaria implements TerminalObservadora {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	
+	/**
+	 * 
+	 * @param 
+	 */
 	public void setBuscadorDeCircuito(BuscadorDeCircuito buscador) {
-		
 		this.buscadorDeCircuito = buscador;
-		
 	}
 	
+	/**
+	 * 
+	 * @param 
+	 */
 	public CircuitoMaritimo buscarCircuito(TerminalPortuaria destino) {
-		
 		List<CircuitoMaritimo> cs = new ArrayList<CircuitoMaritimo>();
 		this.navierasRegistradas.stream().forEach((n) -> cs.addAll(n.circuitosQueUnan(this, destino)));
 		
 		return buscadorDeCircuito.buscarMejorCircuito(cs, this, destino);
-		
 	}
 	
+	/**
+	 * 
+	 * @param 
+	 */
 	public List<Viaje> buscarViaje(Condicion condicion) {
 		return null;
 		
 	}
 	
+	/**
+	 * 
+	 * @param 
+	 */
 	public Duration tiempoEntre(TerminalPortuaria terminalPortuaria, Naviera naviera) {
 		return null;
 		
 	}
 	
+	/**
+	 * 
+	 * @param 
+	 */
 	public LocalDateTime proximaFechaHacia(TerminalPortuaria terminalPortuaria, Buque buque) {
 		return null;
 		
 	}
-	
-	
 	
 	// #################################### MÉTODOS AUXILIARES ################################## \\
 	
@@ -474,27 +497,49 @@ public class TerminalPortuaria implements TerminalObservadora {
 		return false;
 	}
 	*/
+	
+	
+	
+	
+	/**
+	 * 
+	 * @param 
+	 */
 	@Override
 	public void adscribirObservado(Buque buque) {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	/**
+	 * 
+	 * @param 
+	 */
 	public void notificarConsignee(Viaje viajeActual) {
 		// TIENE QUE HACERSE UNA SOLA VEZ
 		
 	}
-	
+
+	/**
+	 * 
+	 * @param 
+	 */
 	public void notificarArribo(Buque miBuque) {
-		// TODO Auto-generated method stub
 		System.out.println("AVISA A LOS CONSIGNEE QUE LA CARGA ESTA POR LLEGAR");
 	}
-	
+
+	/**
+	 * 
+	 * @param 
+	 */
 	public void notificarSalidaTerminal(Buque miBuque) {
-		// TODO Auto-generated method stu
 		System.out.println("MANDA LOS MAILS A LOS SHIPPERS");
-		
 	}
-	
+
+	/**
+	 * 
+	 * @param 
+	 */
 	public double limiteHorasAlmacenaje() {
 		// TODO Auto-generated method stub
 		return 24;

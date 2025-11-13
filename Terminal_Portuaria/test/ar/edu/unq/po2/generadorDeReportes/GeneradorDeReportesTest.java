@@ -45,7 +45,6 @@ public class GeneradorDeReportesTest {
 	
 	@Test
 	public void generarReportesConImportacionesYfinalizarReportesConExportaciones() {
-		
 		generador = new GeneradorDeReportes();
 		VisitorReporteAduana visitorA = generador.getVisitorAduana();
 		VisitorReporteBuque visitorB = generador.getVisitorBuque();
