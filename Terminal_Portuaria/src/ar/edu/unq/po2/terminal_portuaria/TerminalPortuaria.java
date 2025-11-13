@@ -3,6 +3,7 @@ package ar.edu.unq.po2.terminal_portuaria;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +52,8 @@ public class TerminalPortuaria implements TerminalObservadora {
 	
 	private BuscadorDeCircuito buscadorDeCircuito;
 	private BuscadorDeViaje buscadorDeViaje;
+	
+	List<Map<Cliente,String>> mailsAEnviar;
   	
 	/**
 	 * @param coordenada son las coordenadas en donde se encuentra geográficamente la Terminal Portuaria.
@@ -79,6 +82,8 @@ public class TerminalPortuaria implements TerminalObservadora {
 		serviciosDisponibles.add(PrecioServicioTerminal.PESAJE);
 		serviciosDisponibles.add(PrecioServicioTerminal.PRECIODESCONSOLIDADO);
 		serviciosDisponibles.add(PrecioServicioTerminal.REVISIONDIARIA);
+		
+		this.mailsAEnviar = new ArrayList<Map<Cliente,String>>();
 	}
 	
 	/**
@@ -165,14 +170,14 @@ public class TerminalPortuaria implements TerminalObservadora {
 	}
 	
 	void cobrarServicioConsignee(Orden orden) {
-		String factura = this.generarFacturaServicios(orden);
+		String factura = this.generarFacturaServicios(orden,orden.getConsignee());
 		orden.getConsignee().recibirMail(factura);
 	}
 	
-	private String generarFacturaServicios(Orden orden) {
+	private String generarFacturaServicios(Orden orden,Cliente cliente) {
 		 StringBuilder desgloceConceptos = new StringBuilder();
 
-		    desgloceConceptos.append("Estimado/a ").append(orden.getConsignee().nombreCliente()).append(",\n\n");
+		    desgloceConceptos.append("Estimado/a ").append(cliente.nombreCliente()).append(",\n\n");
 		    desgloceConceptos.append("A continuación se detalla el desglose de los servicios asociados a su orden:\n\n");
 
 		    desgloceConceptos.append(String.format("%-30s %10s\n", "Servicio", "Precio"));
@@ -261,11 +266,27 @@ public class TerminalPortuaria implements TerminalObservadora {
 	public void trabajarEnBuque(Buque buque) {
 		this.validarTrabajosEnBuque(buque); // Valida que puede trabajar en el buque (misma coordenada).
 		this.iniciarTrabajos(buque); 	// Inicia la descarga y carga de ordenes en el buque.
-		this.generarReportes(buque); // Genera los reportes en base a lo cargado y descargado del buque.
+		this.generarReportes(buque); 
+		this.generarMailsShipper(buque);// Genera los reportes en base a lo cargado y descargado del buque.
 		this.finalizarTrabajos(buque);  // Finaliza la carga y descarga de ordenes en el buque, borrando de ambos lados lo cargado y descargado respectivamente.
 	}
 	
-	
+	public void generarMailsShipper(Buque buque) {
+		
+			
+		List<Orden> ordenesImp = this.ordenesDelViaje(ordenesDeImportacion, buque);
+		List<Map<Cliente,String>> mails = new ArrayList<Map<Cliente,String>>();
+		ordenesImp.stream().
+				forEach(orden -> mails.add(this.mailsAEnviar(orden)));
+		
+		
+		mailsAEnviar.addAll(mails);
+	}
+	public Map<Cliente,String> mailsAEnviar(Orden orden) {
+		Map<Cliente, String> mapa = new HashMap<>();
+		mapa.put(orden.getShipper(), this.generarFacturaServicios(orden,orden.getShipper()));
+		return mapa;
+	}
 	
 	/**
 	 * Valida que la terminal puede trabajar con el buque dado.
@@ -557,14 +578,9 @@ public class TerminalPortuaria implements TerminalObservadora {
 		
 	}
 	
-	/**
-	 * 
-	 * @param 
-	 */
-	public void notificarConsignee(Viaje viajeActual) {
-		// TIENE QUE HACERSE UNA SOLA VEZ
-		
-	}
+
+	
+	
 
 	/**
 	 * 
@@ -597,10 +613,18 @@ public class TerminalPortuaria implements TerminalObservadora {
 	 * 
 	 * @param 
 	 */
-	public void notificarSalidaTerminal(Buque miBuque) {
-		System.out.println("MANDA LOS MAILS A LOS SHIPPERS");
+	
+		public void notificarSalidaTerminal(Buque miBuque) {
+		    mailsAEnviar.forEach(mapa -> {
+		        Map.Entry<Cliente, String> entrada = mapa.entrySet().iterator().next();
+		        Cliente cliente = entrada.getKey();
+		        String mensaje = entrada.getValue();
+
+		        cliente.recibirMail(mensaje);
+		    });
+		}
 		
-	}
+	
 
 	/**
 	 * 
