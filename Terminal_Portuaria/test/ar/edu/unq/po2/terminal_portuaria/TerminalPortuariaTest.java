@@ -272,4 +272,24 @@ class TerminalPortuariaTest {
 		
 	}
 	
+	@Test 
+	void laTerminalCobraRetiro() {
+		
+	Container containerMock = mock(Container.class);
+		
+		Orden ordenMock = spy(new Orden(null,null,containerMock,null,null));
+		when(ordenMock.getConsignee()).thenReturn(new Cliente("Matias"));
+		Buque buqueMock = mock(Buque.class);
+	
+		
+		assertDoesNotThrow(() -> {
+			
+			
+			terminalGestionada.cobrarServicioConsignee(ordenMock);
+	        
+	    });
+		
+	}
+	
+	
 }

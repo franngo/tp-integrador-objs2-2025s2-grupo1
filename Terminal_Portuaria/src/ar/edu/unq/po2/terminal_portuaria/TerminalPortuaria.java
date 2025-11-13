@@ -164,7 +164,7 @@ public class TerminalPortuaria implements TerminalObservadora {
 		ordenesDeImportacion.remove(orden);
 	}
 	
-	private void cobrarServicioConsignee(Orden orden) {
+	void cobrarServicioConsignee(Orden orden) {
 		String factura = this.generarFacturaServicios(orden);
 		orden.getConsignee().recibirMail(factura);
 	}
