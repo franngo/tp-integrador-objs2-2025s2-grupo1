@@ -26,6 +26,7 @@ import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.empresa_transportista.EmpresaTransportista;
 import ar.edu.unq.po2.naviera.Naviera;
 import ar.edu.unq.po2.orden.Orden;
+import ar.edu.unq.po2.servicio.*;
 import ar.edu.unq.po2.tramo.Tramo;
 import ar.edu.unq.po2.viaje.Viaje;
 
@@ -138,7 +139,25 @@ class TerminalPortuariaTest {
 		buqueImportaciones.avanzarHacia(-24.6412, -38.3439);
 		buqueImportaciones.avanzarHacia(-34.6412, -58.3439);
 		terminalGestionada.trabajarEnBuque(buqueImportaciones);
+		
 		camionMV.retirarImportacionDe(terminalGestionada, choferMV, consigneeMV);
+	}
+	
+	@Test
+	public void testFuncionamientoGenerarOrden() {
+		Orden orden = terminalGestionada.generarOrden(camionBA, choferBA, containerBA, viajeBA, shipperBA);
+		assertNotEquals(orden, ordenBA);
+	}
+	
+	@Test
+	public void testFuncionamientoPrecioTerminal() {
+		assertEquals(3000, terminalGestionada.precioServicio(PrecioServicioTerminal.DIAEXCEDENTE));
+		assertEquals(10, terminalGestionada.precioServicio(PrecioServicioTerminal.KILOWATTCONSUMIDO));
+		assertEquals(15000, terminalGestionada.precioServicio(PrecioServicioTerminal.LAVADOCOMUN));
+		assertEquals(20000, terminalGestionada.precioServicio(PrecioServicioTerminal.LAVADOPESADO));
+		assertEquals(5000, terminalGestionada.precioServicio(PrecioServicioTerminal.PESAJE));
+		assertEquals(20000, terminalGestionada.precioServicio(PrecioServicioTerminal.PRECIODESCONSOLIDADO));
+		assertEquals(10000, terminalGestionada.precioServicio(PrecioServicioTerminal.REVISIONDIARIA));
 	}
 	
 	@Test

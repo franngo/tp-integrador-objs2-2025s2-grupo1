@@ -168,7 +168,7 @@ public class TerminalPortuaria implements TerminalObservadora {
 	 * @param consignee es el dueño de la carga a retirar.
 	 */
 	private void validarRetirarImportacion(Camion camion, Chofer chofer, Cliente consignee) {
-		if(this.tieneOrdenDeImportacionParaRetirar(consignee) && this.estanRegistradosParaIngresar(camion, chofer, consignee)) {
+		if(!this.tieneOrdenDeImportacionParaRetirar(consignee) && !this.estanRegistradosParaIngresar(camion, chofer, consignee)) {
 			throw new RuntimeException("No puede retirar ninguna exportación, ya que el consignee no tiene ninguna y/o no se encuentran registrados.");
 		}
 	}
@@ -178,8 +178,10 @@ public class TerminalPortuaria implements TerminalObservadora {
 	 * @param consignee es el consignee a verificar si se tiene una orden de importación registrada en la terminal.
 	 */
 	private boolean tieneOrdenDeImportacionParaRetirar(Cliente consignee) {
-		return ordenesDeImportacion.stream()
-								   .anyMatch(o -> consignee.equals(o.getConsignee()));
+		return !ordenesDeImportacion.stream()
+								    .filter(o -> consignee.equals(o.getConsignee()))
+								    .toList()
+								    .isEmpty();
 	}
 	
 	/**
@@ -209,7 +211,7 @@ public class TerminalPortuaria implements TerminalObservadora {
 	private boolean estaRegistradoCliente(Cliente cliente) {
 		return clientesRegistrados.contains(cliente);
 	}
-	
+
 	/**
 	 * Describe la orden de importacion del consignee dado que se encuentra registrada en la terminal.
 	 * @param consignee es el dueño de la carga.
@@ -230,6 +232,7 @@ public class TerminalPortuaria implements TerminalObservadora {
 		this.iniciarTrabajos(buque); 	// Inicia la descarga y carga de ordenes en el buque.
 		this.generarReportes(buque); 	// Genera los reportes en base a lo cargado y descargado del buque.
 		this.finalizarTrabajos(buque);  // Finaliza la carga y descarga de ordenes en el buque, borrando de ambos lados lo cargado y descargado respectivamente.
+		System.out.printf("Llegó hasta aca");
 	}
 	
 	/**
