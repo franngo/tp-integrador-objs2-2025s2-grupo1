@@ -20,11 +20,9 @@ import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 class DepartingTestCase {
-
 	Buque buque;
 	Coordenada coordenadaBuque;
 	Coordenada coordenadaTerminal;
-	
 	Departing estadoBuque;
 	TerminalPortuaria terminalAArribar;
 	
@@ -33,22 +31,17 @@ class DepartingTestCase {
 		//terminal Mock con posicion 0,0 
 		terminalAArribar = mock(TerminalPortuaria.class);
 		coordenadaTerminal = spy(new Coordenada(0,0));
-		when(terminalAArribar.coordenadasTerminal()).thenReturn(coordenadaTerminal);
+		when(terminalAArribar.getCoordenada()).thenReturn(coordenadaTerminal);
 		//se crea el buque con su posicion coherente con el de la terminal
 		
 		coordenadaBuque = new Coordenada(0d,0d);
-		buque = new Buque(coordenadaBuque,null, null, "Matias");
+		buque = new Buque(coordenadaBuque,null,"Matias");
 		buque.adscribirObservador(terminalAArribar);
 
 		//se crea el estado que tendra el buque
 		estadoBuque= new Departing(buque);
         buque.establecerEstado(estadoBuque);		
-        
-		
-		
-		
-	
-	  }
+	}
 
 	@Test
 	void elBuqueAhoraPuedeMoverse() {
@@ -63,7 +56,6 @@ class DepartingTestCase {
 	 * */
 	@Test
 	void elBuquePuedeCambiarDeEstado() {
-		
 		//
 		estadoBuque.avanzar(0.5d,0.5d);
 		assertFalse(estadoBuque.debeCambiarDeFase());
@@ -71,8 +63,6 @@ class DepartingTestCase {
 		//El buque se encuentra a mas de un kilometro y puede partir
 		estadoBuque.avanzar(-1.5000d,-1.5000d);
 		assertTrue(estadoBuque.debeCambiarDeFase());
-		
-		
 	}
 	
 	/*
@@ -84,8 +74,6 @@ class DepartingTestCase {
 		estadoBuque.modificarEstadoBuque();
 		
 		verify(terminalAArribar,times(1)).notificarSalidaTerminal(buque);
-		
-		
 	}
 	
 	@Test 
@@ -94,9 +82,6 @@ class DepartingTestCase {
 		estadoBuque.modificarEstadoBuque();
 		
 		assertTrue(buque.obtenerEstado() instanceof OutboundFinal);
-		
+		estadoBuque.notificarEstado();
 	}
-	
-	
-
 }

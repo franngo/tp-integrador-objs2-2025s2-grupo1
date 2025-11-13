@@ -5,7 +5,6 @@ package ar.edu.unq.po2.coordenada;
  *Se ira agregando comportamiento a medida que se lo precise
  */
 
-import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 public class Coordenada {
 
@@ -48,12 +47,10 @@ public class Coordenada {
         this.setLongitud(longitud);
     }
     
-    
     public double distanciaA(Coordenada otraCoordenada) {
-   	 double dx = this.latitud - otraCoordenada.getLatitud();
+   	 	double dx = this.latitud - otraCoordenada.getLatitud();
         double dy = this.longitud - otraCoordenada.getLongitud();
         return Math.sqrt(dx * dx + dy * dy);
-   	
     }
    
     public boolean enMismaPosicionCon(Coordenada otraCoordenada) {

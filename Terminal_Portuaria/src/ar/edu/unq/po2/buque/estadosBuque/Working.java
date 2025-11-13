@@ -1,6 +1,10 @@
 package ar.edu.unq.po2.buque.estadosBuque;
 
+import java.util.List;
+
 import ar.edu.unq.po2.buque.Buque;
+import ar.edu.unq.po2.orden.Orden;
+import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 
 public class Working extends EstadoBuque{
@@ -18,7 +22,7 @@ public class Working extends EstadoBuque{
 	}
 	
 	public void puedePartir() {
-		this.puedePartir=true;
+		this.puedePartir = true;
 	}
 
 	@Override
@@ -37,4 +41,28 @@ public class Working extends EstadoBuque{
 		//No puede moverse tampoco en estado Working
 	}
 
+	// IMPLEMENTACIÓN BENJA
+	
+	@Override
+	public void finalizarTrabajos() {
+   	 	this.puedePartir();
+   	 	this.modificarEstadoBuque();
+	}
+	
+	@Override
+	public void cargarOrdenes(List<Orden> ordenes) {
+		miBuque.getOrdenes().addAll(ordenes);
+	}
+
+	@Override
+	public List<Orden> getOrdenesADescargar(TerminalPortuaria terminalPortuaria) {
+		return miBuque.getOrdenes().stream()
+								   .filter(o -> terminalPortuaria.equals(o.getViaje().puertoDestino()))
+								   .toList();
+	}
+
+	@Override
+	public void finalizarDescargaDeOrdenes(List<Orden> ordenes) {
+		miBuque.getOrdenes().removeAll(ordenes);
+	}
 }

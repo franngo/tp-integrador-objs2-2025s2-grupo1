@@ -24,14 +24,11 @@ public class OutboundFinal extends EstadoBuque{
 	@Override
 	public void modificarEstadoBuque() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void avanzar(double latitud, double longitud) {
 		//El buque ya no tiene mas asociada a la terminal
 		miBuque.nuevaPosicion(latitud, longitud);
-		
 	}
-
 }

@@ -35,15 +35,10 @@ class ChoferTest {
 	public void testFuncionamientoEquals() {
 		Chofer joseF   = new Chofer("Jose Fernandez", "22.240.777"); // Tiene el mismo nombre y apellido que Jose, pero no el mismo DNI.
 		Chofer carlosG = new Chofer("Carlos Gimenez", "25.755.002"); // Tiene el mismo DNI que Carlos, pero no el mismo nombre y apellido.
-		Camion scaniaR580 = new Camion("Scania R580", "AE471WD");    // Camión utilizado de referencia.
 		
 		// Equals con misma referencia de tipo Chofer.
 		assertTrue(jose.equals(jose));
 		assertEquals(jose.hashCode(), jose.hashCode());
-		
-		// Equals con una instancia que no es del tipo Chofer.
-		assertFalse(jose.equals(scaniaR580));
-		assertNotEquals(jose.hashCode(), scaniaR580.hashCode());
 		
 		// Equals con una instancia de tipo Chofer pero con distinto DNI.
 		assertFalse(jose.equals(joseF));

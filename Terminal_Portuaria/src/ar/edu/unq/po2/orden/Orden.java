@@ -2,7 +2,6 @@ package ar.edu.unq.po2.orden;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import ar.edu.unq.po2.camion.Camion;
@@ -12,7 +11,6 @@ import ar.edu.unq.po2.container.ConcreteVisitorContainer;
 import ar.edu.unq.po2.container.Container;
 import ar.edu.unq.po2.generadorDeReportes.VisitorReporte;
 import ar.edu.unq.po2.servicio.Servicio;
-import ar.edu.unq.po2.servicio.ServicioExcedente;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 import ar.edu.unq.po2.viaje.Viaje;
 

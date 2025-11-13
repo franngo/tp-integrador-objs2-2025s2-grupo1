@@ -29,11 +29,11 @@ import ar.edu.unq.po2.viaje.Viaje;
 
 /**
 * Describe una terminal portuaria.
-* @author Benjamin Maldonado & Franco Oreskovic.
+* @author Benjamin Maldonado 
+* @author Franco Oreskovic.
 */
 
-
-public class TerminalPortuaria implements TerminalObservadora{
+public class TerminalPortuaria implements TerminalObservadora {
 	private Coordenada coordenada;
 	private GeneradorDeReportes generadorReportes;
 	
@@ -160,14 +160,6 @@ public class TerminalPortuaria implements TerminalObservadora{
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public TerminalPortuaria() {
-		
-	}
-	Coordenada coordenadasTerminal;
-	
-	public Coordenada coordenadasTerminal() {
-		return coordenadasTerminal;
-	}
 	
 	/**
 	 * Retira la importación la orden del consignee dado que se encuentra en la terminal, en base al camión y chofer dado.

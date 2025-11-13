@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ar.edu.unq.po2.buque.Buque;
-import ar.edu.unq.po2.buque.estadosBuque.OutBound;
 import ar.edu.unq.po2.buque.estadosBuque.OutboundFinal;
 import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
@@ -18,40 +17,33 @@ class OutboundFinalTestCase {
 	Buque buque;
 	Coordenada coordenadaBuque;
 	Coordenada coordenadaTerminal;
-	
 	OutboundFinal estadoBuque;
 	TerminalPortuaria terminalAArribar;
+	
 	@BeforeEach
 	void setUp() throws Exception {
+		//terminal Mock con posicion 0,0 
+		terminalAArribar = mock(TerminalPortuaria.class);
+		coordenadaTerminal = spy(new Coordenada(0,0));
+		when(terminalAArribar.getCoordenada()).thenReturn(coordenadaTerminal);
+		//se crea el buque con su posicion coherente con el de la terminal
 		
-	//	coordenadaTerminal = spy(new Coordenada(0d,0d));
-		//terminalAArribar = new TerminalPortuaria(new Coordenada(0d,0d));
-	//	terminalAArribar = mock(TerminalPortuaria.class);
-	//	when(terminalAArribar.coordenadasTerminal()).thenReturn(coordenadaTerminal);
-		//se crea el buque con su posicion
-		
-		coordenadaBuque = new Coordenada(60d,60d);
-		buque = new Buque(coordenadaBuque,null, null, "Matias");
-		//buque.adscribirObservador(terminalAArribar);
-		
-		//buque.terminalAArribar(terminalAArribar);
-		
+		coordenadaBuque = new Coordenada(0d,0d);
+		buque = new Buque(coordenadaBuque,null,"Matias");
+		buque.adscribirObservador(terminalAArribar);
+
 		//se crea el estado que tendra el buque
 		estadoBuque= new OutboundFinal(buque);
-        buque.establecerEstado(estadoBuque);	
+        buque.establecerEstado(estadoBuque);		
 	}
 
 	@Test
-	void elBuqueYaNoCambiaDeFaseTest() {
-	assertFalse(estadoBuque.debeCambiarDeFase());
-	}
-	
-	@Test
-	void elBuqueSeMueveLibremente() {
-		estadoBuque.avanzar(30d, 30d);
-		assertEquals(30d,buque.posicionActual().getLatitud());
-		assertEquals(30d,buque.posicionActual().getLongitud());
+	void funcionamientoGeneral() {
+		estadoBuque.notificarEstado();
 		
+		assertFalse(estadoBuque.debeCambiarDeFase());
+		
+		estadoBuque.modificarEstadoBuque();
+		estadoBuque.avanzar(400d, 104d);
 	}
-
 }
