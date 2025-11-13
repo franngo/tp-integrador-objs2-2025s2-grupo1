@@ -38,26 +38,15 @@ public abstract class Servicio {
 	protected LocalDateTime getInicioServicio() {
 		return inicioServicio;
 	}
+	
 	public Container getContainer() {
 		return containerServ;
 	}
 	
 	public abstract String tipoServicio();
-		
 	
 	/*
 	 * cuando se invoca este metodo se supone que se descuenta el horario actual del de la instancia
 	 * */
 	public abstract double costoServicio(TerminalPortuaria terminalPortuaria, LocalDateTime horaCobro);
-		
-
-	
-	
-		
-	
-		
-    	
-    
-    
-
 }
