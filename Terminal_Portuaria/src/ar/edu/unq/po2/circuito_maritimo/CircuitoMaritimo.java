@@ -93,9 +93,6 @@ public class CircuitoMaritimo {
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	
-	////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/*
 	 * PRECONDICIÓN: Se debe cumplir this.esCircuitoQueUneA(t1, t2)
@@ -222,33 +219,25 @@ public class CircuitoMaritimo {
 	
 	//??
 	public double precioTotal() {
-		
 		return this.tramos.stream().map((t) -> t.getPrecioTramo()).mapToDouble(Double::doubleValue).sum();
-		
 	}
 	
 
 	//??
 	public int cantidadDeTerminales() {
-		
 		return this.tramos.size()+1;
-		
 	}
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	
     public TerminalPortuaria proximoDestino(TerminalPortuaria terminal) {
-
-      
         List<Tramo> tr = this.tramos.stream().filter((t) -> t.getTerminalOrigen().equals(terminal)).toList();
 
         if(tr.isEmpty()) {
-
             return null; //esto en el caso de que no haya un siguiente
 
         } else {
-
             return tr.getFirst().getTerminalDestino();
-
         }
-
     }
-	
 }	
