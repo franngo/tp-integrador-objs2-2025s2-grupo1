@@ -37,7 +37,7 @@ public class ViajeTest {
 		
 		viaje = new Viaje(fecha, circuito, buque);
 		
-		terminal5 = mock(TerminalPortuaria.class); //para tests 2 y 3
+		terminal5 = mock(TerminalPortuaria.class);
 		
 	}
 	
@@ -84,6 +84,15 @@ public class ViajeTest {
 		when(circuito.proximoDestino(terminal4)).thenReturn(terminal5);
 		
 		assertEquals(terminal5, viaje.proximoDestino());
+		
+	}
+	
+	@Test
+	public void tieneOrigen() {
+		
+		when(circuito.tieneOrigen(terminal5)).thenReturn(true);
+		
+		assertTrue(viaje.tieneOrigen(terminal5));
 		
 	}
 

@@ -135,29 +135,6 @@ public class CircuitoMaritimoTest {
 	}
 	
 	@Test
-	public void precioTotal() {
-		
-		when(tramo1.getPrecioTramo()).thenReturn(70.0);
-		when(tramo2.getPrecioTramo()).thenReturn(30.0);
-		when(tramo3.getPrecioTramo()).thenReturn(50.0);
-		when(tramo4.getPrecioTramo()).thenReturn(10.5);
-		
-		circuito = new CircuitoMaritimo(ts);
-		
-		assertEquals(160.5, circuito.precioTotal());
-		
-	}
-	
-	@Test
-	public void cantidadDeTerminales() {
-		
-		circuito = new CircuitoMaritimo(ts);
-		
-		assertEquals(5, circuito.cantidadDeTerminales());
-		
-	}
-	
-	@Test
 	public void puertoDestino() {
 		
 		circuito = new CircuitoMaritimo(ts);

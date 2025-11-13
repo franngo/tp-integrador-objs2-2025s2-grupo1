@@ -1,6 +1,5 @@
 package ar.edu.unq.po2.naviera;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -17,7 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import ar.edu.unq.po2.circuito_maritimo.CircuitoMaritimo;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
-import ar.edu.unq.po2.tramo.Tramo;
+import ar.edu.unq.po2.viaje.Viaje;
 import ar.edu.unq.po2.buque.Buque;
 
 public class NavieraTest {
@@ -106,6 +105,35 @@ public class NavieraTest {
 		assertTrue(csCumplen.contains(circuito1));
 		assertFalse(csCumplen.contains(circuito2));
 		assertTrue(csCumplen.contains(circuito3));
+		
+	}
+	
+	@Test
+	public void viajesQueIncluyenOrigen() {
+		
+		naviera.publicarViaje(LocalDateTime.now(), circuito1, buque3);
+		naviera.publicarViaje(LocalDateTime.now(), circuito2, buque2);
+		naviera.publicarViaje(LocalDateTime.now(), circuito3, buque1);
+		
+		List<Viaje> vs = naviera.cronograma();
+		
+		Viaje v1 = vs.get(0);
+		Viaje v2 = vs.get(1);
+		Viaje v3 = vs.get(2);
+		
+		TerminalPortuaria t1 = mock(TerminalPortuaria.class);
+		
+		when(v1.tieneOrigen(t1)).thenReturn(true);
+		when(v2.tieneOrigen(t1)).thenReturn(false);
+		when(v3.tieneOrigen(t1)).thenReturn(true);
+		
+		List<Viaje> vsCumplen = naviera.viajesQueIncluyenOrigen(t1);
+		
+		assertEquals(2, vsCumplen.size());
+		
+		assertTrue(vsCumplen.contains(v1));
+		assertFalse(vsCumplen.contains(v2));
+		assertTrue(vsCumplen.contains(v3));
 		
 	}
 

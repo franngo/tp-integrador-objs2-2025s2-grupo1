@@ -378,6 +378,11 @@ public class TerminalPortuaria implements TerminalObservadora {
 		}
 	}
 	
+	//Creado únicamente para poder mockear la dependencia y llevar a cabo el testing de la clase.
+	public void setBuscadorDeViaje(BuscadorDeViaje buscador) {
+		this.buscadorDeViaje = buscador;
+	}
+	
 	/**
 	 * Describe una orden que puede ser utilizada para exportar desde la Terminal Portuaria.
 	 * @param camion es el camion contratado para ser asignado a la orden a generar.
@@ -438,7 +443,13 @@ public class TerminalPortuaria implements TerminalObservadora {
 	 * @param 
 	 */
 	public List<Viaje> buscarViaje(Condicion condicion) {
-		return null;
+		
+		List<Viaje> vs = new ArrayList<Viaje>();
+		this.navierasRegistradas.stream().forEach((n) -> vs.addAll(n.viajesQueIncluyenOrigen(this)));
+		//Obtenemos la lista de Viajes en los que esta terminal es puerto origen en alguno de los tramos, lo que
+		//significa que se puede unir con alguna otra terminal B.
+		
+		return buscadorDeViaje.buscarViaje(condicion, vs);
 		
 	}
 	

@@ -50,7 +50,7 @@ public class CircuitoMaritimo {
 		return this.tieneOrigen(t1) && this.tieneDestino(t2) && this.tienePrimeroA(t1, t2);
 	}
 	
-	private boolean tieneOrigen(TerminalPortuaria terminal) {
+	public boolean tieneOrigen(TerminalPortuaria terminal) {
 		return this.tramos.stream().anyMatch((t) -> t.getTerminalOrigen().equals(terminal));
 	}
 	
@@ -81,14 +81,6 @@ public class CircuitoMaritimo {
 			//si está como destino t2 en alguno de los tramos, significa que se cumple la condición
 			
 		} else { return false; }
-		
-	}
-	
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	public boolean incluyeA(TerminalPortuaria t) {
-		
-		return this.tieneOrigen(t) || this.tieneDestino(t);
 		
 	}
 
@@ -163,6 +155,14 @@ public class CircuitoMaritimo {
 		
 	}
 	
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	public boolean incluyeA(TerminalPortuaria t) {
+		
+		return this.tieneOrigen(t) || this.tieneDestino(t);
+		
+	}
+	
 	//////////////////////////////métodos necesarios para Viaje//////////////////////////////////////////////////////////
 	
 	//Usado para que el Viaje asociado pueda decir la fecha de llegada (necesario para las Condiciones)
@@ -214,21 +214,6 @@ public class CircuitoMaritimo {
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	//??
-	public double precioTotal() {
-		return this.tramos.stream().map((t) -> t.getPrecioTramo()).mapToDouble(Double::doubleValue).sum();
-	}
-	
-
-	//??
-	public int cantidadDeTerminales() {
-		return this.tramos.size()+1;
-	}
-	
-	////////////////////////////////////////////////////////////////////////////////////////////////////
 	
     public TerminalPortuaria proximoDestino(TerminalPortuaria terminal) {
         List<Tramo> tr = this.tramos.stream().filter((t) -> t.getTerminalOrigen().equals(terminal)).toList();
@@ -240,4 +225,5 @@ public class CircuitoMaritimo {
             return tr.getFirst().getTerminalDestino();
         }
     }
+    
 }	
