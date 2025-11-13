@@ -23,38 +23,43 @@ public class Viaje {
 	
 	//////////////////////////////////////////////CONSTRUCTOR///////////////////////////////////////////////////
 	
-	//??
 	public LocalDateTime fechaDeSalida() {
 		
 		return this.fechaDeSalida;
 		
 	}
 	
-	//??
 	public LocalDateTime fechaDeLlegada() {
 
 		return this.fechaDeSalida.plus(circuito.tiempoTotal());
 		
 	}
 	
-	public LocalDateTime fechaDeLlegadaATerminal(TerminalPortuaria terminal) {
-		return this.fechaDeSalida.plus(circuito.tiempoHastaTerminal(terminal));
-	}
-	
-	//??
 	public TerminalPortuaria puertoDestino() {
 		
 		return circuito.puertoDestino();
 		
 	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	public LocalDateTime fechaDeLlegadaATerminal(TerminalPortuaria terminal) {
+		
+		return this.fechaDeSalida.plus(circuito.tiempoHastaTerminal(terminal));
+		
+	}
 
 	public TerminalPortuaria proximoDestino() {
+		
 		TerminalPortuaria t = this.buque.terminalAArribar();
 		return this.circuito.proximoDestino(t);
+		
 	}
 	
 	public boolean tieneOrigen(TerminalPortuaria terminal) {
+		
 		return this.circuito.tieneOrigen(terminal);
+		
 	}
 	
 }
