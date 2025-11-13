@@ -34,13 +34,32 @@ import ar.edu.unq.po2.viaje.Viaje;
 
 class TerminalPortuariaTest {
 	TerminalPortuaria terminalGestionada;
+	EmpresaTransportista andreani;
+	CircuitoMaritimo circuitoMV;
+	CircuitoMaritimo circuitoBA;
+	Buque buqueMV;
+	Buque buqueBA;
+	Viaje viajeMV;
+	Viaje viajeBA;
+	Cliente shipperMV;
+	Cliente shipperBA;
+	Cliente consigneeMV;
+	Cliente consigneeBA;
+	Container containerMV;
+	Container containerBA;
+	Chofer choferMV;
+	Chofer choferBA;
+	Camion camionMV;
+	Camion camionBA;
+	Orden ordenMV;	
+	Orden ordenBA;	
 	
 	@BeforeEach
 	public void setUp() {
 		// Inicializacion de la Terminal Gestionada junto a la empresa transportista
 		this.terminalGestionada = new TerminalPortuaria(new Coordenada(-34.6412, -58.3439));
 		
-		EmpresaTransportista andreani = new EmpresaTransportista();
+		this.andreani = new EmpresaTransportista();
 		Camion scaniaR580 = new Camion("Scania R580", "AE471WD");
 		Camion volvoFH460 = new Camion("Volvo FH460", "NRG113");
 		Chofer carlos = new Chofer("Carlos Romero", "25.755.002");
@@ -50,72 +69,53 @@ class TerminalPortuariaTest {
 		andreani.añadirChofer(carlos);
 		andreani.añadirChofer(jose);
 		
-		// Falta poner una naviera aca.
-		
 		// Orden Montevideo
-		CircuitoMaritimo circuitoMV = mock(CircuitoMaritimo.class);
-		Buque buqueMSC = mock(Buque.class);
-		Viaje viajeMV = new Viaje(LocalDateTime.now().plusDays(2), circuitoMV, buqueMSC);
-		Cliente consigneeMV = new Cliente("Ricardo Fort");
-		Container containerMV = new Reefer(consigneeMV, 1000, 4750, 2950, 15000, 20);
-		Chofer choferMV = andreani.contratarChofer();
-		Camion camionMV = andreani.contratarCamion();
-		// Orden ordenMV = new OrdenDeExportacion(camionMV, choferMV, containerMV, viajeMV);
+		this.circuitoMV = mock(CircuitoMaritimo.class);
+		this.buqueMV = mock(Buque.class);
+		this.viajeMV = new Viaje(LocalDateTime.now().plusDays(2), circuitoMV, buqueMV);
+		this.shipperMV = new Cliente("Alberto Gonzalez");
+		this.consigneeMV = new Cliente("Ricardo Fort");
+		this.containerMV = new Reefer(consigneeMV, 1000, 4750, 2950, 15000, 20);
+		this.choferMV = andreani.contratarChofer();
+		this.camionMV = andreani.contratarCamion();
+		this.ordenMV = new Orden(camionMV, choferMV, containerMV, viajeMV, shipperMV);
 		
-		// camionMV.cambiarOrdenActualPor(ordenMV);
+		camionMV.cambiarOrdenActualPor(ordenMV);
 		choferMV.cambiarEstaDisponiblePor(false);
 
 		// Orden Buenos Aires
-		CircuitoMaritimo circuitoBA = mock(CircuitoMaritimo.class);
-		Buque buqueEvergreen = mock(Buque.class);
-		Viaje viajeBA = new Viaje(LocalDateTime.now().plusHours(2), circuitoBA, buqueEvergreen);
-		Cliente consigneeBA = new Cliente("Roberto Paniagua");
-		Chofer choferBA = andreani.contratarChofer();
-		Camion camionBA = andreani.contratarCamion();
-		Container containerBA = new Reefer(consigneeBA, 1100, 4500, 3050, 25000, 15);
-        // Orden ordenBA = new OrdenDeExportacion(camionBA, choferBA, containerBA, viajeBA);
+		this.circuitoBA = mock(CircuitoMaritimo.class);
+		this.buqueBA = mock(Buque.class);
+		this.viajeBA = new Viaje(LocalDateTime.now().plusHours(2), circuitoBA, buqueBA);
+		this.shipperBA = new Cliente("Carlos Rodriguez");
+		this.consigneeBA = new Cliente("Roberto Paniagua");
+		this.choferBA = andreani.contratarChofer();
+		this.camionBA = andreani.contratarCamion();
+		this.containerBA = new Reefer(consigneeBA, 1100, 4500, 3050, 25000, 15);
+		this.ordenBA = new Orden(camionBA, choferBA, containerBA, viajeBA, shipperBA);
 		
-        // camionBA.cambiarOrdenActualPor(ordenBA);
+        camionBA.cambiarOrdenActualPor(ordenBA);
         choferBA.cambiarEstaDisponiblePor(false);
         
         // Registro de los consignee y la empresa transportista
         terminalGestionada.registrarCliente(consigneeBA);
         terminalGestionada.registrarCliente(consigneeMV);
+        terminalGestionada.registrarCliente(shipperBA);
+        terminalGestionada.registrarCliente(shipperMV);
         terminalGestionada.registrarEmpresaTransportista(andreani);
 	}
 	
 	@Test
-	public void testFuncionamientoCircuitoDeExportacionExitoso() {
-		/* Viaje viajeElegido = terminalGestionada.buscarViaje();
-		Camion camionContratado = andreani.contratarCamion();
-		Chofer choferContratado = andreani.contratarChofer();
-		Container container = new Dry(null, 0, 0, 0, 0);
+	public void testFuncionamientoCircuitoDeExportacion() {
+		// La orden de MV no se exporta porque el horario no coincide para el ingreso del camión.
+		assertThrows(RuntimeException.class, () -> camionMV.transportarExportacionA(terminalGestionada, choferMV));
 		
-		Orden orden = terminalGestionada.generarOrden(camionContratado, choferContratado, container, viajeElegido); */
+		// La orden de BA se exporta normalmente, porque el horario coincide.
+		camionBA.transportarExportacionA(terminalGestionada, choferBA);
 	}
 	
 	@Test
-	public void testFuncionamientoCircuitoDeExportacionFallido() {
-		/* Viaje viajeElegido = terminalGestionada.buscarViaje();
-		Camion camionContratado = andreani.contratarCamion();
-		Chofer choferContratado = andreani.contratarChofer();
-		Container container = new Dry(null, 0, 0, 0, 0);
-		
-		Orden orden = terminalGestionada.generarOrden(camionContratado, choferContratado, container, viajeElegido); */
-	}
-	
-	@Test
-	public void testFuncionamientoCircuitoDeImportacionExitoso() {
-		/* Viaje viajeElegido = terminalGestionada.buscarViaje();
-		Camion camionContratado = andreani.contratarCamion();
-		Chofer choferContratado = andreani.contratarChofer();
-		Container container = new Dry(null, 0, 0, 0, 0);
-		
-		Orden orden = terminalGestionada.generarOrden(camionContratado, choferContratado, container, viajeElegido); */
-	}
-	
-	@Test
-	public void testFuncionamientoCircuitoDeImportacionFallido() {
+	public void testFuncionamientoCircuitoDeImportacion() {
 		/* Viaje viajeElegido = terminalGestionada.buscarViaje();
 		Camion camionContratado = andreani.contratarCamion();
 		Chofer choferContratado = andreani.contratarChofer();
