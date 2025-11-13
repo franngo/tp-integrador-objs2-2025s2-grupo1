@@ -158,9 +158,9 @@ public class NavieraTest {
 	@Test
 	public void viajesQueUnanConBuque() {
 		
-		naviera.publicarViaje(LocalDateTime.now(), circuito1, buque3);
+		naviera.publicarViaje(LocalDateTime.now(), circuito1, buque2);
 		naviera.publicarViaje(LocalDateTime.now(), circuito2, buque2);
-		naviera.publicarViaje(LocalDateTime.now(), circuito3, buque1);
+		naviera.publicarViaje(LocalDateTime.now(), circuito3, buque3);
 		
 		List<Viaje> vs = naviera.cronograma();
 		
@@ -169,18 +169,19 @@ public class NavieraTest {
 		Viaje v3 = vs.get(2);
 		
 		TerminalPortuaria t1 = mock(TerminalPortuaria.class);
+		TerminalPortuaria t2 = mock(TerminalPortuaria.class);
 		
-		when(v1.tieneOrigen(t1)).thenReturn(true);
-		when(v2.tieneOrigen(t1)).thenReturn(false);
-		when(v3.tieneOrigen(t1)).thenReturn(true);
+		when(v1.esViajeQueUneA(t1, t2)).thenReturn(true);
+		when(v2.esViajeQueUneA(t1, t2)).thenReturn(true);
+		when(v3.esViajeQueUneA(t1, t2)).thenReturn(true);
 		
-		List<Viaje> vsCumplen = naviera.viajesQueIncluyenOrigen(t1);
+		List<Viaje> vsCumplen = naviera.viajesQueUnanConBuque(t1, t2, buque2);
 		
 		assertEquals(2, vsCumplen.size());
 		
 		assertTrue(vsCumplen.contains(v1));
-		assertFalse(vsCumplen.contains(v2));
-		assertTrue(vsCumplen.contains(v3));
+		assertTrue(vsCumplen.contains(v2));
+		assertFalse(vsCumplen.contains(v3));
 		
 	}
 

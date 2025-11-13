@@ -74,7 +74,7 @@ public class Naviera {
 	
 	public List<Viaje> viajesQueUnanConBuque(TerminalPortuaria t1, TerminalPortuaria t2, Buque buque) {
 		
-		List<Viaje> vs = viajes.stream().
+		List<Viaje> vs = this.viajes.stream().
 				filter((v) -> v.esViajeQueUneA(t1, t2)).
 				toList();
 		
