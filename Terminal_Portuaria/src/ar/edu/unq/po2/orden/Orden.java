@@ -149,10 +149,5 @@ public class Orden {
 		return visitor.visitOrden(this);
 	}
 
-	/**
-	 * 
-	 */
-	public String accept(VisitorReporte visitor) {
-		return visitor.visitOrden(this);
-	}
+	
 }
