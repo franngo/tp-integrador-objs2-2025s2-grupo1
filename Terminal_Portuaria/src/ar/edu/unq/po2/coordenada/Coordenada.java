@@ -48,14 +48,14 @@ public class Coordenada {
     }
     
     public double distanciaA(Coordenada otraCoordenada) {
-   	 	double dx = this.latitud - otraCoordenada.getLatitud();
-        double dy = this.longitud - otraCoordenada.getLongitud();
+   	 	double dx = this.getLatitud() - otraCoordenada.getLatitud();
+        double dy = this.getLongitud() - otraCoordenada.getLongitud();
         return Math.sqrt(dx * dx + dy * dy);
     }
    
     public boolean enMismaPosicionCon(Coordenada otraCoordenada) {
-    	boolean mismaLongitud = this.longitud == otraCoordenada.getLongitud();
-    	boolean mismLatitud = this.latitud == otraCoordenada.getLatitud();
+    	boolean mismaLongitud = this.getLongitud() == otraCoordenada.getLongitud();
+    	boolean mismLatitud = this.getLatitud() == otraCoordenada.getLatitud();
     	return mismLatitud && mismaLongitud;
     }
 
