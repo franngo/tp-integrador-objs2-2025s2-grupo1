@@ -51,7 +51,7 @@ public class Buque implements BuqueObservado{
     public void avanzarHacia(double latitud, double longitud){
         estadoBuque.avanzar(latitud, longitud);
         estadoBuque.actualizarSiSeRequiere();
-        estadoBuque.notificarEstado();
+        this.notificarEstado();
      }
     
     public void sinViaje() {
@@ -97,7 +97,7 @@ public class Buque implements BuqueObservado{
 
 	@Override
 	public void notificarEstado() {
-		
+		estadoBuque.notificarEstado();
 	}
 	
 	// IMPLEMENTACIÓN BENJA

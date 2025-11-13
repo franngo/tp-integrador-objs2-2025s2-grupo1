@@ -9,23 +9,21 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ar.edu.unq.po2.buque.Buque;
+import ar.edu.unq.po2.buque.estadosBuque.Departing;
 import ar.edu.unq.po2.buque.estadosBuque.Working;
 import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 class WorkingTestCase {
-
 	Buque buque;
 	Coordenada coordenadaBuque;
 	Coordenada coordenadaTerminal;
-	
 	Working estadoBuque;
 	TerminalPortuaria terminalAArribar;
 	
 	@BeforeEach
 	void setUp() throws Exception {
 		//se crea el buque con su posicion coherente con el de la terminal
-		
 		coordenadaBuque = new Coordenada(0d,0d);
 		buque = new Buque(coordenadaBuque,null, "Matias");
 		//se crea el estado que tendra el buque
@@ -36,24 +34,20 @@ class WorkingTestCase {
 		terminalAArribar = mock(TerminalPortuaria.class);
 		coordenadaTerminal = spy(new Coordenada(0,0));
 		when(terminalAArribar.getCoordenada()).thenReturn(coordenadaTerminal);
-		
-		
-		
 	
-	     buque.adscribirObservador(terminalAArribar);
-	  }
+	    buque.adscribirObservador(terminalAArribar);
+	}
 
 	@Test
 	void elBuqueNocambiaPosicionEnEstadoWorking() {
-	      estadoBuque.avanzar(100d, 100d);
+	    estadoBuque.avanzar(100d, 100d);
 		 
-		 assertEquals(0d, buque.posicionActual().getLatitud());
-		 assertEquals(0d, buque.posicionActual().getLongitud());
+		assertEquals(0d, buque.posicionActual().getLatitud());
+		assertEquals(0d, buque.posicionActual().getLongitud());
 	}
 	
 	@Test
 	void elBuqueNoParteSinConfirmacionTest() {
-		
 		//el buque no puede cambiar de fase hasta que se le confirme la partida
 		assertFalse(estadoBuque.debeCambiarDeFase());
 		
@@ -62,10 +56,10 @@ class WorkingTestCase {
 		assertTrue(estadoBuque.debeCambiarDeFase());
 	}
 	
+	@Test
 	void elBuqueCambiaDeEstado() {
-          estadoBuque.modificarEstadoBuque();
-		 
-		 assertTrue(buque.obtenerEstado() instanceof Working);
+        estadoBuque.modificarEstadoBuque();
+		assertTrue(buque.obtenerEstado() instanceof Departing);
+		estadoBuque.notificarEstado();
 	}
-
 }

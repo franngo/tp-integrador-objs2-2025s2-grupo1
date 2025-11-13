@@ -19,39 +19,33 @@ import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 
 class InboundTestCase {
-    
-	  
-		Buque buque;
-		Coordenada coordenadaBuque;
-		Coordenada coordenadaTerminal;
+	Buque buque;
+	Coordenada coordenadaBuque;
+	Coordenada coordenadaTerminal;
+	Inbound estadoBuque;
+	TerminalPortuaria terminalAArribar;
 		
-		Inbound estadoBuque;
-		TerminalPortuaria terminalAArribar;
+	@BeforeEach
+	void setUp()  {
+		terminalAArribar = mock(TerminalPortuaria.class);
+		coordenadaTerminal = spy(new Coordenada(0,0));
+		when(terminalAArribar.getCoordenada()).thenReturn(coordenadaTerminal);
 		
-		@BeforeEach
-		void setUp()  {
-			terminalAArribar = mock(TerminalPortuaria.class);
-			coordenadaTerminal = spy(new Coordenada(0,0));
-			when(terminalAArribar.getCoordenada()).thenReturn(coordenadaTerminal);
-			//se crea el buque con su posicion
-			coordenadaBuque = new Coordenada(10d,20d);
-			buque = new Buque(coordenadaBuque,null,"Matias");
-			buque.adscribirObservador(terminalAArribar);
-			//se crea el estado que tendra el buque
-			estadoBuque= new Inbound(buque);
-	        buque.establecerEstado(estadoBuque);		
-	        
-	        //terminal Mock con posicion 0,0 
-			
-			
-			
+		//se crea el buque con su posicion
+		coordenadaBuque = new Coordenada(10d,20d);
+		buque = new Buque(coordenadaBuque,null,"Matias");
+		buque.adscribirObservador(terminalAArribar);
 		
-		}
-
+		//se crea el estado que tendra el buque
+		estadoBuque= new Inbound(buque);
+        buque.establecerEstado(estadoBuque);		
+        
+        //terminal Mock con posicion 0,0 
+	}
 	
-		@Test
+	@Test
 	void elBuqueNotificaArriboTest() {
-			//el buque notifica exaxtamente una sola vez
+		//el buque notifica exaxtamente una sola vez
 		estadoBuque.notificarEstado();
 		verify(terminalAArribar,times(1)).notificarArribo(buque);
 		
@@ -61,17 +55,19 @@ class InboundTestCase {
 		estadoBuque.notificarEstado();
 		
 		verify(terminalAArribar,times(1)).notificarArribo(buque);
-
-     }
-		
+    }
+	
+	@Test
 	void puedeCambiarDeFaseTest() {
 		//el buque llega a las mismas coordenadas que la terminal
 		estadoBuque.avanzar(0, 0);
 		assertTrue(estadoBuque.debeCambiarDeFase());
 	}
 	
+	@Test
 	void elEstadoCambiaDeFase() {
 		estadoBuque.modificarEstadoBuque();
 		assertTrue(buque.obtenerEstado() instanceof Arrived);
+		estadoBuque.notificarEstado();
 	}
 }
