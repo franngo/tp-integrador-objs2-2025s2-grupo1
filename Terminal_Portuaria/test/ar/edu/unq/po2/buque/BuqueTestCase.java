@@ -101,10 +101,12 @@ class BuqueTestCase {
 		
 		// En estado Arrived en adelante, es posible utilizarlas.
 		miBuque.establecerEstado(new Arrived(miBuque));
+		
 		miBuque.iniciarTrabajos();
 		miBuque.finalizarDescargaDeOrdenes(ordenes);
 		miBuque.getOrdenesADescargar(terminalDumb);
 		miBuque.cargarOrdenes(ordenes);
 		miBuque.finalizarTrabajos();
+		miBuque.notificarEstado();
 	}
 }
