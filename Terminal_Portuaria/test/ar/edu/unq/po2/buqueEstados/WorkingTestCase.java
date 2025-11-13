@@ -35,7 +35,7 @@ class WorkingTestCase {
         //terminal Mock con posicion 0,0 
 		terminalAArribar = mock(TerminalPortuaria.class);
 		coordenadaTerminal = spy(new Coordenada(0,0));
-		when(terminalAArribar.coordenadasTerminal()).thenReturn(coordenadaTerminal);
+		when(terminalAArribar.getCoordenada()).thenReturn(coordenadaTerminal);
 		
 		
 		

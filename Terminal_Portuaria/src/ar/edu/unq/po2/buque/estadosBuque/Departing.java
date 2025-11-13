@@ -6,7 +6,6 @@ import ar.edu.unq.po2.buque.Buque;
 
 public class Departing extends EstadoBuque{
 
-	
 	public Departing(Buque miBuque) {
 		super(miBuque);
 		// TODO Auto-generated constructor stub
@@ -14,12 +13,10 @@ public class Departing extends EstadoBuque{
 
 	@Override
 	public boolean debeCambiarDeFase() {
-	
 		// TODO Auto-generated method stub
-		return miBuque.posicionActual().distanciaA(terminalAArribar.coordenadasTerminal()) 
+		return miBuque.posicionActual().distanciaA(terminalAArribar.getCoordenada()) 
 				> this.unKM();
 	}
-    
 	
 	double unKM() {return 1;}
 	
@@ -28,14 +25,10 @@ public class Departing extends EstadoBuque{
 		terminalAArribar.notificarSalidaTerminal(miBuque);
 		miBuque.arriboConExito();
 		miBuque.establecerEstado(new OutboundFinal(miBuque));
-		
 	}
-
-
 
 	@Override
 	public void notificarEstado() {
-		
 		
 	}
 
@@ -43,7 +36,5 @@ public class Departing extends EstadoBuque{
 	public void avanzar(double latitud, double longitud) {
 		//elBuqueAhoraPuedeMoverse
 		miBuque.nuevaPosicion(latitud, longitud);
-		
 	}
-
 }

@@ -26,7 +26,7 @@ public class Buque implements BuqueObservado{
     Viaje viajeActual;
     Coordenada posicionActual;
     TerminalPortuaria terminalAArribar; // El observer
-    EstadoBuque estadoBuque;
+    EstadoBuque estadoBuque; // No debería ser inicializado con null?
   
     public Buque(Coordenada coordenadas, List<Orden> ordenes, String nombre){
     	this.enViaje = false;
@@ -137,7 +137,7 @@ public class Buque implements BuqueObservado{
 	 }
 
 	 public List<Orden> getOrdenes() {
-		return null;
+		return ordenes;
 	 }
 
 	 public void cargarOrdenes(List<Orden> ordenes) {

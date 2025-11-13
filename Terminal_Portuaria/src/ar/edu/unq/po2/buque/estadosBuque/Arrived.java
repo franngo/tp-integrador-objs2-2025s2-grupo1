@@ -4,9 +4,7 @@ import ar.edu.unq.po2.buque.Buque;
 
 
 public class Arrived extends EstadoBuque{
-
    boolean puedeIniciarWorking = false;
-	
 
 	public Arrived(Buque miBuque) {
 		super(miBuque);
@@ -19,7 +17,6 @@ public class Arrived extends EstadoBuque{
 		return this.laTerminalDioVistoBueno();
 	}
      
-	
 	public boolean laTerminalDioVistoBueno() {return puedeIniciarWorking;}
 	
 	@Override
@@ -44,5 +41,4 @@ public class Arrived extends EstadoBuque{
 		// en laterminal
 		
 	}
-
 }

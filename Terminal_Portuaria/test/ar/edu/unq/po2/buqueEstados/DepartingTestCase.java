@@ -33,7 +33,7 @@ class DepartingTestCase {
 		//terminal Mock con posicion 0,0 
 		terminalAArribar = mock(TerminalPortuaria.class);
 		coordenadaTerminal = spy(new Coordenada(0,0));
-		when(terminalAArribar.coordenadasTerminal()).thenReturn(coordenadaTerminal);
+		when(terminalAArribar.getCoordenada()).thenReturn(coordenadaTerminal);
 		//se crea el buque con su posicion coherente con el de la terminal
 		
 		coordenadaBuque = new Coordenada(0d,0d);

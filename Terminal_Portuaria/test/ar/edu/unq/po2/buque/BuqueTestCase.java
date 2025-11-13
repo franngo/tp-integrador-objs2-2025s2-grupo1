@@ -33,7 +33,7 @@ class BuqueTestCase {
 		 
 		terminalDumb= mock(TerminalPortuaria.class);
 		coordenadasTerminal = new Coordenada(0d,0d);
-		when(terminalDumb.coordenadasTerminal()).thenReturn(coordenadasTerminal);
+		when(terminalDumb.getCoordenada()).thenReturn(coordenadasTerminal);
 		
 		ordenes=List.of();
 		

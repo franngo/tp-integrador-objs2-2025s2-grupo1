@@ -32,7 +32,7 @@ class InboundTestCase {
 		void setUp()  {
 			terminalAArribar = mock(TerminalPortuaria.class);
 			coordenadaTerminal = spy(new Coordenada(0,0));
-			when(terminalAArribar.coordenadasTerminal()).thenReturn(coordenadaTerminal);
+			when(terminalAArribar.getCoordenada()).thenReturn(coordenadaTerminal);
 			//se crea el buque con su posicion
 			coordenadaBuque = new Coordenada(10d,20d);
 			buque = new Buque(coordenadaBuque,null,"Matias");

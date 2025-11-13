@@ -151,14 +151,6 @@ public class TerminalPortuaria implements TerminalObservadora{
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public TerminalPortuaria() {
-		
-	}
-	Coordenada coordenadasTerminal;
-	
-	public Coordenada coordenadasTerminal() {
-		return coordenadasTerminal;
-	}
 	
 	/**
 	 * Retira la importación la orden del consignee dado que se encuentra en la terminal, en base al camión y chofer dado.
