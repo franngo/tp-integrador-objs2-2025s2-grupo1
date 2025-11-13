@@ -5,16 +5,23 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CoordenadaTestCase {
+	
     private Coordenada coordenada;
+    private Coordenada otraCoordenada;
 
     @BeforeEach
     public void setUp(){
-        coordenada = new Coordenada(-34.6837231,-58.3816232);
+    	
+        coordenada = new Coordenada(-34.6837231d,-58.3816232d);
+        
+       otraCoordenada = spy(new Coordenada(0d,0d));
     }
 
     /*
@@ -52,4 +59,20 @@ public class CoordenadaTestCase {
 
 
     }
+    
+    @Test
+    void testComprobacionDeCoordenadas() {
+    	assertFalse(coordenada.enMismaPosicionCon(otraCoordenada));
+    	assertFalse(coordenada.equals(otraCoordenada));
+    }
+    
+    @Test
+    void calculoDeDistancia() {
+    	
+    	double distancia = coordenada.distanciaA(otraCoordenada);
+    	double distanciaRedondeada = Math.round(distancia * 100.0) / 100.0;
+    	assertEquals(67.91d,distanciaRedondeada);
+    }
+    
+    
 }
