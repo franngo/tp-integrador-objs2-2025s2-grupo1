@@ -32,6 +32,8 @@ import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.empresa_transportista.EmpresaTransportista;
 import ar.edu.unq.po2.naviera.Naviera;
 import ar.edu.unq.po2.orden.Orden;
+import ar.edu.unq.po2.servicio.*;
+import ar.edu.unq.po2.tramo.Tramo;
 import ar.edu.unq.po2.viaje.Viaje;
 
 /**
@@ -41,13 +43,32 @@ import ar.edu.unq.po2.viaje.Viaje;
 
 class TerminalPortuariaTest {
 	TerminalPortuaria terminalGestionada;
+	EmpresaTransportista andreani;
+	CircuitoMaritimo circuitoMV;
+	CircuitoMaritimo circuitoBA;
+	Buque buqueMV;
+	Buque buqueBA;
+	Viaje viajeMV;
+	Viaje viajeBA;
+	Cliente shipperMV;
+	Cliente shipperBA;
+	Cliente consigneeMV;
+	Cliente consigneeBA;
+	Container containerMV;
+	Container containerBA;
+	Chofer choferMV;
+	Chofer choferBA;
+	Camion camionMV;
+	Camion camionBA;
+	Orden ordenMV;	
+	Orden ordenBA;	
 	
 	@BeforeEach
 	public void setUp() {
 		// Inicializacion de la Terminal Gestionada junto a la empresa transportista
 		this.terminalGestionada = new TerminalPortuaria(new Coordenada(-34.6412, -58.3439));
 		
-		EmpresaTransportista andreani = new EmpresaTransportista();
+		this.andreani = new EmpresaTransportista();
 		Camion scaniaR580 = new Camion("Scania R580", "AE471WD");
 		Camion volvoFH460 = new Camion("Volvo FH460", "NRG113");
 		Chofer carlos = new Chofer("Carlos Romero", "25.755.002");
@@ -57,78 +78,92 @@ class TerminalPortuariaTest {
 		andreani.añadirChofer(carlos);
 		andreani.añadirChofer(jose);
 		
-		// Falta poner una naviera aca.
-		
 		// Orden Montevideo
-		CircuitoMaritimo circuitoMV = mock(CircuitoMaritimo.class);
-		Buque buqueMSC = mock(Buque.class);
-		Viaje viajeMV = new Viaje(LocalDateTime.now().plusDays(2), circuitoMV, buqueMSC);
-		Cliente consigneeMV = new Cliente("Ricardo Fort");
-		Container containerMV = new Reefer(consigneeMV, 1000, 4750, 2950, 15000, 20);
-		Chofer choferMV = andreani.contratarChofer();
-		Camion camionMV = andreani.contratarCamion();
-		// Orden ordenMV = new OrdenDeExportacion(camionMV, choferMV, containerMV, viajeMV);
+		this.circuitoMV = mock(CircuitoMaritimo.class);
+		this.buqueMV = mock(Buque.class);
+		this.viajeMV = new Viaje(LocalDateTime.now().plusDays(2), circuitoMV, buqueMV);
+		this.shipperMV = new Cliente("Alberto Gonzalez");
+		this.consigneeMV = new Cliente("Ricardo Fort");
+		this.containerMV = new Reefer(consigneeMV, 1000, 4750, 2950, 15000, 20);
+		this.choferMV = andreani.contratarChofer();
+		this.camionMV = andreani.contratarCamion();
+		this.ordenMV = new Orden(camionMV, choferMV, containerMV, viajeMV, shipperMV);
 		
-		// camionMV.cambiarOrdenActualPor(ordenMV);
+		camionMV.cambiarOrdenActualPor(ordenMV);
 		choferMV.cambiarEstaDisponiblePor(false);
 
 		// Orden Buenos Aires
-		CircuitoMaritimo circuitoBA = mock(CircuitoMaritimo.class);
-		Buque buqueEvergreen = mock(Buque.class);
-		Viaje viajeBA = new Viaje(LocalDateTime.now().plusHours(2), circuitoBA, buqueEvergreen);
-		Cliente consigneeBA = new Cliente("Roberto Paniagua");
-		Chofer choferBA = andreani.contratarChofer();
-		Camion camionBA = andreani.contratarCamion();
-		Container containerBA = new Reefer(consigneeBA, 1100, 4500, 3050, 25000, 15);
-        // Orden ordenBA = new OrdenDeExportacion(camionBA, choferBA, containerBA, viajeBA);
+		this.circuitoBA = mock(CircuitoMaritimo.class);
+		this.buqueBA = mock(Buque.class);
+		this.viajeBA = new Viaje(LocalDateTime.now().plusHours(2), circuitoBA, buqueBA);
+		this.shipperBA = new Cliente("Carlos Rodriguez");
+		this.consigneeBA = new Cliente("Roberto Paniagua");
+		this.choferBA = andreani.contratarChofer();
+		this.camionBA = andreani.contratarCamion();
+		this.containerBA = new Reefer(consigneeBA, 1100, 4500, 3050, 25000, 15);
+		this.ordenBA = new Orden(camionBA, choferBA, containerBA, viajeBA, shipperBA);
 		
-        // camionBA.cambiarOrdenActualPor(ordenBA);
+        camionBA.cambiarOrdenActualPor(ordenBA);
         choferBA.cambiarEstaDisponiblePor(false);
         
         // Registro de los consignee y la empresa transportista
         terminalGestionada.registrarCliente(consigneeBA);
         terminalGestionada.registrarCliente(consigneeMV);
+        terminalGestionada.registrarCliente(shipperBA);
+        terminalGestionada.registrarCliente(shipperMV);
         terminalGestionada.registrarEmpresaTransportista(andreani);
 	}
 	
 	@Test
-	public void testFuncionamientoCircuitoDeExportacionExitoso() {
-		/* Viaje viajeElegido = terminalGestionada.buscarViaje();
-		Camion camionContratado = andreani.contratarCamion();
-		Chofer choferContratado = andreani.contratarChofer();
-		Container container = new Dry(null, 0, 0, 0, 0);
+	public void testFuncionamientoCircuitoDeExportacion() {
+		// La orden de MV no se exporta porque el horario no coincide para el ingreso del camión.
+		assertThrows(RuntimeException.class, () -> camionMV.transportarExportacionA(terminalGestionada, choferMV));
 		
-		Orden orden = terminalGestionada.generarOrden(camionContratado, choferContratado, container, viajeElegido); */
+		// La orden de BA se exporta normalmente, porque el horario coincide.
+		camionBA.transportarExportacionA(terminalGestionada, choferBA);
 	}
 	
 	@Test
-	public void testFuncionamientoCircuitoDeExportacionFallido() {
-		/* Viaje viajeElegido = terminalGestionada.buscarViaje();
-		Camion camionContratado = andreani.contratarCamion();
-		Chofer choferContratado = andreani.contratarChofer();
-		Container container = new Dry(null, 0, 0, 0, 0);
+	public void testFuncionamientoCircuitoDeImportacion() {
+		// Setup
+		TerminalPortuaria terminalMV = mock(TerminalPortuaria.class);
+		Tramo tramoCircuitoBuque = new Tramo(terminalGestionada, terminalMV, Duration.ofDays(1), 10000);
+		List<Tramo> tramosCircuitoBuque = new ArrayList<>();
+		tramosCircuitoBuque.add(tramoCircuitoBuque);
+		CircuitoMaritimo circuitoBuque = new CircuitoMaritimo(tramosCircuitoBuque);
 		
-		Orden orden = terminalGestionada.generarOrden(camionContratado, choferContratado, container, viajeElegido); */
+		Coordenada coordenadasBuque = new Coordenada(-1334.6412, -9458.3439);
+		List<Orden> ordenes = new ArrayList<Orden>();
+		Buque buqueImportaciones = new Buque(coordenadasBuque, ordenes, "La bestia");
+		Viaje viajeBuque = new Viaje(LocalDateTime.now().minusDays(1), circuitoBuque, buqueImportaciones);
+		Orden ordenBuque = new Orden(camionMV, choferMV, containerMV, viajeBuque, shipperMV);
+		ordenes.add(ordenBuque);
+		camionMV.cambiarOrdenActualPor(null);
+
+		// Exercise
+		buqueImportaciones.iniciarViaje(viajeBuque);
+		buqueImportaciones.avanzarHacia(-24.6412, -38.3439);
+		buqueImportaciones.avanzarHacia(-34.6412, -58.3439);
+		terminalGestionada.trabajarEnBuque(buqueImportaciones);
+		
+		camionMV.retirarImportacionDe(terminalGestionada, choferMV, consigneeMV);
 	}
 	
 	@Test
-	public void testFuncionamientoCircuitoDeImportacionExitoso() {
-		/* Viaje viajeElegido = terminalGestionada.buscarViaje();
-		Camion camionContratado = andreani.contratarCamion();
-		Chofer choferContratado = andreani.contratarChofer();
-		Container container = new Dry(null, 0, 0, 0, 0);
-		
-		Orden orden = terminalGestionada.generarOrden(camionContratado, choferContratado, container, viajeElegido); */
+	public void testFuncionamientoGenerarOrden() {
+		Orden orden = terminalGestionada.generarOrden(camionBA, choferBA, containerBA, viajeBA, shipperBA);
+		assertNotEquals(orden, ordenBA);
 	}
 	
 	@Test
-	public void testFuncionamientoCircuitoDeImportacionFallido() {
-		/* Viaje viajeElegido = terminalGestionada.buscarViaje();
-		Camion camionContratado = andreani.contratarCamion();
-		Chofer choferContratado = andreani.contratarChofer();
-		Container container = new Dry(null, 0, 0, 0, 0);
-		
-		Orden orden = terminalGestionada.generarOrden(camionContratado, choferContratado, container, viajeElegido); */
+	public void testFuncionamientoPrecioTerminal() {
+		assertEquals(3000, terminalGestionada.precioServicio(PrecioServicioTerminal.DIAEXCEDENTE));
+		assertEquals(10, terminalGestionada.precioServicio(PrecioServicioTerminal.KILOWATTCONSUMIDO));
+		assertEquals(15000, terminalGestionada.precioServicio(PrecioServicioTerminal.LAVADOCOMUN));
+		assertEquals(20000, terminalGestionada.precioServicio(PrecioServicioTerminal.LAVADOPESADO));
+		assertEquals(5000, terminalGestionada.precioServicio(PrecioServicioTerminal.PESAJE));
+		assertEquals(20000, terminalGestionada.precioServicio(PrecioServicioTerminal.PRECIODESCONSOLIDADO));
+		assertEquals(10000, terminalGestionada.precioServicio(PrecioServicioTerminal.REVISIONDIARIA));
 	}
 	
 	@Test
@@ -149,7 +184,7 @@ class TerminalPortuariaTest {
 	}
 	
 	@Test
-	public void buscarCircuito() {
+	public void testFuncionamientoBuscarCircuito() {
 		Naviera naviera1 = mock(Naviera.class);
 		Naviera naviera2 = mock(Naviera.class);
 		Naviera naviera3 = mock(Naviera.class);

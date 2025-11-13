@@ -49,7 +49,7 @@ class BuqueTestCase {
 	@Test
 	void elBarcoNoPuedeIniciarViaje() {
 		miBuque.enViaje();
-		assertThrows(Exception.class, () -> {miBuque.iniciarViaje(viajeDumb);});
+		assertThrows(RuntimeException.class, () -> {miBuque.iniciarViaje(viajeDumb);});
 		 
 		miBuque.sinViaje();
 		assertDoesNotThrow(() -> {miBuque.iniciarViaje(viajeDumb);});

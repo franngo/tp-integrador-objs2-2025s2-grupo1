@@ -62,15 +62,15 @@ public class Buque implements BuqueObservado{
     	this.enViaje = true;
     }
 
-	public void iniciarViaje(Viaje viajeActual) throws Exception{
+	public void iniciarViaje(Viaje viajeActual) {
 		this.validarSiEstaEnViaje();
         this.viajeActual = viajeActual;
         this.terminalAArribar = viajeActual.puertoDestino();
         estadoBuque = new OutBound(this);
     }
 	
-	private void validarSiEstaEnViaje() throws Exception {
-		if(enViaje) { throw new Exception("El barco ya esta en viaje");}
+	private void validarSiEstaEnViaje() {
+		if(enViaje) { throw new RuntimeException("El barco ya esta en viaje");}
 	}
     
 	public void terminalAArribar(TerminalPortuaria terminal) {
