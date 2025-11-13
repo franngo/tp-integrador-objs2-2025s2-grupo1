@@ -14,8 +14,6 @@ import org.junit.jupiter.api.Test;
 import ar.edu.unq.po2.buque.Buque;
 import ar.edu.unq.po2.container.Container;
 import ar.edu.unq.po2.orden.Orden;
-import ar.edu.unq.po2.orden.OrdenDeExportacion;
-import ar.edu.unq.po2.orden.OrdenDeImportacion;
 import ar.edu.unq.po2.viaje.Viaje;
 
 public class GeneradorDeReportesTest {
@@ -24,11 +22,11 @@ public class GeneradorDeReportesTest {
 	GeneradorDeReportes generador;
 	
 	//DOCs
-	OrdenDeImportacion ordenImp1;
-	OrdenDeImportacion ordenImp2;
+	Orden ordenImp1;
+	Orden ordenImp2;
 	
-	OrdenDeExportacion ordenExp1;
-	OrdenDeExportacion ordenExp2;
+	Orden ordenExp1;
+	Orden ordenExp2;
 	
 	Buque buque;
 	Viaje viaje;
@@ -70,13 +68,13 @@ public class GeneradorDeReportesTest {
 
 		///////
 		
-		ordenImp1 = mock(OrdenDeImportacion.class);
+		ordenImp1 = mock(Orden.class);
 		when(ordenImp1.accept(visitorA)).thenReturn
 		("    			<li><p> Tipo: Tanque, ID: MARC9378524</p></li>\n");
 		when(ordenImp1.accept(visitorB)).thenReturn
 		("			<item>MARC9378524</item>\n");
 		
-		ordenImp2 = mock(OrdenDeImportacion.class);
+		ordenImp2 = mock(Orden.class);
 		when(ordenImp2.accept(visitorA)).thenReturn
 		("    			<li><p> Tipo: Refeer, ID: LUIS9378524</p></li>\n");
 		when(ordenImp2.accept(visitorB)).thenReturn
@@ -85,13 +83,13 @@ public class GeneradorDeReportesTest {
 		
 		///////
 		
-		ordenExp1 = mock(OrdenDeExportacion.class);
+		ordenExp1 = mock(Orden.class);
 		when(ordenExp1.accept(visitorA)).thenReturn
 		("    			<li><p> Tipo: Tanque, ID: JULI9378524</p></li>\n");
 		when(ordenExp1.accept(visitorB)).thenReturn
 		("			<item>JULI9378524</item>\n");
 		
-		ordenExp2 = mock(OrdenDeExportacion.class);
+		ordenExp2 = mock(Orden.class);
 		when(ordenExp2.accept(visitorA)).thenReturn
 		("    			<li><p> Tipo: Refeer, ID: LAUR9378524</p></li>\n");
 		when(ordenExp2.accept(visitorB)).thenReturn
