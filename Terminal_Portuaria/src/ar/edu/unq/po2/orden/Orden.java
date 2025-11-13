@@ -146,14 +146,9 @@ public class Orden {
 	}
 
 	/**
-	 * ...
+	 * 
 	 */
-	/*
-    abstract public String accept(VisitorReporte visitor);
-    */
-	/*
 	public String accept(VisitorReporte visitor) {
-		return visitor.visitOrdenDeExportacion(this);
+		return visitor.visitOrden(this);
 	}
-	*/
 }

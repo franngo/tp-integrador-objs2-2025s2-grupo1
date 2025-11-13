@@ -8,47 +8,38 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ar.edu.unq.po2.container.Container;
-import ar.edu.unq.po2.orden.OrdenDeExportacion;
-import ar.edu.unq.po2.orden.OrdenDeImportacion;
+import ar.edu.unq.po2.orden.Orden;
 
 public class VisitorReporteBuqueTest {
-	
 	//SUT
 	VisitorReporteBuque visitor;
 	
 	//DOCs
-	OrdenDeImportacion ordenImp;
-	OrdenDeExportacion ordenExp;
+	Orden ordenImp;
+	Orden ordenExp;
 	Container container;
 	
 	@BeforeEach
 	public void setUp() {
-		
 		visitor = new VisitorReporteBuque();
 		
 		container = mock(Container.class);
 		when(container.getIdConnteiner()).thenReturn("MARC9378524");
-		
 	}
 	
 	@Test
 	public void visitOrdenDeImportacion() {
-		
-		ordenImp = mock(OrdenDeImportacion.class);
+		ordenImp = mock(Orden.class);
 		when(ordenImp.getCarga()).thenReturn(container);
 		
-		assertEquals("			<item>MARC9378524</item>\n", visitor.visitOrdenDeImportacion(ordenImp));
-
+		assertEquals("			<item>MARC9378524</item>\n", visitor.visitOrden(ordenImp));
 	}
 	
 	@Test
 	public void visitOrdenDeExportacion() {
-		
-		ordenExp = mock(OrdenDeExportacion.class);
+		ordenExp = mock(Orden.class);
 		when(ordenExp.getCarga()).thenReturn(container);
 		
-		assertEquals("			<item>MARC9378524</item>\n", visitor.visitOrdenDeExportacion(ordenExp));
-
+		assertEquals("			<item>MARC9378524</item>\n", visitor.visitOrden(ordenExp));
 	}
-
 }

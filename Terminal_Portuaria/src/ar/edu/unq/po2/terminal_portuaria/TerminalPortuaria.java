@@ -67,7 +67,7 @@ public class TerminalPortuaria implements TerminalObservadora {
 		this.ordenesDeExportacion = new ArrayList<Orden>();
 		this.reportesGenerados = new ArrayList<Reporte>();
 		
-		this.buscadorDeCircuito = new BuscadorPorPrecio(); //se elige uno particular para que no inicie vacío
+		this.buscadorDeCircuito = new BuscadorPorPrecio();
 		this.buscadorDeViaje = new BuscadorDeViaje();
 		
 		serviciosDisponibles.add(PrecioServicioTerminal.DIAEXCEDENTE);
@@ -222,8 +222,8 @@ public class TerminalPortuaria implements TerminalObservadora {
 	}
 
 	/**
-	 * 
-	 * @param 
+	 * Realiza los trabajos de carga y descarga con el buque dado, si el mismo se encuentra en la terminal.
+	 * @param buque es el buque sobre el cual realizar los trabajos.
 	 */
 	public void trabajarEnBuque(Buque buque) {
 		this.validarTrabajosEnBuque(buque); // Valida que puede trabajar en el buque (misma coordenada).
@@ -233,8 +233,8 @@ public class TerminalPortuaria implements TerminalObservadora {
 	}
 	
 	/**
-	 * 
-	 * @param 
+	 * Valida que la terminal puede trabajar con el buque dado.
+	 * @param buque es el buque sobre el cual realizar la validación.
 	 */
 	private void validarTrabajosEnBuque(Buque buque) {
 		if(!coordenada.equals(buque.posicionActual())) { // Esto debería verificar si está en estado Arrived.
@@ -243,8 +243,8 @@ public class TerminalPortuaria implements TerminalObservadora {
 	}
 	
 	/**
-	 * 
-	 * @param 
+	 * Inicia los trabajos de carga y descarga en el buque dado.
+	 * @param buque es el buque sobre el cual realizar la carga y descarga.
 	 */
 	private void iniciarTrabajos(Buque buque) {
 		buque.iniciarTrabajos(); 	  		// Esto debería pasar el buque a estado Working.
@@ -253,8 +253,8 @@ public class TerminalPortuaria implements TerminalObservadora {
 	}
 	
 	/**
-	 * 
-	 * @param 
+	 * Inicia la descarga de las ordenes del buque en la terminal dada.
+	 * @param buque es el buque sobre el cual realizar la descarga.
 	 */
 	private void iniciarDescargaOrdenes(Buque buque) {
 		List<Orden> ordenes = buque.getOrdenesADescargar(this);
@@ -266,8 +266,8 @@ public class TerminalPortuaria implements TerminalObservadora {
 	}
 
 	/**
-	 * 
-	 * @param 
+	 * Inicia la carga de las ordenes del buque en la terminal dada.
+	 * @param buque es el buque sobre el cual realizar la carga.
 	 */
 	private void iniciarCargaOrdenes(Buque buque) {
 		List<Orden> ordenes = ordenesDeExportacion.stream()
@@ -279,8 +279,8 @@ public class TerminalPortuaria implements TerminalObservadora {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * 
-	 * @param 
+	 * Genera los reportes de las importaciones y exportaciones realizadas con el buque dado.
+	 * @param buque es el buque que se toma de referencia para realizar los reportes.
 	 */
 	private void generarReportes(Buque buque) {
 		// Genera reportes de importación
@@ -296,21 +296,22 @@ public class TerminalPortuaria implements TerminalObservadora {
 	}
 	
 	/**
-	 * 
-	 * @param 
+	 * Describe las ordenes del viaje del buque dado que coincidan con las ordenes dadas.
+	 * @param ordenes son las ordenes que se toman de referencia.
+	 * @param buque es el buque a tomar de referencia el viaje.
 	 */
 	private List<Orden> ordenesDelViaje(List<Orden> ordenes, Buque buque) {
 		List<Orden> aDevolver = ordenes.stream()
-										.filter(o -> buque.getOrdenes().contains(o))
-										.toList();
+									   .filter(o -> buque.getOrdenes().contains(o))
+									   .toList();
 		return aDevolver;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * 
-	 * @param 
+	 * Finaliza los trabajos de la terminal en el buque dado, terminando de cargar y descargar ordenes del mismo.
+	 * @param buque es el buque en el cual finalizar los trabajos
 	 */
 	private void finalizarTrabajos(Buque buque) {
 		List<Orden> ordenesCargadas = ordenesDeExportacion.stream()
@@ -324,8 +325,8 @@ public class TerminalPortuaria implements TerminalObservadora {
 	}
 	
 	/**
-	 * 
-	 * @param 
+	 * Finaliza la carga de ordenes, donde las ordenes dadas son las ordenes a eliminar de la terminal porque fueron cargadas.
+	 * @param ordenesCargadas son las ordenes que anteriormente fueron cargadas y deben eliminarse de la terminal.
 	 */
 	private void finalizarCargaDeOrdenes(List<Orden> ordenesCargadas) {
 		for(Orden o : ordenesCargadas) {
@@ -368,8 +369,8 @@ public class TerminalPortuaria implements TerminalObservadora {
 	}
 	
 	/**
-	 * 
-	 * @param 
+	 * Valida que el circuito incluya a esta terminal.
+	 * @param circuitoMaritimo es el circuito maritimo que se valida.
 	 */
 	private void validarQueIncluyaTerminal(CircuitoMaritimo circuitoMaritimo) {
 		if(!circuitoMaritimo.incluyeA(this)) {

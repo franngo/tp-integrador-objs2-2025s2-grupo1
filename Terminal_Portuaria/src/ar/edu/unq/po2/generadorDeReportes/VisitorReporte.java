@@ -1,12 +1,7 @@
 package ar.edu.unq.po2.generadorDeReportes;
 
-import ar.edu.unq.po2.orden.OrdenDeExportacion;
-import ar.edu.unq.po2.orden.OrdenDeImportacion;
+import ar.edu.unq.po2.orden.Orden;
 
 public interface VisitorReporte {
-	
-	abstract public String visitOrdenDeImportacion(OrdenDeImportacion orden);
-	
-	abstract public String visitOrdenDeExportacion(OrdenDeExportacion orden);
-
+	abstract public String visitOrden(Orden orden);
 }
