@@ -438,7 +438,13 @@ public class TerminalPortuaria implements TerminalObservadora {
 	 * @param 
 	 */
 	public List<Viaje> buscarViaje(Condicion condicion) {
-		return null;
+		
+		List<Viaje> vs = new ArrayList<Viaje>();
+		this.navierasRegistradas.stream().forEach((n) -> vs.addAll(n.viajesQueIncluyenOrigen(this)));
+		//Obtenemos la lista de Viajes en los que esta terminal es puerto origen en alguno de los tramos, lo que
+		//significa que se puede unir con alguna otra terminal B.
+		
+		return buscadorDeViaje.buscarViaje(condicion, vs);
 		
 	}
 	

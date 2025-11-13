@@ -52,4 +52,9 @@ public class Viaje {
 		TerminalPortuaria t = this.buque.terminalAArribar();
 		return this.circuito.proximoDestino(t);
 	}
+	
+	public boolean tieneOrigen(TerminalPortuaria terminal) {
+		return this.circuito.tieneOrigen(terminal);
+	}
+	
 }

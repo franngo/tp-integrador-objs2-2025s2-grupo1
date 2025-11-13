@@ -49,5 +49,14 @@ public class Naviera {
 		return cs;
 		
 	}
+	
+	public List<Viaje> viajesQueIncluyenOrigen(TerminalPortuaria t) {
+		
+		List<Viaje> vs = viajes.stream().
+				filter((v) -> v.tieneOrigen(t)).
+				toList();
+		return vs;
+		
+	}
 
 }

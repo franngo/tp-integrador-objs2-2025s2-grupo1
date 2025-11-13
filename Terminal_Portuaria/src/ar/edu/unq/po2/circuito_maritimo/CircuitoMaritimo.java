@@ -50,7 +50,7 @@ public class CircuitoMaritimo {
 		return this.tieneOrigen(t1) && this.tieneDestino(t2) && this.tienePrimeroA(t1, t2);
 	}
 	
-	private boolean tieneOrigen(TerminalPortuaria terminal) {
+	public boolean tieneOrigen(TerminalPortuaria terminal) {
 		return this.tramos.stream().anyMatch((t) -> t.getTerminalOrigen().equals(terminal));
 	}
 	
