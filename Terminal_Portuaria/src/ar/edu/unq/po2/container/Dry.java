@@ -60,5 +60,10 @@ public class Dry extends Container {
 	    	return cargaBL.dueños();
 	    }
 	
+	    @Override
+	    public Cliente getDuenioConsignee() {
+	    	// IMPLEMENTAR TODO
+	    	return new Cliente("Matias"); 
+	    }
 
 }
