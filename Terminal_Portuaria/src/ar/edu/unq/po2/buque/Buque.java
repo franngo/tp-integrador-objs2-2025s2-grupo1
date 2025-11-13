@@ -109,10 +109,6 @@ public class Buque implements BuqueObservado{
 	public void iniciarTrabajos() {
 		this.obtenerEstado().iniciarTrabajos();
 	}
-   
-	public void finalizarTrabajos() {
-		this.obtenerEstado().finalizarTrabajos();
-    }
 
 	public void finalizarDescargaDeOrdenes(List<Orden> ordenes) {
 		this.obtenerEstado().finalizarDescargaDeOrdenes(ordenes);
@@ -125,6 +121,10 @@ public class Buque implements BuqueObservado{
 	public void cargarOrdenes(List<Orden> ordenes) {
 		this.obtenerEstado().cargarOrdenes(ordenes);
 	} 
+
+	public void finalizarTrabajos() {
+		this.obtenerEstado().finalizarTrabajos();
+	}
 	 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
      

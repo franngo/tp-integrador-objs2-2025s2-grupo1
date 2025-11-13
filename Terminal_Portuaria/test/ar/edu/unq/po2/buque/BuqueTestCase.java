@@ -5,11 +5,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ar.edu.unq.po2.buque.estadosBuque.Arrived;
 import ar.edu.unq.po2.buque.estadosBuque.EstadoBuque;
 import ar.edu.unq.po2.buque.estadosBuque.OutBound;
 import ar.edu.unq.po2.coordenada.Coordenada;
@@ -35,7 +37,7 @@ class BuqueTestCase {
 		coordenadasTerminal = new Coordenada(0d,0d);
 		when(terminalDumb.getCoordenada()).thenReturn(coordenadasTerminal);
 		
-		ordenes=List.of();
+		ordenes = new ArrayList<Orden>();
 		
 		coordenadasBuque = new Coordenada(30d,20d);
 		viajeDumb = mock(Viaje.class);
@@ -86,5 +88,23 @@ class BuqueTestCase {
 		miBuque.terminalAArribar(otroDestino);
 		
 		assertEquals(otroDestino,miBuque.terminalAArribar());
+	}
+	
+	@Test
+	void elBuqueSoloPuedeOperarSuCargaEnWorking() {
+		// No puede realizar estas operaciones relacionadas con la carga y descarga.
+		assertThrows(RuntimeException.class, () -> miBuque.iniciarTrabajos());
+		assertThrows(RuntimeException.class, () -> miBuque.finalizarDescargaDeOrdenes(ordenes));
+		assertThrows(RuntimeException.class, () -> miBuque.getOrdenesADescargar(terminalDumb));
+		assertThrows(RuntimeException.class, () -> miBuque.cargarOrdenes(ordenes));
+		assertThrows(RuntimeException.class, () -> miBuque.finalizarTrabajos());
+		
+		// En estado Arrived en adelante, es posible utilizarlas.
+		miBuque.establecerEstado(new Arrived(miBuque));
+		miBuque.iniciarTrabajos();
+		miBuque.finalizarDescargaDeOrdenes(ordenes);
+		miBuque.getOrdenesADescargar(terminalDumb);
+		miBuque.cargarOrdenes(ordenes);
+		miBuque.finalizarTrabajos();
 	}
 }
