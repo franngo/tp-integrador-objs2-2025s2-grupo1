@@ -366,7 +366,7 @@ public class TerminalPortuaria implements TerminalObservadora{
 	 * @param shipper es el encargado de exportar la orden.
 	 */
 	public Orden generarOrden(Camion camion, Chofer chofer, Container container, Viaje viaje, Cliente shipper) {
-		return new OrdenDeExportacion(camion, chofer, container, viaje, shipper);
+		return new Orden(camion, chofer, container, viaje, shipper);
 	}
 	
 	/**

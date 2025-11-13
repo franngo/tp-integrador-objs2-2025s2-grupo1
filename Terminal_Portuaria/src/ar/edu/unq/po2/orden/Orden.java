@@ -21,7 +21,7 @@ import ar.edu.unq.po2.viaje.Viaje;
 * @author Benjamin Maldonado & Matias Sanchez.
 */
 
-public abstract class Orden {
+public class Orden {
 	private ConcreteVisitorContainer visitanteContainer;
 	private Camion camion;
 	private Chofer chofer;
@@ -46,8 +46,14 @@ public abstract class Orden {
 		this.shipper = shipper;
 		this.estaEnViaje = false;
 		this.serviciosACobrar = new ArrayList<Servicio>();
+		this.visitanteContainer = new ConcreteVisitorContainer();
 	}
-
+     
+	public ConcreteVisitorContainer visitanteContainer() {
+		return visitanteContainer;
+	}
+	
+	
 	/**
 	 * Describe el camion que tiene la orden.
 	 */	
@@ -90,7 +96,7 @@ public abstract class Orden {
 	/**
 	 * Indica si la orden se encuentra en viaje o no.
 	 */	
-	public boolean getEstaEnViae() {
+	public boolean getEstaEnViaje() {
 		return estaEnViaje;
 	}
 	
@@ -128,7 +134,7 @@ public abstract class Orden {
 	 */
 	public void crearServiciosACobrar() {
 		this.validarCrearServiciosACobrar();
-      	List<Servicio> serviciosACobrar = carga.acceptVisitor(visitanteContainer);
+      	List<Servicio> serviciosACobrar = carga.acceptVisitor(this.visitanteContainer());
 		serviciosACobrar.addAll(serviciosACobrar);
 	}
 	
@@ -144,5 +150,12 @@ public abstract class Orden {
 	/**
 	 * ...
 	 */
+	/*
     abstract public String accept(VisitorReporte visitor);
+    */
+	/*
+	public String accept(VisitorReporte visitor) {
+		return visitor.visitOrdenDeExportacion(this);
+	}
+	*/
 }

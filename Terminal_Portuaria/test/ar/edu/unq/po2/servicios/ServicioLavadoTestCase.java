@@ -6,16 +6,16 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ar.edu.unq.po2.cliente.Cliente;
-import ar.edu.unq.po2.cliente.Consignee;
+
 import ar.edu.unq.po2.container.Container;
-import ar.edu.unq.po2.container.Tanque;
+
 import ar.edu.unq.po2.servicio.PrecioServicioTerminal;
 import ar.edu.unq.po2.servicio.ServicioLavado;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
@@ -30,7 +30,7 @@ class ServicioLavadoTestCase {
 	   TerminalPortuaria terminalDumb; 
 		@BeforeEach
 		public void setUp() {
-			cliente = new Consignee("Matias");
+			cliente = new Cliente("Matias");
 			terminalDumb = mock(TerminalPortuaria.class);
 			//miContainer = new Tanque(cliente,100,100,100,10);
 			miContainer = mock(Container.class);
