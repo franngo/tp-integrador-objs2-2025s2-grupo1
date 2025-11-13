@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Test;
 
 import ar.edu.unq.po2.buque.Buque;
 import ar.edu.unq.po2.buscador_de_circuito.BuscadorDeCircuito;
+import ar.edu.unq.po2.buscador_de_viaje.BuscadorDeViaje;
+import ar.edu.unq.po2.buscador_de_viaje.Condicion;
 import ar.edu.unq.po2.camion.Camion;
 import ar.edu.unq.po2.chofer.Chofer;
 import ar.edu.unq.po2.circuito_maritimo.CircuitoMaritimo;
@@ -188,4 +190,63 @@ class TerminalPortuariaTest {
 		
 		assertEquals(c4, terminalGestionada.buscarCircuito(destino));
 	}
+	
+	@Test
+	public void buscarViaje() {
+		
+		Naviera naviera1 = mock(Naviera.class);
+		Naviera naviera2 = mock(Naviera.class);
+		Naviera naviera3 = mock(Naviera.class);
+		
+		terminalGestionada.registrarNaviera(naviera1);
+		terminalGestionada.registrarNaviera(naviera2);
+		terminalGestionada.registrarNaviera(naviera3);
+		
+		List<Viaje> vs1 = new ArrayList<Viaje>();
+		Viaje v1 = mock(Viaje.class);
+		Viaje v2 = mock(Viaje.class);
+		vs1.add(v1);
+		vs1.add(v2);
+		
+		List<Viaje> vs2 = new ArrayList<Viaje>();
+		Viaje v3 = mock(Viaje.class);
+		vs2.add(v3);
+		
+		
+		List<Viaje>  vs3 = new ArrayList<Viaje>();
+		Viaje v4 = mock(Viaje.class);
+		Viaje v5 = mock(Viaje.class);
+		vs3.add(v4);
+		vs3.add(v5);
+		
+		when(naviera1.viajesQueIncluyenOrigen(terminalGestionada)).thenReturn(vs1);
+		when(naviera2.viajesQueIncluyenOrigen(terminalGestionada)).thenReturn(vs2);
+		when(naviera3.viajesQueIncluyenOrigen(terminalGestionada)).thenReturn(vs3);
+		
+		List<Viaje> vsDef = new ArrayList<Viaje>();
+		vsDef.addAll(vs1);
+		vsDef.addAll(vs2);
+		vsDef.addAll(vs3);
+		
+		BuscadorDeViaje buscador = mock(BuscadorDeViaje.class);
+		
+		terminalGestionada.setBuscadorDeViaje(buscador);
+		
+		Condicion cond = mock(Condicion.class);
+		
+		List<Viaje> vs4 = vs1;
+		
+		when(buscador.buscarViaje(eq(cond), argThat(lista -> lista.containsAll(vsDef)))).thenReturn(vs4);
+		
+		List<Viaje> vsCumplen = terminalGestionada.buscarViaje(cond);
+		
+		assertEquals(2, vsCumplen.size());
+		assertTrue(vsCumplen.contains(v1));
+		assertTrue(vsCumplen.contains(v2));
+		assertFalse(vsCumplen.contains(v3));
+		assertFalse(vsCumplen.contains(v4));
+		assertFalse(vsCumplen.contains(v5));
+		
+	}
+	
 }

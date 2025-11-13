@@ -378,6 +378,11 @@ public class TerminalPortuaria implements TerminalObservadora {
 		}
 	}
 	
+	//Creado únicamente para poder mockear la dependencia y llevar a cabo el testing de la clase.
+	public void setBuscadorDeViaje(BuscadorDeViaje buscador) {
+		this.buscadorDeViaje = buscador;
+	}
+	
 	/**
 	 * Describe una orden que puede ser utilizada para exportar desde la Terminal Portuaria.
 	 * @param camion es el camion contratado para ser asignado a la orden a generar.
