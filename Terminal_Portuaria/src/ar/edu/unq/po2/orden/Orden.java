@@ -44,6 +44,7 @@ public class Orden {
 		this.shipper = shipper;
 		this.estaEnViaje = false;
 		this.serviciosACobrar = new ArrayList<Servicio>();
+		
 		this.visitanteContainer = new ConcreteVisitorContainer();
 	}
      
@@ -132,8 +133,8 @@ public class Orden {
 	 */
 	public void crearServiciosACobrar() {
 		this.validarCrearServiciosACobrar();
-      	List<Servicio> serviciosACobrar = carga.acceptVisitor(this.visitanteContainer());
-		serviciosACobrar.addAll(serviciosACobrar);
+      	List<Servicio> servicios = carga.acceptVisitor(this.visitanteContainer());
+		serviciosACobrar.addAll(servicios);
 	}
 	
 	/**

@@ -7,10 +7,15 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -23,36 +28,51 @@ import ar.edu.unq.po2.container.ConcreteVisitorContainer;
 import ar.edu.unq.po2.container.Container;
 import ar.edu.unq.po2.container.Reefer;
 import ar.edu.unq.po2.container.Tanque;
+import ar.edu.unq.po2.generadorDeReportes.VisitorReporte;
 import ar.edu.unq.po2.servicio.ServicioLavado;
+import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 import ar.edu.unq.po2.viaje.Viaje;
 
 class OrdenTestCase {
 	
 	Orden miOrden;
 	
-	Container containerMock;
+	Reefer containerMock;
 	Cliente shipper;
 	Cliente consignee;
 	Camion camionDumb;
 	Viaje viajeDumb;
 	Chofer choferDumb;
+	ConcreteVisitorContainer visitante;
+	VisitorReporte visitanteReporter;
+	TerminalPortuaria terminalDumb;
 
 	@BeforeEach
 	void setUp() {
-		consignee = mock(Cliente.class);
-		when(consignee.nombreCliente()).thenReturn("Matias");
-		containerMock = new Tanque(consignee, 0, 0, 0, 0);
+		terminalDumb = mock(TerminalPortuaria.class);
+		visitanteReporter = mock(VisitorReporte.class);
+		consignee = new Cliente("Matias Sanchez");
 		
 		
-		when(containerMock.getDuenioConsignee()).thenReturn(consignee);
+		
+		containerMock = new Reefer(consignee, 0, 0, 0, 0, 0);
+		
+		
 		shipper = mock(Cliente.class);
-		//consignee = mock(Cliente.class);
+		
 		camionDumb = mock(Camion.class);
 		choferDumb = mock(Chofer.class);
-		viajeDumb = mock(Viaje.class);
+		LocalDateTime fechaEsperada = LocalDateTime.of(2025, 11, 12, 10, 30);
+		LocalDateTime fechaEsperada2 = LocalDateTime.of(2025, 11, 14, 18, 0);
 		
+		viajeDumb = mock(Viaje.class);
+		when(viajeDumb.fechaDeSalida()).thenReturn(fechaEsperada);
+		
+        when(viajeDumb.fechaDeLlegadaATerminal(any())).thenReturn(fechaEsperada2);
 		miOrden = new Orden(camionDumb, choferDumb, containerMock, viajeDumb, shipper);
-		when(containerMock.acceptVisitor(miOrden.visitanteContainer())).thenReturn(List.of(new ServicioLavado(null, null)));
+		//when(viajeDumb.fechaDeSalida()).thenReturn(LocalDate.now());
+		
+        // Configurar comportamiento del mock
 	}
 	@Test
 	void testDatosOrden() {
@@ -73,12 +93,13 @@ class OrdenTestCase {
 		miOrden.crearServiciosACobrar();
 		
 		assertFalse(miOrden.getServiciosOrden().isEmpty());
+		//assertEquals(10,miOrden.getServiciosOrden().size());
 	}
 	
 	
 	 /* Solo se puede crear los servicios una vez
 	 * */
-	/*
+	
 	@Test
 	void testComprobacionDeServicios() {
 		miOrden.crearServiciosACobrar();
@@ -87,5 +108,16 @@ class OrdenTestCase {
 		assertThrows(Exception.class, () -> {
 			miOrden.crearServiciosACobrar();
 		});
-	}*/
+	}
+	
+	@Test
+	void verificarInteraccionConVisitanteTest() {
+		miOrden.accept(visitanteReporter);
+		verify(visitanteReporter,times(1)).visitOrden(miOrden);
+	}
+	@Test 
+	void verificarInteraccionViaje() {
+		assertTrue(miOrden.fechaDeSalida() instanceof LocalDateTime);
+		assertTrue(miOrden.fechaDeLlegadaA(terminalDumb) instanceof LocalDateTime);
+	}
 }
