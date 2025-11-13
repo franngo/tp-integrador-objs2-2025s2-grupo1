@@ -3,6 +3,7 @@ package ar.edu.unq.po2.terminal_portuaria;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -467,8 +468,14 @@ public class TerminalPortuaria implements TerminalObservadora {
 	 * 
 	 * @param 
 	 */
-	public LocalDateTime proximaFechaHacia(TerminalPortuaria terminalPortuaria, Buque buque) {
-		return null;
+	public LocalDateTime proximaFechaHacia(TerminalPortuaria destino, Buque buque) {
+		
+		List<Viaje> vs = new ArrayList<Viaje>();
+		this.navierasRegistradas.stream().forEach((n) -> vs.addAll(n.viajesQueUnanConBuque(this, destino, buque)));
+		
+		Viaje vDef = vs.stream().min(Comparator.comparing(v -> v.fechaDeLlegadaATerminal(this))).get();
+		
+		return vDef.fechaDeLlegadaATerminal(this);
 		
 	}
 	

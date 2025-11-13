@@ -71,5 +71,19 @@ public class Naviera {
 		return d;
 		
 	}
+	
+	public List<Viaje> viajesQueUnanConBuque(TerminalPortuaria t1, TerminalPortuaria t2, Buque buque) {
+		
+		List<Viaje> vs = viajes.stream().
+				filter((v) -> v.esViajeQueUneA(t1, t2)).
+				toList();
+		
+		List<Viaje> vsDef = vs.stream().
+				filter((v) -> v.getBuque().equals(buque)).
+				toList();
+		
+		return vsDef;
+		
+	}
 
 }
