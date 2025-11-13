@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.empresa_transportista.EmpresaTransportista;
 import ar.edu.unq.po2.naviera.Naviera;
 import ar.edu.unq.po2.orden.Orden;
+import ar.edu.unq.po2.tramo.Tramo;
 import ar.edu.unq.po2.viaje.Viaje;
 
 /**
@@ -116,12 +118,27 @@ class TerminalPortuariaTest {
 	
 	@Test
 	public void testFuncionamientoCircuitoDeImportacion() {
-		/* Viaje viajeElegido = terminalGestionada.buscarViaje();
-		Camion camionContratado = andreani.contratarCamion();
-		Chofer choferContratado = andreani.contratarChofer();
-		Container container = new Dry(null, 0, 0, 0, 0);
+		// Setup
+		TerminalPortuaria terminalMV = mock(TerminalPortuaria.class);
+		Tramo tramoCircuitoBuque = new Tramo(terminalGestionada, terminalMV, Duration.ofDays(1), 10000);
+		List<Tramo> tramosCircuitoBuque = new ArrayList<>();
+		tramosCircuitoBuque.add(tramoCircuitoBuque);
+		CircuitoMaritimo circuitoBuque = new CircuitoMaritimo(tramosCircuitoBuque);
 		
-		Orden orden = terminalGestionada.generarOrden(camionContratado, choferContratado, container, viajeElegido); */
+		Coordenada coordenadasBuque = new Coordenada(-1334.6412, -9458.3439);
+		List<Orden> ordenes = new ArrayList<Orden>();
+		Buque buqueImportaciones = new Buque(coordenadasBuque, ordenes, "La bestia");
+		Viaje viajeBuque = new Viaje(LocalDateTime.now().minusDays(1), circuitoBuque, buqueImportaciones);
+		Orden ordenBuque = new Orden(camionMV, choferMV, containerMV, viajeBuque, shipperMV);
+		ordenes.add(ordenBuque);
+		camionMV.cambiarOrdenActualPor(null);
+
+		// Exercise
+		buqueImportaciones.iniciarViaje(viajeBuque);
+		buqueImportaciones.avanzarHacia(-24.6412, -38.3439);
+		buqueImportaciones.avanzarHacia(-34.6412, -58.3439);
+		terminalGestionada.trabajarEnBuque(buqueImportaciones);
+		camionMV.retirarImportacionDe(terminalGestionada, choferMV, consigneeMV);
 	}
 	
 	@Test
