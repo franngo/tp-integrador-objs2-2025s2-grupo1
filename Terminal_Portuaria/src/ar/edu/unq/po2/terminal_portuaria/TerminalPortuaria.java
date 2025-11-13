@@ -35,9 +35,10 @@ import ar.edu.unq.po2.viaje.Viaje;
 * Describe una terminal portuaria.
 * @author Benjamin Maldonado 
 * @author Franco Oreskovic.
+* @author Matias Sanchez.
 */
 
-public class TerminalPortuaria implements TerminalObservadora {
+public class TerminalPortuaria {
 	private Coordenada coordenada;
 	private GeneradorDeReportes generadorReportes;
 	
@@ -53,8 +54,7 @@ public class TerminalPortuaria implements TerminalObservadora {
 	
 	private BuscadorDeCircuito buscadorDeCircuito;
 	private BuscadorDeViaje buscadorDeViaje;
-	
-	List<Map<Cliente,String>> mailsAEnviar;
+	List<Map<Cliente, String>> mailsAEnviar;
   	
 	/**
 	 * @param coordenada son las coordenadas en donde se encuentra geográficamente la Terminal Portuaria.
@@ -170,34 +170,41 @@ public class TerminalPortuaria implements TerminalObservadora {
 		ordenesDeImportacion.remove(orden);
 	}
 	
-	void cobrarServicioConsignee(Orden orden) {
+	/**
+	 * Cobra los servicios al consignee de la orden dada.
+	 * @param orden es la orden donde se le cobra al consignee de la misma los servicios.
+	 */
+	public void cobrarServicioConsignee(Orden orden) {
 		String factura = this.generarFacturaServicios(orden,orden.getConsignee());
 		orden.getConsignee().recibirMail(factura);
 	}
 	
-	private String generarFacturaServicios(Orden orden,Cliente cliente) {
-		 StringBuilder desgloceConceptos = new StringBuilder();
+	/**
+	 * Genera la factura de servicios en base a la orden y el cliente dados
+	 * @param orden es la orden a facturar los servicios.
+	 * @param cliente es a quien se le cobran los servicios.
+	 */
+	private String generarFacturaServicios(Orden orden, Cliente cliente) {
+	 	StringBuilder desgloceConceptos = new StringBuilder();
 
-		    desgloceConceptos.append("Estimado/a ").append(cliente.nombreCliente()).append(",\n\n");
-		    desgloceConceptos.append("A continuación se detalla el desglose de los servicios asociados a su orden:\n\n");
+	    desgloceConceptos.append("Estimado/a ").append(cliente.nombreCliente()).append(",\n\n");
+	    desgloceConceptos.append("A continuación se detalla el desglose de los servicios asociados a su orden:\n\n");
 
-		    desgloceConceptos.append(String.format("%-30s %10s\n", "Servicio", "Precio"));
-		    desgloceConceptos.append("--------------------------------------------------\n");
+	    desgloceConceptos.append(String.format("%-30s %10s\n", "Servicio", "Precio"));
+	    desgloceConceptos.append("--------------------------------------------------\n");
 
-		    double total = 0.0;
-		    for (Servicio serv : orden.getServiciosOrden()) {
-		        desgloceConceptos.append(String.format("%-30s $%10.2f\n", serv.tipoServicio(), serv.costoServicio(this, LocalDateTime.now())));
-		        
-		    }
+	    double total = 0.0;
+	    for (Servicio serv : orden.getServiciosOrden()) {
+	        desgloceConceptos.append(String.format("%-30s $%10.2f\n", serv.tipoServicio(), serv.costoServicio(this, LocalDateTime.now())));
+	    }
 
-		    desgloceConceptos.append("--------------------------------------------------\n");
-		    desgloceConceptos.append(String.format("%-30s $%10.2f\n", "TOTAL", total));
-		    desgloceConceptos.append("\nGracias por confiar en nosotros.\n");
-		    desgloceConceptos.append("Atentamente,\n");
-		    desgloceConceptos.append("Equipo de Logística\n");
-		    
-		    return desgloceConceptos.toString();
-		
+	    desgloceConceptos.append("--------------------------------------------------\n");
+	    desgloceConceptos.append(String.format("%-30s $%10.2f\n", "TOTAL", total));
+	    desgloceConceptos.append("\nGracias por confiar en nosotros.\n");
+	    desgloceConceptos.append("Atentamente,\n");
+	    desgloceConceptos.append("Equipo de Logística\n");
+	    
+	    return desgloceConceptos.toString();
 	}
 
 	/**
@@ -336,8 +343,6 @@ public class TerminalPortuaria implements TerminalObservadora {
 		buque.cargarOrdenes(ordenes);
 	}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
 	/**
 	 * Genera los reportes de las importaciones y exportaciones realizadas con el buque dado.
 	 * @param buque es el buque que se toma de referencia para realizar los reportes.
@@ -366,8 +371,6 @@ public class TerminalPortuaria implements TerminalObservadora {
 									   .toList();
 		return aDevolver;
 	}
-	
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
 	 * Finaliza los trabajos de la terminal en el buque dado, terminando de cargar y descargar ordenes del mismo.
@@ -398,7 +401,6 @@ public class TerminalPortuaria implements TerminalObservadora {
 	 * Registra la empresa transportista dada en la Terminal Portuaria.
 	 * @param empresaTransportista es la empresa transportista a registrar en la Terminal Portuaria.
 	 */
-
 	public void registrarEmpresaTransportista(EmpresaTransportista empresaTransportista) {
 		this.empresasTransportistasRegistradas.add(empresaTransportista);
 	}
@@ -438,7 +440,10 @@ public class TerminalPortuaria implements TerminalObservadora {
 		}
 	}
 	
-	//Creado únicamente para poder mockear la dependencia y llevar a cabo el testing de la clase.
+	/**
+	 * Settea el buscador de viaje de la terminal por el dado.
+	 * @param buscador es el bucador de viajes a settear.
+	 */
 	public void setBuscadorDeViaje(BuscadorDeViaje buscador) {
 		this.buscadorDeViaje = buscador;
 	}
@@ -473,23 +478,18 @@ public class TerminalPortuaria implements TerminalObservadora {
 			throw new RuntimeException("El servicio dado no se encuentra disponible en la terminal.");
 		}
 	}
-	
-	
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * 
-	 * @param 
+	 * Settea el buscador de circuito de la terminal por el dado.
+	 * @param buscador es el bucador de circuitos a settear.
 	 */
 	public void setBuscadorDeCircuito(BuscadorDeCircuito buscador) {
 		this.buscadorDeCircuito = buscador;
 	}
 	
 	/**
-	 * 
-	 * @param 
+	 * Busca un circuito en base a la terminal portuaria de destino.
+	 * @param destino es la terminal portuaria 
 	 */
 	public CircuitoMaritimo buscarCircuito(TerminalPortuaria destino) {
 		List<CircuitoMaritimo> cs = new ArrayList<CircuitoMaritimo>();
@@ -499,45 +499,97 @@ public class TerminalPortuaria implements TerminalObservadora {
 	}
 	
 	/**
-	 * 
-	 * @param 
+	 * Devuelve una lista de viajes que satisfacen la condición dada.
+	 * @param condicion es la condición con la cual se filtran los viajes.
 	 */
 	public List<Viaje> buscarViaje(Condicion condicion) {
-		
 		List<Viaje> vs = new ArrayList<Viaje>();
 		this.navierasRegistradas.stream().forEach((n) -> vs.addAll(n.viajesQueIncluyenOrigen(this)));
 		//Obtenemos la lista de Viajes en los que esta terminal es puerto origen en alguno de los tramos, lo que
 		//significa que se puede unir con alguna otra terminal B.
 		
 		return buscadorDeViaje.buscarViaje(condicion, vs);
-		
 	}
 	
 	/**
-	 * 
-	 * @param 
+	 * Describe el tiempo que hay entre dos terminales en la naviera dada.
+	 * @param terminalPortuaria es la segunda terminal a comparar.
+	 * @param naviera es la naviera en la que se consulta.
 	 */
 	public Duration tiempoEntre(TerminalPortuaria terminalPortuaria, Naviera naviera) {
-		
 		return naviera.tiempoEntre(this, terminalPortuaria);
-		
 	}
 	
 	/**
-	 * 
-	 * @param 
+	 * Describe la proxima fecha hacia la terminal dada con el buque dado.
+	 * @param destino es la terminal que se toma como destino.
+	 * @param buque es el buque que se toma de referencia.
 	 */
 	public LocalDateTime proximaFechaHacia(TerminalPortuaria destino, Buque buque) {
-		
 		List<Viaje> vs = new ArrayList<Viaje>();
 		this.navierasRegistradas.stream().forEach((n) -> vs.addAll(n.viajesQueUnanConBuque(this, destino, buque)));
 		
 		Viaje vDef = vs.stream().min(Comparator.comparing(v -> v.fechaDeLlegadaATerminal(this))).get();
-		//min, al comparar por LocalDate, se queda con la fecha más antigua/alejada en el tiempo respecto a las demás,
-		//o sea, la próxima (pensándolo desde el punto de vista de que ninguna de esas fechas sucedieron aún).
+		// min, al comparar por LocalDate, se queda con la fecha más antigua/alejada en el tiempo respecto a las demás,
+		// o sea, la próxima (pensándolo desde el punto de vista de que ninguna de esas fechas sucedieron aún).
 		
 		return vDef.fechaDeLlegadaATerminal(this);
+	}
+	
+	/**
+	 * El buque dado notifica la salida de la terminal.
+	 * @param miBuque es buque que notifica la salida de la terminal.
+	 */
+	public void notificarArribo(Buque miBuque) {
+		List <Orden> ordenesAvisar = this.ordenesMail(miBuque.getViajeActual());
+		ordenesAvisar.stream().forEach(orden -> this.enviarMailLlegada(orden));
+	}
+	
+	/**
+	 * Describe las ordenes que debe enviarle mails.
+	 * @param viaje es el viaje que se toma de referencia para filtrar las ordenes.
+	 */
+	public List<Orden> ordenesMail(Viaje viaje){
+		return ordenesDeImportacion.stream()
+	            				   .filter(orden -> orden.getViaje() == viaje)
+	            				   .collect(Collectors.toList());
+	}
+    
+	/**
+	 * Envia mail de llegada a los consignees de la orden dada.
+	 * @param orden es la orden a tomar de referencia para enviar los mails.
+	 */
+	public void enviarMailLlegada(Orden orden) {
+		String cuerpoMail = "Estimado/a " + orden.getConsignee().nombreCliente() + ",\n\n" +
+			    "Le informamos que su carga asociada al contenedor " + orden.getCarga().getIdConnteiner() +
+			    " está próxima a llegar a destino.\n\n" +
+			    "Por favor, manténgase atento a las próximas actualizaciones.\n\n" +
+			    "Saludos cordiales,\n" +
+			    "Departamento de Logística\n" +
+			    "Puerto Internacional de Buenos Aires";
 		
+		 orden.getConsignee().recibirMail(cuerpoMail);
+	}
+	
+	/**
+	 * El buque dado notifica la salida de la terminal.
+	 * @param miBuque es buque que notifica la salida de la terminal.
+	 */
+	public void notificarSalidaTerminal(Buque miBuque) {
+	    mailsAEnviar.forEach(mapa -> {
+	    		Map.Entry<Cliente, String> entrada = mapa.entrySet().iterator().next();
+		        Cliente cliente = entrada.getKey();
+		        String mensaje = entrada.getValue();
+
+		        cliente.recibirMail(mensaje);
+		    });
+	}
+
+	/**
+	 * Describe la cantidad de horas de almacenaje.
+	 */
+	public double limiteHorasAlmacenaje() {
+		return 24;
 	}
 	
 	// #################################### MÉTODOS AUXILIARES ################################## \\
@@ -551,100 +603,5 @@ public class TerminalPortuaria implements TerminalObservadora {
 	@Override
 	public int hashCode() {
 		return coordenada.hashCode();
-	}
-
-		
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	
-	// METODOS PARA LO QUE  ES EL BUQUE, REFACTORIZAR UNA VEZ ESTEN IMPLEMENTADOS
-	//A PARTIR DE AQUI ES TODO LO QUE HACE LA TERMINAL CUANDO EL BUQUE ESTA LLEGANDO
-	/*
-	public void actualizar(Buque buque) {
-		
-		
-	}
-	
-	public boolean puedeIniciarWorking(Buque miBuque) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	public boolean partidaHabilitada(Buque miBuque) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	*/
-	
-	
-	
-	
-	/**
-	 * 
-	 * @param 
-	 */
-	@Override
-	public void adscribirObservado(Buque buque) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-
-	
-	
-
-	/**
-	 * 
-	 * @param 
-	 */
-	public void notificarArribo(Buque miBuque) {
-		List <Orden> ordenesAvisar = this.ordenesMail(miBuque.getViajeActual());
-		ordenesAvisar.stream().forEach(orden -> this.enviarMailLlegada(orden));
-	}
-	
-	public List<Orden> ordenesMail(Viaje viaje){
-		 return ordenesDeImportacion.stream()
-	            .filter(orden -> orden.getViaje() == viaje)
-	            .collect(Collectors.toList());
-	}
-    
-	
-	public void enviarMailLlegada(Orden orden) {
-		String cuerpoMail = "Estimado/a " + orden.getConsignee().nombreCliente() + ",\n\n" +
-			    "Le informamos que su carga asociada al contenedor " + orden.getCarga().getIdConnteiner() +
-			    " está próxima a llegar a destino.\n\n" +
-			    "Por favor, manténgase atento a las próximas actualizaciones.\n\n" +
-			    "Saludos cordiales,\n" +
-			    "Departamento de Logística\n" +
-			    "Puerto Internacional de Buenos Aires";
-		
-		orden.getConsignee().recibirMail(cuerpoMail);
-	}
-	/**
-	 * 
-	 * @param 
-	 */
-	
-		public void notificarSalidaTerminal(Buque miBuque) {
-		    mailsAEnviar.forEach(mapa -> {
-		        Map.Entry<Cliente, String> entrada = mapa.entrySet().iterator().next();
-		        Cliente cliente = entrada.getKey();
-		        String mensaje = entrada.getValue();
-
-		        cliente.recibirMail(mensaje);
-		    });
-		}
-		
-	
-
-	/**
-	 * 
-	 * @param 
-	 */
-	public double limiteHorasAlmacenaje() {
-		// TODO Auto-generated method stub
-		return 24;
 	}
 }
