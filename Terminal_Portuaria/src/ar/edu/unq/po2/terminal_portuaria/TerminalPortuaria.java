@@ -419,12 +419,12 @@ public class TerminalPortuaria implements TerminalObservadora{
 		
 	}
 	
-	public CircuitoMaritimo buscarCircuito(TerminalPortuaria terminalPortuaria) {
+	public CircuitoMaritimo buscarCircuito(TerminalPortuaria destino) {
 		
 		List<CircuitoMaritimo> cs = new ArrayList<CircuitoMaritimo>();
-		this.navierasRegistradas.stream().forEach((n) -> cs.addAll(n.circuitosQueUnan(this, terminalPortuaria)));
+		this.navierasRegistradas.stream().forEach((n) -> cs.addAll(n.circuitosQueUnan(this, destino)));
 		
-		return buscadorDeCircuito.buscarMejorCircuito(cs, this, terminalPortuaria);
+		return buscadorDeCircuito.buscarMejorCircuito(cs, this, destino);
 		
 	}
 	

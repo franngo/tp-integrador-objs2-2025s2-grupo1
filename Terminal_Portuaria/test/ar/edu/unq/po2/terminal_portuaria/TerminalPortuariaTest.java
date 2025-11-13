@@ -1,15 +1,20 @@
 package ar.edu.unq.po2.terminal_portuaria;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ar.edu.unq.po2.buque.Buque;
+import ar.edu.unq.po2.buscador_de_circuito.BuscadorDeCircuito;
 import ar.edu.unq.po2.camion.Camion;
 import ar.edu.unq.po2.chofer.Chofer;
 import ar.edu.unq.po2.circuito_maritimo.CircuitoMaritimo;
@@ -30,6 +35,7 @@ import ar.edu.unq.po2.viaje.Viaje;
 */
 
 class TerminalPortuariaTest {
+	
 	TerminalPortuaria terminalGestionada;
 	
 	@BeforeEach
@@ -137,4 +143,55 @@ class TerminalPortuariaTest {
 		terminalGestionada.registrarEmpresaTransportista(empresaTransportista);
 		terminalGestionada.registrarNaviera(naviera);
 	}
+	
+	@Test
+	public void buscarCircuito() {
+		
+		Naviera naviera1 = mock(Naviera.class);
+		Naviera naviera2 = mock(Naviera.class);
+		Naviera naviera3 = mock(Naviera.class);
+		
+		terminalGestionada.registrarNaviera(naviera1);
+		terminalGestionada.registrarNaviera(naviera2);
+		terminalGestionada.registrarNaviera(naviera3);
+		
+		TerminalPortuaria destino = mock(TerminalPortuaria.class);
+		
+		List<CircuitoMaritimo> cs1 = new ArrayList<CircuitoMaritimo>();
+		CircuitoMaritimo c1 = mock(CircuitoMaritimo.class);
+		CircuitoMaritimo c2 = mock(CircuitoMaritimo.class);
+		cs1.add(c1);
+		cs1.add(c2);
+		
+		List<CircuitoMaritimo> cs2 = new ArrayList<CircuitoMaritimo>();
+		CircuitoMaritimo c3 = mock(CircuitoMaritimo.class);
+		cs2.add(c3);
+		
+		
+		List<CircuitoMaritimo> cs3 = new ArrayList<CircuitoMaritimo>();
+		CircuitoMaritimo c4 = mock(CircuitoMaritimo.class);
+		CircuitoMaritimo c5 = mock(CircuitoMaritimo.class);
+		cs3.add(c4);
+		cs3.add(c5);
+		
+		when(naviera1.circuitosQueUnan(terminalGestionada, destino)).thenReturn(cs1);
+		when(naviera2.circuitosQueUnan(terminalGestionada, destino)).thenReturn(cs2);
+		when(naviera3.circuitosQueUnan(terminalGestionada, destino)).thenReturn(cs3);
+		
+		BuscadorDeCircuito buscador = mock(BuscadorDeCircuito.class);
+		
+		terminalGestionada.setBuscadorDeCircuito(buscador);
+		
+		List<CircuitoMaritimo> csDef = new ArrayList<CircuitoMaritimo>();
+		csDef.addAll(cs1);
+		csDef.addAll(cs2);
+		csDef.addAll(cs3);
+		
+		when(buscador.buscarMejorCircuito(argThat(lista -> lista.containsAll(csDef)), eq(terminalGestionada), eq(destino))).
+		thenReturn(c4);
+		
+		assertEquals(c4, terminalGestionada.buscarCircuito(destino));
+		
+	}
+	
 }
