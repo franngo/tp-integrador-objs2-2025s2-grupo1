@@ -9,6 +9,8 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ar.edu.unq.po2.cliente.Cliente;
+
 class CargaBLCompuestoTestCase {
    
 	CargaBL carga1;
@@ -52,6 +54,11 @@ class CargaBLCompuestoTestCase {
 	@Test
 	void pesoDeCargaTest() {
 		assertEquals(70d,cargaBLC.getPeso());
+	}
+	
+	@Test 
+	void clientesEnCarga() {
+		assertTrue(cargaBLC.getDuenioConsignee() instanceof Cliente);
 	}
 
 }
