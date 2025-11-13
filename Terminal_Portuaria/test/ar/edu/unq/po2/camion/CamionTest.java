@@ -16,7 +16,6 @@ import ar.edu.unq.po2.cliente.*;
 import ar.edu.unq.po2.container.*;
 import ar.edu.unq.po2.empresa_transportista.EmpresaTransportista;
 import ar.edu.unq.po2.orden.Orden;
-import ar.edu.unq.po2.orden.OrdenDeExportacion;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 import ar.edu.unq.po2.viaje.Viaje;
 
@@ -98,12 +97,12 @@ class CamionTest {
         Buque buque = mock(Buque.class);
         Viaje viaje = new Viaje(LocalDateTime.now().plusHours(2), circuito, buque);
 
-        Cliente consignee = new Consignee("Roberto Paniagua");
-        Cliente shipper = new Shipper("Benjamin Maldonado");
+        Cliente consignee = new Cliente("Roberto Paniagua");
+        Cliente shipper = new Cliente("Benjamin Maldonado");
         Chofer chofer = new Chofer("Jose Fernandez", "38.091.105");
         Container container = new Reefer(consignee, 1100, 4500, 3050, 25000, 15);
         
-        Orden orden = new OrdenDeExportacion(scaniaR580, chofer, container, viaje, shipper);
+        Orden orden = new Orden(scaniaR580, chofer, container, viaje, shipper);
         
         andreani.añadirCamion(scaniaR580);
         andreani.añadirChofer(chofer);
@@ -125,7 +124,7 @@ class CamionTest {
         TerminalPortuaria terminal = mock(TerminalPortuaria.class);
         EmpresaTransportista andreani = new EmpresaTransportista();
         
-        Cliente consignee = new Consignee("Roberto Paniagua");
+        Cliente consignee = new Cliente("Roberto Paniagua");
         Chofer chofer = new Chofer("Jose Fernandez", "38.091.105");
         
         andreani.añadirCamion(scaniaR580);
@@ -143,7 +142,7 @@ class CamionTest {
 		// Setup
         TerminalPortuaria terminal = mock(TerminalPortuaria.class);
         Chofer chofer = new Chofer("Jose Fernandez", "38.091.105");
-        Cliente consignee = new Consignee("Roberto Paniagua");
+        Cliente consignee = new Cliente("Roberto Paniagua");
 
         // Exercise
         volvoFH460.retirarImportacionDe(terminal, chofer, consignee);
@@ -163,7 +162,7 @@ class CamionTest {
         
         Container container = mock(Container.class);
         Viaje viaje = mock(Viaje.class);
-        Orden orden = new OrdenDeExportacion(volvoFH460, chofer, container, viaje, shipper);
+        Orden orden = new Orden(volvoFH460, chofer, container, viaje, shipper);
         
         // Exercise
         volvoFH460.cambiarOrdenActualPor(orden);

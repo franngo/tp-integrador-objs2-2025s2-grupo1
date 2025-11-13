@@ -12,8 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
+import ar.edu.unq.po2.cliente.Cliente;
 
-import ar.edu.unq.po2.cliente.Consignee;
 
 
 
@@ -24,11 +24,11 @@ class ReeferTestCase {
     
 	Reefer miRefeer; 
 	@Mock
-	Consignee dumbCliente;
+	Cliente dumbCliente;
 	ConcreteVisitorContainer mockVisitor; 
 	@BeforeEach
 	void setUp()  {
-		dumbCliente = mock(Consignee.class);
+		dumbCliente = mock(Cliente.class);
 		when(dumbCliente.nombreCliente()).thenReturn("Matias");
 	
 		miRefeer= new Reefer(dumbCliente,10d,20d,30d,400d, 10);

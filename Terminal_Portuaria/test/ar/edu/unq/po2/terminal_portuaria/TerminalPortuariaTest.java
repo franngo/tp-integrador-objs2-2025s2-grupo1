@@ -19,14 +19,12 @@ import ar.edu.unq.po2.camion.Camion;
 import ar.edu.unq.po2.chofer.Chofer;
 import ar.edu.unq.po2.circuito_maritimo.CircuitoMaritimo;
 import ar.edu.unq.po2.cliente.Cliente;
-import ar.edu.unq.po2.cliente.Consignee;
 import ar.edu.unq.po2.container.Container;
 import ar.edu.unq.po2.container.Reefer;
 import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.empresa_transportista.EmpresaTransportista;
 import ar.edu.unq.po2.naviera.Naviera;
 import ar.edu.unq.po2.orden.Orden;
-import ar.edu.unq.po2.orden.OrdenDeExportacion;
 import ar.edu.unq.po2.viaje.Viaje;
 
 /**
@@ -59,7 +57,7 @@ class TerminalPortuariaTest {
 		CircuitoMaritimo circuitoMV = mock(CircuitoMaritimo.class);
 		Buque buqueMSC = mock(Buque.class);
 		Viaje viajeMV = new Viaje(LocalDateTime.now().plusDays(2), circuitoMV, buqueMSC);
-		Cliente consigneeMV = new Consignee("Ricardo Fort");
+		Cliente consigneeMV = new Cliente("Ricardo Fort");
 		Container containerMV = new Reefer(consigneeMV, 1000, 4750, 2950, 15000, 20);
 		Chofer choferMV = andreani.contratarChofer();
 		Camion camionMV = andreani.contratarCamion();
@@ -72,7 +70,7 @@ class TerminalPortuariaTest {
 		CircuitoMaritimo circuitoBA = mock(CircuitoMaritimo.class);
 		Buque buqueEvergreen = mock(Buque.class);
 		Viaje viajeBA = new Viaje(LocalDateTime.now().plusHours(2), circuitoBA, buqueEvergreen);
-		Cliente consigneeBA = new Consignee("Roberto Paniagua");
+		Cliente consigneeBA = new Cliente("Roberto Paniagua");
 		Chofer choferBA = andreani.contratarChofer();
 		Camion camionBA = andreani.contratarCamion();
 		Container containerBA = new Reefer(consigneeBA, 1100, 4500, 3050, 25000, 15);
