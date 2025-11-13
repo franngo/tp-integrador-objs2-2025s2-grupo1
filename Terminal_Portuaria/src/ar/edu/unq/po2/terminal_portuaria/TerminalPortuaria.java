@@ -26,6 +26,7 @@ import ar.edu.unq.po2.generadorDeReportes.*;
 import ar.edu.unq.po2.naviera.Naviera;
 import ar.edu.unq.po2.orden.*;
 import ar.edu.unq.po2.servicio.PrecioServicioTerminal;
+import ar.edu.unq.po2.servicio.Servicio;
 import ar.edu.unq.po2.viaje.Viaje;
 
 /**
@@ -159,9 +160,40 @@ public class TerminalPortuaria implements TerminalObservadora {
 	public void retirarImportacion(Camion camion, Chofer chofer, Cliente consignee) {
 		this.validarRetirarImportacion(camion, chofer, consignee);
 		Orden orden = this.ordenDeConsignee(consignee);
+		this.cobrarServicioConsignee(orden);
 		ordenesDeImportacion.remove(orden);
 	}
 	
+	void cobrarServicioConsignee(Orden orden) {
+		String factura = this.generarFacturaServicios(orden);
+		orden.getConsignee().recibirMail(factura);
+	}
+	
+	private String generarFacturaServicios(Orden orden) {
+		 StringBuilder desgloceConceptos = new StringBuilder();
+
+		    desgloceConceptos.append("Estimado/a ").append(orden.getConsignee().nombreCliente()).append(",\n\n");
+		    desgloceConceptos.append("A continuación se detalla el desglose de los servicios asociados a su orden:\n\n");
+
+		    desgloceConceptos.append(String.format("%-30s %10s\n", "Servicio", "Precio"));
+		    desgloceConceptos.append("--------------------------------------------------\n");
+
+		    double total = 0.0;
+		    for (Servicio serv : orden.getServiciosOrden()) {
+		        desgloceConceptos.append(String.format("%-30s $%10.2f\n", serv.tipoServicio(), serv.costoServicio(this, LocalDateTime.now())));
+		        
+		    }
+
+		    desgloceConceptos.append("--------------------------------------------------\n");
+		    desgloceConceptos.append(String.format("%-30s $%10.2f\n", "TOTAL", total));
+		    desgloceConceptos.append("\nGracias por confiar en nosotros.\n");
+		    desgloceConceptos.append("Atentamente,\n");
+		    desgloceConceptos.append("Equipo de Logística\n");
+		    
+		    return desgloceConceptos.toString();
+		
+	}
+
 	/**
 	 * Valida si el consignee dado puede retirar una importación registrada a su nombre en la terminal, en base al camión y chofer dados.
 	 * @param camion es el camion informado por el consignee que va a retirar la carga.
@@ -229,9 +261,11 @@ public class TerminalPortuaria implements TerminalObservadora {
 	public void trabajarEnBuque(Buque buque) {
 		this.validarTrabajosEnBuque(buque); // Valida que puede trabajar en el buque (misma coordenada).
 		this.iniciarTrabajos(buque); 	// Inicia la descarga y carga de ordenes en el buque.
-		this.generarReportes(buque); 	// Genera los reportes en base a lo cargado y descargado del buque.
+		this.generarReportes(buque); // Genera los reportes en base a lo cargado y descargado del buque.
 		this.finalizarTrabajos(buque);  // Finaliza la carga y descarga de ordenes en el buque, borrando de ambos lados lo cargado y descargado respectivamente.
 	}
+	
+	
 	
 	/**
 	 * Valida que la terminal puede trabajar con el buque dado.
