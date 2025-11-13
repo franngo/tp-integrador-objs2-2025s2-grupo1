@@ -474,6 +474,8 @@ public class TerminalPortuaria implements TerminalObservadora {
 		this.navierasRegistradas.stream().forEach((n) -> vs.addAll(n.viajesQueUnanConBuque(this, destino, buque)));
 		
 		Viaje vDef = vs.stream().min(Comparator.comparing(v -> v.fechaDeLlegadaATerminal(this))).get();
+		//min, al comparar por LocalDate, se queda con la fecha más antigua/alejada en el tiempo respecto a las demás,
+		//o sea, la próxima (pensándolo desde el punto de vista de que ninguna de esas fechas sucedieron aún).
 		
 		return vDef.fechaDeLlegadaATerminal(this);
 		

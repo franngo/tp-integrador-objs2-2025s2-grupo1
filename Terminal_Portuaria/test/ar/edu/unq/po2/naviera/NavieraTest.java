@@ -154,5 +154,34 @@ public class NavieraTest {
 		assertEquals(Duration.ofHours(8), naviera.tiempoEntre(t1, t2));
 		
 	}
+	
+	@Test
+	public void viajesQueUnanConBuque() {
+		
+		naviera.publicarViaje(LocalDateTime.now(), circuito1, buque3);
+		naviera.publicarViaje(LocalDateTime.now(), circuito2, buque2);
+		naviera.publicarViaje(LocalDateTime.now(), circuito3, buque1);
+		
+		List<Viaje> vs = naviera.cronograma();
+		
+		Viaje v1 = vs.get(0);
+		Viaje v2 = vs.get(1);
+		Viaje v3 = vs.get(2);
+		
+		TerminalPortuaria t1 = mock(TerminalPortuaria.class);
+		
+		when(v1.tieneOrigen(t1)).thenReturn(true);
+		when(v2.tieneOrigen(t1)).thenReturn(false);
+		when(v3.tieneOrigen(t1)).thenReturn(true);
+		
+		List<Viaje> vsCumplen = naviera.viajesQueIncluyenOrigen(t1);
+		
+		assertEquals(2, vsCumplen.size());
+		
+		assertTrue(vsCumplen.contains(v1));
+		assertFalse(vsCumplen.contains(v2));
+		assertTrue(vsCumplen.contains(v3));
+		
+	}
 
 }
