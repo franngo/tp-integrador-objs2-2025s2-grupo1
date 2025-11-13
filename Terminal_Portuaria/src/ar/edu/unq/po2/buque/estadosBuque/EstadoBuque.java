@@ -12,7 +12,7 @@ public abstract class EstadoBuque {
     
     public EstadoBuque(Buque miBuque) {
 		this.miBuque = miBuque;
-		this.terminalAArribar=miBuque.terminalAArribar();
+		this.terminalAArribar = miBuque.terminalAArribar();
 	}
     
 	public abstract void notificarEstado();
@@ -22,27 +22,25 @@ public abstract class EstadoBuque {
 	      if(this.debeCambiarDeFase()) {
 	    	  	this.modificarEstadoBuque();
 	      }
-		
 	}
 	
-	public abstract boolean debeCambiarDeFase();
-	public abstract void modificarEstadoBuque();
+	protected Buque miBuque() {
+		return miBuque;
+	}
 	
-	protected Buque miBuque() {return miBuque;}
-	protected TerminalPortuaria terminalAArribar() {return terminalAArribar;}
+	protected TerminalPortuaria terminalAArribar() {
+		return terminalAArribar;
+	}
+
+	public void puedeIniciarWorking() {}
+	
+	public void puedePartir() {}
+
+	public abstract boolean debeCambiarDeFase();
+	
+	public abstract void modificarEstadoBuque();
 
 	public abstract void avanzar(double latitud, double longitud);
-		// TODO Auto-generated method stub
-
-	public void puedeIniciarWorking() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void puedePartir() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	// IMPLEMENTACIÓN BENJA
 	
