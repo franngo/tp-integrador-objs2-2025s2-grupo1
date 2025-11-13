@@ -15,6 +15,7 @@ public class OutBound extends EstadoBuque {
 
 	@Override
 	public void modificarEstadoBuque() {
+		  
 		  miBuque.establecerEstado(new Inbound(miBuque));
 	}
 	

@@ -74,5 +74,17 @@ public class ViajeTest {
 		assertEquals(terminal5, viaje.puertoDestino());
 		
 	}
+	
+	@Test
+	public void proximoDestino() {
+		
+		TerminalPortuaria terminal4 = mock(TerminalPortuaria.class);
+		
+		when(buque.terminalAArribar()).thenReturn(terminal4);
+		when(circuito.proximoDestino(terminal4)).thenReturn(terminal5);
+		
+		assertEquals(terminal5, viaje.proximoDestino());
+		
+	}
 
 }
