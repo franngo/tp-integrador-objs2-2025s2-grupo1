@@ -22,7 +22,7 @@ public class Working extends EstadoBuque{
 	}
 	
 	public void puedePartir() {
-		this.puedePartir=true;
+		this.puedePartir = true;
 	}
 
 	@Override
@@ -44,19 +44,25 @@ public class Working extends EstadoBuque{
 	// IMPLEMENTACIÓN BENJA
 	
 	@Override
+	public void finalizarTrabajos() {
+   	 	this.puedePartir();
+   	 	this.modificarEstadoBuque();
+	}
+	
+	@Override
 	public void cargarOrdenes(List<Orden> ordenes) {
-		this.miBuque.getOrdenes().addAll(ordenes);
+		miBuque.getOrdenes().addAll(ordenes);
 	}
 
 	@Override
 	public List<Orden> getOrdenesADescargar(TerminalPortuaria terminalPortuaria) {
-		return this.miBuque.getOrdenes().stream()
-									    .filter(o -> terminalPortuaria.equals(o.getViaje().puertoDestino()))
-									    .toList();
+		return miBuque.getOrdenes().stream()
+								   .filter(o -> terminalPortuaria.equals(o.getViaje().puertoDestino()))
+								   .toList();
 	}
 
 	@Override
 	public void finalizarDescargaDeOrdenes(List<Orden> ordenes) {
-		this.miBuque.getOrdenes().removeAll(ordenes);
+		miBuque.getOrdenes().removeAll(ordenes);
 	}
 }

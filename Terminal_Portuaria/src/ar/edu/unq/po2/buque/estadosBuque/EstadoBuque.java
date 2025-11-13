@@ -46,6 +46,14 @@ public abstract class EstadoBuque {
 
 	// IMPLEMENTACIÓN BENJA
 	
+	public void iniciarTrabajos() {
+		throw new RuntimeException("El buque no se encuentra en la terminal");
+	}
+	
+	public void finalizarTrabajos() {
+		throw new RuntimeException("El buque aun no se encuentra en condiciones de partir");
+	}
+	
 	public void cargarOrdenes(List<Orden> ordenes) {
 		throw new RuntimeException("No puede realizar esta acción en este estado.");
 	}

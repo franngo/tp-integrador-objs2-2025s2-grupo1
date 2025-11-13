@@ -2,22 +2,19 @@ package ar.edu.unq.po2.buque;
 
 import java.util.List;
 
-import ar.edu.unq.po2.buque.estadosBuque.Arrived;
-
 import ar.edu.unq.po2.buque.estadosBuque.EstadoBuque;
 import ar.edu.unq.po2.buque.estadosBuque.OutBound;
-import ar.edu.unq.po2.buque.estadosBuque.Working;
 import ar.edu.unq.po2.coordenada.Coordenada;
 import ar.edu.unq.po2.orden.Orden;
 import ar.edu.unq.po2.terminal_portuaria.TerminalPortuaria;
 import ar.edu.unq.po2.viaje.Viaje;
-
 
 /**
 * Describe un buque.
 * @author Matias Sanchez 
 * @author Benjamin Maldonado.
 */
+
 public class Buque implements BuqueObservado{
     List<Orden> ordenes;
     boolean enViaje;
@@ -105,51 +102,35 @@ public class Buque implements BuqueObservado{
 	
 	// IMPLEMENTACIÓN BENJA
      
-	public void iniciarTrabajos() {
-		this.validarIniciarTrabajos();
-		this.obtenerEstado().puedeIniciarWorking();
-		this.obtenerEstado().modificarEstadoBuque();
+	public List<Orden> getOrdenes() {
+		return ordenes;
 	}
-	
-	private void validarIniciarTrabajos() {
-		if(!(this.obtenerEstado() instanceof Arrived)) {
-			throw new RuntimeException("El buque no se encuentra en la terminal");
-		}
+
+	public void iniciarTrabajos() {
+		this.obtenerEstado().iniciarTrabajos();
 	}
    
-     public void finalizarTrabajos() {
-    	 this.validarFinalizarTrabajos();
-    	 this.obtenerEstado().puedePartir();
-    	 this.obtenerEstado().modificarEstadoBuque();
-     }
-     
-     private void validarFinalizarTrabajos() {
-    	 if(!(this.obtenerEstado() instanceof Working)) {
-    		 throw new RuntimeException("El buque aun no se encuentra en condiciones de partir");
-    	 }
-     }
-     
-     public List<Orden> getOrdenes() {
-    	 return ordenes;
-     }
+	public void finalizarTrabajos() {
+		this.obtenerEstado().finalizarTrabajos();
+    }
 
-     public void finalizarDescargaDeOrdenes(List<Orden> ordenes) {
+	public void finalizarDescargaDeOrdenes(List<Orden> ordenes) {
 		this.obtenerEstado().finalizarDescargaDeOrdenes(ordenes);
-	 }
-
-	 public List<Orden> getOrdenesADescargar(TerminalPortuaria terminalPortuaria) {
+	}
+	
+	public List<Orden> getOrdenesADescargar(TerminalPortuaria terminalPortuaria) {
 		return this.obtenerEstado().getOrdenesADescargar(terminalPortuaria);
-	 }
-
-	 public void cargarOrdenes(List<Orden> ordenes) {
-		 this.obtenerEstado().cargarOrdenes(ordenes);
-	 } 
+	}
+	
+	public void cargarOrdenes(List<Orden> ordenes) {
+		this.obtenerEstado().cargarOrdenes(ordenes);
+	} 
 	 
-	 /////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////
      
-     //Cuando termina todo el proceso, el barco deberia cambiar su destino a la proxima terminal
-     // que le indique el viaje. No nos interesa que sucede 
-	 public void arriboConExito() {
-		  this.terminalAArribar = null;
-	 } 
+    //Cuando termina todo el proceso, el barco deberia cambiar su destino a la proxima terminal
+    // que le indique el viaje. No nos interesa que sucede 
+	public void arriboConExito() {
+		this.terminalAArribar = null;
+	} 
 }

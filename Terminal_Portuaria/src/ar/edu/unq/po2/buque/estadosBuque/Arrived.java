@@ -41,4 +41,12 @@ public class Arrived extends EstadoBuque{
 		// en laterminal
 		
 	}
+	
+	// IMPLEMENTACIÓN BENJA
+	
+	@Override
+	public void iniciarTrabajos() {
+		this.puedeIniciarWorking();
+		this.modificarEstadoBuque();
+	}
 }
