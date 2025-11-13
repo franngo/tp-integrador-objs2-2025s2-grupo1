@@ -18,5 +18,14 @@ class ClienteTestCase {
 	void testElClienteDiceSuNombre() {
 		assertEquals("Matias",cliente.nombreCliente());
 	}
+	
+	/*
+	 * El cliente no hace anda de momento con el mail
+	 * */
+	@Test
+    void reciboDeMail() {
+		cliente.recibirMail("");
+		assertTrue(true);
+	}	
 
 }

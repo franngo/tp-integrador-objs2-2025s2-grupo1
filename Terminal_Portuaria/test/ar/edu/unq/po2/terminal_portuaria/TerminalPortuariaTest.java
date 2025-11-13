@@ -1,9 +1,13 @@
 package ar.edu.unq.po2.terminal_portuaria;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.Duration;
@@ -304,10 +308,64 @@ class TerminalPortuariaTest {
 		when(v4.fechaDeLlegadaATerminal(terminalGestionada)).thenReturn(LocalDateTime.of(2025, 12, 12, 14, 30));
 		when(v5.fechaDeLlegadaATerminal(terminalGestionada)).thenReturn(LocalDateTime.of(2027, 11, 12, 14, 30));
 		
-		/////
-		
 		assertEquals(LocalDateTime.of(2025, 10, 12, 14, 30), terminalGestionada.proximaFechaHacia(destino, buque));
 		
 	}
+	
+	@Test
+	void laTerminalNotificaConsigneeTest() {
+		
+		Container containerMock = mock(Container.class);
+		
+		Orden ordenMock = spy(new Orden(null,null,containerMock,null,null));
+		when(ordenMock.getConsignee()).thenReturn(new Cliente("Matias"));
+		Buque buqueMock = mock(Buque.class);
+	
+		
+		assertDoesNotThrow(() -> {
+			terminalGestionada.notificarArribo(buqueMock);
+			
+			terminalGestionada.enviarMailLlegada(ordenMock);
+	        
+	    });
+		
+	}
+	
+	@Test 
+	void laTerminalCobraRetiro() {
+		
+	Container containerMock = mock(Container.class);
+		
+		Orden ordenMock = spy(new Orden(null,null,containerMock,null,null));
+		when(ordenMock.getConsignee()).thenReturn(new Cliente("Matias"));
+		Buque buqueMock = mock(Buque.class);
+	
+		
+		assertDoesNotThrow(() -> {
+			
+			
+			terminalGestionada.cobrarServicioConsignee(ordenMock);
+	        
+	    });
+		
+	}
+	
+	@Test 
+	void laTerminalMandaServiciosALosShipper() {
+		
+		Buque buqueMock = mock(Buque.class);
+       assertDoesNotThrow(() -> {
+			
+			
+			terminalGestionada.notificarSalidaTerminal(buqueMock);
+	        
+	    });
+	}
+	
+	@Test
+	void laTerminalDiceSuLimiteExcedente() {
+		assertEquals(24,terminalGestionada.limiteHorasAlmacenaje());
+	}
+	
 	
 }

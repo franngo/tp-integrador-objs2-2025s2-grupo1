@@ -4,16 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/*
-public class ClienteComposite implements Cliente{
+
+public class ClienteCompuesto extends Cliente{
     
+	List<Cliente> clientes;
 	
-	public List<Cliente> clientes; 
-	
-	public ClienteComposite(List<Cliente> clientes) {
-		this.clientes= new ArrayList<Cliente>();
-		clientes.addAll(clientes);
+	public ClienteCompuesto(String nombre,List<Cliente> clientesAgregar) {
+		super(null);
+		clientes=new ArrayList<Cliente>();
+		clientes.addAll(clientesAgregar);
+		// TODO Auto-generated constructor stub
 	}
+
+	
 	@Override
 	public String nombreCliente() {
 		// @Benja: te da un string que luego tenes que mapear
@@ -24,4 +27,3 @@ public class ClienteComposite implements Cliente{
 	}
  
 }
-*/

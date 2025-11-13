@@ -4,10 +4,12 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import ar.edu.unq.po2.buque.Buque;
 import ar.edu.unq.po2.buscador_de_circuito.BuscadorDeCircuito;
@@ -26,6 +28,7 @@ import ar.edu.unq.po2.generadorDeReportes.*;
 import ar.edu.unq.po2.naviera.Naviera;
 import ar.edu.unq.po2.orden.*;
 import ar.edu.unq.po2.servicio.PrecioServicioTerminal;
+import ar.edu.unq.po2.servicio.Servicio;
 import ar.edu.unq.po2.viaje.Viaje;
 
 /**
@@ -50,6 +53,8 @@ public class TerminalPortuaria implements TerminalObservadora {
 	
 	private BuscadorDeCircuito buscadorDeCircuito;
 	private BuscadorDeViaje buscadorDeViaje;
+	
+	List<Map<Cliente,String>> mailsAEnviar;
   	
 	/**
 	 * @param coordenada son las coordenadas en donde se encuentra geográficamente la Terminal Portuaria.
@@ -78,6 +83,8 @@ public class TerminalPortuaria implements TerminalObservadora {
 		serviciosDisponibles.add(PrecioServicioTerminal.PESAJE);
 		serviciosDisponibles.add(PrecioServicioTerminal.PRECIODESCONSOLIDADO);
 		serviciosDisponibles.add(PrecioServicioTerminal.REVISIONDIARIA);
+		
+		this.mailsAEnviar = new ArrayList<Map<Cliente,String>>();
 	}
 	
 	/**
@@ -159,9 +166,40 @@ public class TerminalPortuaria implements TerminalObservadora {
 	public void retirarImportacion(Camion camion, Chofer chofer, Cliente consignee) {
 		this.validarRetirarImportacion(camion, chofer, consignee);
 		Orden orden = this.ordenDeConsignee(consignee);
+		this.cobrarServicioConsignee(orden);
 		ordenesDeImportacion.remove(orden);
 	}
 	
+	void cobrarServicioConsignee(Orden orden) {
+		String factura = this.generarFacturaServicios(orden,orden.getConsignee());
+		orden.getConsignee().recibirMail(factura);
+	}
+	
+	private String generarFacturaServicios(Orden orden,Cliente cliente) {
+		 StringBuilder desgloceConceptos = new StringBuilder();
+
+		    desgloceConceptos.append("Estimado/a ").append(cliente.nombreCliente()).append(",\n\n");
+		    desgloceConceptos.append("A continuación se detalla el desglose de los servicios asociados a su orden:\n\n");
+
+		    desgloceConceptos.append(String.format("%-30s %10s\n", "Servicio", "Precio"));
+		    desgloceConceptos.append("--------------------------------------------------\n");
+
+		    double total = 0.0;
+		    for (Servicio serv : orden.getServiciosOrden()) {
+		        desgloceConceptos.append(String.format("%-30s $%10.2f\n", serv.tipoServicio(), serv.costoServicio(this, LocalDateTime.now())));
+		        
+		    }
+
+		    desgloceConceptos.append("--------------------------------------------------\n");
+		    desgloceConceptos.append(String.format("%-30s $%10.2f\n", "TOTAL", total));
+		    desgloceConceptos.append("\nGracias por confiar en nosotros.\n");
+		    desgloceConceptos.append("Atentamente,\n");
+		    desgloceConceptos.append("Equipo de Logística\n");
+		    
+		    return desgloceConceptos.toString();
+		
+	}
+
 	/**
 	 * Valida si el consignee dado puede retirar una importación registrada a su nombre en la terminal, en base al camión y chofer dados.
 	 * @param camion es el camion informado por el consignee que va a retirar la carga.
@@ -229,8 +267,26 @@ public class TerminalPortuaria implements TerminalObservadora {
 	public void trabajarEnBuque(Buque buque) {
 		this.validarTrabajosEnBuque(buque); // Valida que puede trabajar en el buque (misma coordenada).
 		this.iniciarTrabajos(buque); 	// Inicia la descarga y carga de ordenes en el buque.
-		this.generarReportes(buque); 	// Genera los reportes en base a lo cargado y descargado del buque.
+		this.generarReportes(buque); 
+		this.generarMailsShipper(buque);// Genera los reportes en base a lo cargado y descargado del buque.
 		this.finalizarTrabajos(buque);  // Finaliza la carga y descarga de ordenes en el buque, borrando de ambos lados lo cargado y descargado respectivamente.
+	}
+	
+	public void generarMailsShipper(Buque buque) {
+		
+			
+		List<Orden> ordenesImp = this.ordenesDelViaje(ordenesDeImportacion, buque);
+		List<Map<Cliente,String>> mails = new ArrayList<Map<Cliente,String>>();
+		ordenesImp.stream().
+				forEach(orden -> mails.add(this.mailsAEnviar(orden)));
+		
+		
+		mailsAEnviar.addAll(mails);
+	}
+	public Map<Cliente,String> mailsAEnviar(Orden orden) {
+		Map<Cliente, String> mapa = new HashMap<>();
+		mapa.put(orden.getShipper(), this.generarFacturaServicios(orden,orden.getShipper()));
+		return mapa;
 	}
 	
 	/**
@@ -532,30 +588,53 @@ public class TerminalPortuaria implements TerminalObservadora {
 		
 	}
 	
-	/**
-	 * 
-	 * @param 
-	 */
-	public void notificarConsignee(Viaje viajeActual) {
-		// TIENE QUE HACERSE UNA SOLA VEZ
-		
-	}
+
+	
+	
 
 	/**
 	 * 
 	 * @param 
 	 */
 	public void notificarArribo(Buque miBuque) {
-		System.out.println("AVISA A LOS CONSIGNEE QUE LA CARGA ESTA POR LLEGAR");
+		List <Orden> ordenesAvisar = this.ordenesMail(miBuque.getViajeActual());
+		ordenesAvisar.stream().forEach(orden -> this.enviarMailLlegada(orden));
 	}
-
+	
+	public List<Orden> ordenesMail(Viaje viaje){
+		 return ordenesDeImportacion.stream()
+	            .filter(orden -> orden.getViaje() == viaje)
+	            .collect(Collectors.toList());
+	}
+    
+	
+	public void enviarMailLlegada(Orden orden) {
+		String cuerpoMail = "Estimado/a " + orden.getConsignee().nombreCliente() + ",\n\n" +
+			    "Le informamos que su carga asociada al contenedor " + orden.getCarga().getIdConnteiner() +
+			    " está próxima a llegar a destino.\n\n" +
+			    "Por favor, manténgase atento a las próximas actualizaciones.\n\n" +
+			    "Saludos cordiales,\n" +
+			    "Departamento de Logística\n" +
+			    "Puerto Internacional de Buenos Aires";
+		
+		orden.getConsignee().recibirMail(cuerpoMail);
+	}
 	/**
 	 * 
 	 * @param 
 	 */
-	public void notificarSalidaTerminal(Buque miBuque) {
-		System.out.println("MANDA LOS MAILS A LOS SHIPPERS");
-	}
+	
+		public void notificarSalidaTerminal(Buque miBuque) {
+		    mailsAEnviar.forEach(mapa -> {
+		        Map.Entry<Cliente, String> entrada = mapa.entrySet().iterator().next();
+		        Cliente cliente = entrada.getKey();
+		        String mensaje = entrada.getValue();
+
+		        cliente.recibirMail(mensaje);
+		    });
+		}
+		
+	
 
 	/**
 	 * 
