@@ -144,6 +144,10 @@ public class Orden {
 			throw new RuntimeException("No se pueden crear los servicios a cobrar porque ya fueron creados anteriormente.");
 		}
 	}
+	
+	public String accept(VisitorReporte visitor) {
+		return visitor.visitOrden(this);
+	}
 
 	/**
 	 * ...
