@@ -145,9 +145,10 @@ public class Orden {
 		}
 	}
 	
+	/**
+	 * Acepta el visitor del reporte, el cual se encarga de devolver un string en base a la orden.
+	 */
 	public String accept(VisitorReporte visitor) {
 		return visitor.visitOrden(this);
 	}
-
-	
 }
