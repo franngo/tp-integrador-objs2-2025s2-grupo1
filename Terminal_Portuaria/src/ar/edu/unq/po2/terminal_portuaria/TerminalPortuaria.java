@@ -54,7 +54,7 @@ public class TerminalPortuaria {
 	
 	private BuscadorDeCircuito buscadorDeCircuito;
 	private BuscadorDeViaje buscadorDeViaje;
-	List<Map<Cliente, String>> mailsAEnviar;
+	private List<Map<Cliente, String>> mailsAEnviar;
   	
 	/**
 	 * @param coordenada son las coordenadas en donde se encuentra geográficamente la Terminal Portuaria.
@@ -174,7 +174,7 @@ public class TerminalPortuaria {
 	 * Cobra los servicios al consignee de la orden dada.
 	 * @param orden es la orden donde se le cobra al consignee de la misma los servicios.
 	 */
-	public void cobrarServicioConsignee(Orden orden) {
+	private void cobrarServicioConsignee(Orden orden) {
 		String factura = this.generarFacturaServicios(orden,orden.getConsignee());
 		orden.getConsignee().recibirMail(factura);
 	}
@@ -277,23 +277,22 @@ public class TerminalPortuaria {
 		this.validarTrabajosEnBuque(buque); // Valida que puede trabajar en el buque (misma coordenada).
 		this.iniciarTrabajos(buque); 	// Inicia la descarga y carga de ordenes en el buque.
 		this.generarReportes(buque); 
-		this.generarMailsShipper(buque);// Genera los reportes en base a lo cargado y descargado del buque.
+		this.generarMailsShipper(buque); // Genera los reportes en base a lo cargado y descargado del buque.
 		this.finalizarTrabajos(buque);  // Finaliza la carga y descarga de ordenes en el buque, borrando de ambos lados lo cargado y descargado respectivamente.
 		System.out.printf("Llegó hasta aca");
 	}
 	
-	public void generarMailsShipper(Buque buque) {
-		
-			
+	private void generarMailsShipper(Buque buque) {
 		List<Orden> ordenesImp = this.ordenesDelViaje(ordenesDeImportacion, buque);
 		List<Map<Cliente,String>> mails = new ArrayList<Map<Cliente,String>>();
-		ordenesImp.stream().
-				forEach(orden -> mails.add(this.mailsAEnviar(orden)));
 		
+		ordenesImp.stream()
+				  .forEach(orden -> mails.add(this.mailsAEnviar(orden)));
 		
 		mailsAEnviar.addAll(mails);
 	}
-	public Map<Cliente,String> mailsAEnviar(Orden orden) {
+	
+	private Map<Cliente,String> mailsAEnviar(Orden orden) {
 		Map<Cliente, String> mapa = new HashMap<>();
 		mapa.put(orden.getShipper(), this.generarFacturaServicios(orden,orden.getShipper()));
 		return mapa;
@@ -549,7 +548,7 @@ public class TerminalPortuaria {
 	 * Describe las ordenes que debe enviarle mails.
 	 * @param viaje es el viaje que se toma de referencia para filtrar las ordenes.
 	 */
-	public List<Orden> ordenesMail(Viaje viaje){
+	private List<Orden> ordenesMail(Viaje viaje){
 		return ordenesDeImportacion.stream()
 	            				   .filter(orden -> orden.getViaje() == viaje)
 	            				   .collect(Collectors.toList());
@@ -559,7 +558,7 @@ public class TerminalPortuaria {
 	 * Envia mail de llegada a los consignees de la orden dada.
 	 * @param orden es la orden a tomar de referencia para enviar los mails.
 	 */
-	public void enviarMailLlegada(Orden orden) {
+	private void enviarMailLlegada(Orden orden) {
 		String cuerpoMail = "Estimado/a " + orden.getConsignee().nombreCliente() + ",\n\n" +
 			    "Le informamos que su carga asociada al contenedor " + orden.getCarga().getIdConnteiner() +
 			    " está próxima a llegar a destino.\n\n" +
